@@ -18,7 +18,9 @@ return {
     },
     keys = {
       -- Project management
-      { "<leader>pp", function()
+      {
+        "<leader>pp",
+        function()
           require("telescope").extensions.projects.projects({
             attach_mappings = function(prompt_bufnr, map)
               local action_state = require("telescope.actions.state")
@@ -113,8 +115,12 @@ return {
               return true
             end
           })
-        end, desc = "Switch Project (New Tab)" },
-      { "<leader>pP", function()
+        end,
+        desc = "Switch Project (New Tab)"
+      },
+      {
+        "<leader>pP",
+        function()
           -- Open project in current tab
           require("telescope").extensions.projects.projects({
             attach_mappings = function(_, map)
@@ -130,52 +136,60 @@ return {
               return true
             end
           })
-        end, desc = "Open Project in Current Tab" },
+        end,
+        desc = "Open Project in Current Tab"
+      },
 
       -- File finding
-      { "<leader>pf", "<cmd>Telescope find_files<cr>", desc = "Find File in Project" },
-      { "<leader>ps", "<cmd>Telescope live_grep<cr>", desc = "Search in Project" },
-      { "<leader>pb", "<cmd>Telescope buffers<cr>", desc = "Project Buffers" },
-      { "<leader>pr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Project Files" },
+      { "<leader>pf", "<cmd>Telescope find_files<cr>",                                                          desc = "Find File in Project" },
+      { "<leader>ps", "<cmd>Telescope live_grep<cr>",                                                           desc = "Search in Project" },
+      { "<leader>pb", "<cmd>Telescope buffers<cr>",                                                             desc = "Project Buffers" },
+      { "<leader>pr", "<cmd>Telescope oldfiles<cr>",                                                            desc = "Recent Project Files" },
       { "<leader>p.", function() require("telescope.builtin").find_files({ cwd = vim.fn.expand("%:p:h") }) end, desc = "Find File in Current Directory" },
 
       -- Frecency-based file finding
-      { "<leader>fr", "<cmd>Telescope frecency<cr>", desc = "Recent Files (Frecency)" },
-      { "<leader>fR", "<cmd>Telescope frecency workspace=CWD<cr>", desc = "Recent Files in CWD (Frecency)" },
+      { "<leader>fr", "<cmd>Telescope frecency<cr>",                                                            desc = "Recent Files (Frecency)" },
+      { "<leader>fR", "<cmd>Telescope frecency workspace=CWD<cr>",                                              desc = "Recent Files in CWD (Frecency)" },
 
       -- Buffer management within tab (with scope.nvim)
-      { "<leader>b,", "<cmd>Telescope scope buffers<cr>", desc = "Tab Buffers" },
+      { "<leader>b,", "<cmd>Telescope scope buffers<cr>",                                                       desc = "Tab Buffers" },
 
       -- Session management
-      { "<leader>ql", "<cmd>Telescope session-lens<cr>", desc = "List Sessions" },
+      { "<leader>ql", "<cmd>Telescope session-lens<cr>",                                                        desc = "List Sessions" },
 
       -- Git integration
-      { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Git Commits" },
-      { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Git Branches" },
-      { "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "Git Status" },
+      { "<leader>gc", "<cmd>Telescope git_commits<cr>",                                                         desc = "Git Commits" },
+      { "<leader>gb", "<cmd>Telescope git_branches<cr>",                                                        desc = "Git Branches" },
+      { "<leader>gs", "<cmd>Telescope git_status<cr>",                                                          desc = "Git Status" },
 
       -- Search
-      { "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Grep" },
-      { "<leader>sw", "<cmd>Telescope grep_string<cr>", desc = "Word" },
+      { "<leader>sp", "<cmd>Telescope live_grep<cr>",                                                           desc = "Search Project" },
+      {
+        "<leader>sp",
+        mode = "v",
+        function()
+          require("telescope.builtin").grep_string()
+        end,
+        desc = "Selection"
+      },
+      { "<leader>sw", "<cmd>Telescope grep_string<cr>",                                               desc = "Word" },
       { "<leader>sW", function() require("telescope.builtin").grep_string({ word_match = "-w" }) end, desc = "Word (exact)" },
-      { "<leader>sg", mode = "v", function() require("telescope.builtin").grep_string() end, desc = "Selection" },
-      { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
-      { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
-      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-      { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
-      { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document Diagnostics" },
-      { "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace Diagnostics" },
+      { "<leader>sC", "<cmd>Telescope commands<cr>",                                                  desc = "Commands" },
+      { "<leader>sk", "<cmd>Telescope keymaps<cr>",                                                   desc = "Key Maps" },
+      { "<leader>sh", "<cmd>Telescope help_tags<cr>",                                                 desc = "Help Pages" },
+      { "<leader>sM", "<cmd>Telescope man_pages<cr>",                                                 desc = "Man Pages" },
+      { "<leader>sm", "<cmd>Telescope marks<cr>",                                                     desc = "Jump to Mark" },
+      { "<leader>so", "<cmd>Telescope vim_options<cr>",                                               desc = "Options" },
+      { "<leader>sR", "<cmd>Telescope resume<cr>",                                                    desc = "Resume" },
+      { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>",                                       desc = "Document Diagnostics" },
+      { "<leader>sD", "<cmd>Telescope diagnostics<cr>",                                               desc = "Workspace Diagnostics" },
 
       -- LSP
-      { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition" },
-      { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
-      { "gI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
-      { "gy", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto Type Definition" },
-      { "<leader>ss", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Goto Symbol" },
-      { "<leader>sS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Goto Symbol (Workspace)" },
+      { "gd",         "<cmd>Telescope lsp_definitions<cr>",                                           desc = "Goto Definition" },
+      { "gr",         "<cmd>Telescope lsp_references<cr>",                                            desc = "References" },
+      { "gI",         "<cmd>Telescope lsp_implementations<cr>",                                       desc = "Goto Implementation" },
+      { "gy",         "<cmd>Telescope lsp_type_definitions<cr>",                                      desc = "Goto Type Definition" },
+      { "<leader>sS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",                             desc = "Goto Symbol (Workspace)" },
     },
     opts = {
       defaults = {
@@ -312,6 +326,20 @@ return {
       pcall(telescope.load_extension, "scope")
       pcall(telescope.load_extension, "yank_history")
       pcall(telescope.load_extension, "session-lens")
+    end,
+  },
+
+  -- Override snacks_picker LSP keymaps to use our custom bindings
+
+  {
+    "neovim/nvim-lspconfig",
+    opts = function()
+      local keys = require("lazyvim.plugins.lsp.keymaps").get()
+      for i = #keys, 1, -1 do
+        if keys[i][1] == "<leader>ss" then
+          table.remove(keys, i)   -- drop LazyVim’s buffer-local override
+        end
+      end
     end,
   },
 }

@@ -41,11 +41,11 @@ return {
       },
     },
     keys = {
-      { "<leader>un", function() require("snacks").notifier.hide() end, desc = "Dismiss All Notifications" },
-      { "<leader>bd", function() require("snacks").bufdelete() end, desc = "Delete Buffer" },
-      { "<leader>gb", function() require("snacks").git.blame_line() end, desc = "Git Blame Line" },
-      { "<leader>gB", function() require("snacks").gitbrowse() end, desc = "Git Browse" },
-      { "<leader>cR", function() require("snacks").rename() end, desc = "Rename File" },
+      { "<leader>ss", function() require("snacks").picker.lines() end,       desc = "Buffer Lines" },
+      { "<leader>si", function() require("snacks").picker.lsp_symbols() end, desc = "LSP Symbols" },
+      { "<leader>bd", function() require("snacks").bufdelete() end,          desc = "Delete Buffer" },
+      { "<leader>gb", function() require("snacks").git.blame_line() end,     desc = "Git Blame Line" },
+      { "<leader>cR", function() require("snacks").rename() end,             desc = "Rename File" },
     },
   },
 
@@ -66,11 +66,11 @@ return {
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
           t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
           d = { "%f[%d]%d+" }, -- digits
-          e = { -- Word with case
+          e = {                -- Word with case
             { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
             "^().*()$",
           },
-          u = ai.gen_spec.function_call(), -- function call
+          u = ai.gen_spec.function_call(),                           -- function call
           U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- function call with underscore
         },
       }
@@ -96,9 +96,9 @@ return {
       save_empty = false,
     },
     keys = {
-      { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
+      { "<leader>qs", function() require("persistence").load() end,                desc = "Restore Session" },
       { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
-      { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+      { "<leader>qd", function() require("persistence").stop() end,                desc = "Don't Save Current Session" },
     },
   },
 
@@ -111,7 +111,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       highlight = {
-        on_put = false, -- No animation on paste
+        on_put = false,  -- No animation on paste
         on_yank = false, -- No animation on yank
         timer = 200,
       },
@@ -128,23 +128,23 @@ return {
     },
     keys = {
       { "<leader>p", function() require("telescope").extensions.yank_history.yank_history() end, desc = "Open Yank History" },
-      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank Text" },
-      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put Yanked Text After Cursor" },
-      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put Yanked Text Before Cursor" },
-      { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put Yanked Text After Selection" },
-      { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put Yanked Text Before Selection" },
-      { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle Forward Through Yank History" },
-      { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle Backward Through Yank History" },
-      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (Linewise)" },
-      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (Linewise)" },
-      { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (Linewise)" },
-      { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (Linewise)" },
-      { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and Indent Right" },
-      { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and Indent Left" },
-      { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put Before and Indent Right" },
-      { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put Before and Indent Left" },
-      { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put After Applying a Filter" },
-      { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put Before Applying a Filter" },
+      { "y",         "<Plug>(YankyYank)",                                                        mode = { "n", "x" },                           desc = "Yank Text" },
+      { "p",         "<Plug>(YankyPutAfter)",                                                    mode = { "n", "x" },                           desc = "Put Yanked Text After Cursor" },
+      { "P",         "<Plug>(YankyPutBefore)",                                                   mode = { "n", "x" },                           desc = "Put Yanked Text Before Cursor" },
+      { "gp",        "<Plug>(YankyGPutAfter)",                                                   mode = { "n", "x" },                           desc = "Put Yanked Text After Selection" },
+      { "gP",        "<Plug>(YankyGPutBefore)",                                                  mode = { "n", "x" },                           desc = "Put Yanked Text Before Selection" },
+      { "[y",        "<Plug>(YankyCycleForward)",                                                desc = "Cycle Forward Through Yank History" },
+      { "]y",        "<Plug>(YankyCycleBackward)",                                               desc = "Cycle Backward Through Yank History" },
+      { "]p",        "<Plug>(YankyPutIndentAfterLinewise)",                                      desc = "Put Indented After Cursor (Linewise)" },
+      { "[p",        "<Plug>(YankyPutIndentBeforeLinewise)",                                     desc = "Put Indented Before Cursor (Linewise)" },
+      { "]P",        "<Plug>(YankyPutIndentAfterLinewise)",                                      desc = "Put Indented After Cursor (Linewise)" },
+      { "[P",        "<Plug>(YankyPutIndentBeforeLinewise)",                                     desc = "Put Indented Before Cursor (Linewise)" },
+      { ">p",        "<Plug>(YankyPutIndentAfterShiftRight)",                                    desc = "Put and Indent Right" },
+      { "<p",        "<Plug>(YankyPutIndentAfterShiftLeft)",                                     desc = "Put and Indent Left" },
+      { ">P",        "<Plug>(YankyPutIndentBeforeShiftRight)",                                   desc = "Put Before and Indent Right" },
+      { "<P",        "<Plug>(YankyPutIndentBeforeShiftLeft)",                                    desc = "Put Before and Indent Left" },
+      { "=p",        "<Plug>(YankyPutAfterFilter)",                                              desc = "Put After Applying a Filter" },
+      { "=P",        "<Plug>(YankyPutBeforeFilter)",                                             desc = "Put Before Applying a Filter" },
     },
   },
 
@@ -170,14 +170,14 @@ return {
       },
     },
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
-      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
-      { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)" },
-      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
-      { "[x", function() require("trouble").prev({ skip_groups = true, jump = true }) end, desc = "Previous Trouble Item" },
-      { "]x", function() require("trouble").next({ skip_groups = true, jump = true }) end, desc = "Next Trouble Item" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",                                       desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",                          desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",                               desc = "Symbols (Trouble)" },
+      { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",                desc = "LSP Definitions / references / ... (Trouble)" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                                           desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                                            desc = "Quickfix List (Trouble)" },
+      { "[x",         function() require("trouble").prev({ skip_groups = true, jump = true }) end, desc = "Previous Trouble Item" },
+      { "]x",         function() require("trouble").next({ skip_groups = true, jump = true }) end, desc = "Next Trouble Item" },
     },
   },
 
