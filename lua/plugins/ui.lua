@@ -616,8 +616,31 @@ return {
         "prompt",
         "TelescopePrompt",
         "alpha",
+        "dashboard",
+        "neo-tree",
+        "Trouble",
+        "lazy",
+        "mason",
+      },
+      handlers = {
+        diagnostic = true,
+        search = false,
+        gitsigns = false,
       },
     },
+    config = function(_, opts)
+      require("scrollbar").setup(opts)
+      -- Override diagnostic handler to add buffer validation
+      local diagnostic_handler = require("scrollbar.handlers.diagnostic")
+      local original_show = diagnostic_handler.show
+      diagnostic_handler.show = function(...)
+        local ok = pcall(original_show, ...)
+        if not ok then
+          -- Silently ignore errors from invalid buffers
+          return
+        end
+      end
+    end,
   },
   
   -- Better vim.ui
