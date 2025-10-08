@@ -167,13 +167,8 @@ return {
         end
 
         require("snacks").picker.pick({
-          source = {
-            name = "harpoon",
-            get = function()
-              return items
-            end
-          },
-          format = "file",
+          items = items,
+          format = "text",
           preview = "file",
           confirm = function(picker, item)
             if not item then return end
