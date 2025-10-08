@@ -39,7 +39,7 @@ return {
           highlight = { backdrop = false },
         },
         char = {
-          enabled = false, -- Disable for normal f/F/t/T
+          enabled = false,          -- Disable for normal f/F/t/T
           multi_line = true,
           label = { exclude = "" }, -- Don't exclude any keys
           autohide = false,
@@ -48,39 +48,76 @@ return {
         },
       },
     },
+    init = function()
+      -- Shared 2-char line jump logic
+      local function format(opts)
+        return {
+          { opts.match.label1, "FlashMatch" },
+          { opts.match.label2, "FlashLabel" },
+        }
+      end
+
+      _G.flash_two_char_line_jump = function(forward)
+        local Flash = require("flash")
+        Flash.jump({
+          search = { mode = "search", max_length = 0, forward = forward },
+          label = { after = false, before = { 0, 0 }, uppercase = false, format = format },
+          pattern = "^",
+          action = function(match, state)
+            state:hide()
+            Flash.jump({
+              search = { max_length = 0 },
+              highlight = { matches = false },
+              label = { format = format },
+              matcher = function(win)
+                return vim.tbl_filter(function(m)
+                  return m.label == match.label and m.win == win
+                end, state.results)
+              end,
+              labeler = function(matches)
+                for _, m in ipairs(matches) do
+                  m.label = m.label2
+                end
+              end,
+            })
+          end,
+          labeler = function(matches, state)
+            local labels = state:labels()
+            for m, match in ipairs(matches) do
+              match.label1 = labels[math.floor((m - 1) / #labels) + 1]
+              match.label2 = labels[(m - 1) % #labels + 1]
+              match.label = match.label1
+            end
+          end,
+        })
+      end
+    end,
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-      -- Doom-like line jumping
-      { "gj", mode = { "n", "x", "o" }, function()
-        require("flash").jump({
-          search = { mode = "search", max_length = 0 },
-          label = { after = { 0, 0 } },
-          pattern = "^"
-        })
-      end, desc = "Jump to line" },
-      { "gk", mode = { "n", "x", "o" }, function()
-        require("flash").jump({
-          search = { mode = "search", max_length = 0, forward = false },
-          label = { after = { 0, 0 } },
-          pattern = "^"
-        })
-      end, desc = "Jump to line (backwards)" },
-      { "gw", mode = { "n", "x", "o" }, function()
-        require("flash").jump({
-          pattern = ".",
-          search = {
-            wrap = true,
-            multi_window = true,
-            mode = function(str)
-              return "\\<" .. str
-            end,
-          },
-        })
-      end, desc = "Jump to word" },
+      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+      -- Doom-like line jumping with 2-char labels
+      { "gj", mode = { "n", "x", "o" }, function() flash_two_char_line_jump(true) end, desc = "Jump to line" },
+      { "gk", mode = { "n", "x", "o" }, function() flash_two_char_line_jump(false) end, desc = "Jump to line (backwards)" },
+      {
+        "gw",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump({
+            pattern = ".",
+            search = {
+              wrap = true,
+              multi_window = true,
+              mode = function(str)
+                return "\\<" .. str
+              end,
+            },
+          })
+        end,
+        desc = "Jump to word"
+      },
     },
   },
 
@@ -91,7 +128,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       local harpoon = require("harpoon")
-      
+
       -- REQUIRED
       harpoon:setup({
         settings = {
@@ -103,21 +140,21 @@ return {
         },
       })
       -- REQUIRED
-      
+
       -- Basic keymaps
       vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end, { desc = "Harpoon Add File" })
       vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon Menu" })
-      
+
       -- Navigation keymaps
       vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end, { desc = "Harpoon File 1" })
       vim.keymap.set("n", "<C-j>", function() harpoon:list():select(2) end, { desc = "Harpoon File 2" })
       vim.keymap.set("n", "<C-k>", function() harpoon:list():select(3) end, { desc = "Harpoon File 3" })
       vim.keymap.set("n", "<C-l>", function() harpoon:list():select(4) end, { desc = "Harpoon File 4" })
-      
+
       -- Toggle previous & next buffers stored within Harpoon list
       vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end, { desc = "Harpoon Previous" })
       vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end, { desc = "Harpoon Next" })
-      
+
       -- Telescope integration (optional)
       local conf = require("telescope.config").values
       local function toggle_telescope(harpoon_files)
@@ -125,7 +162,7 @@ return {
         for _, item in ipairs(harpoon_files.items) do
           table.insert(file_paths, item.value)
         end
-        
+
         require("telescope.pickers").new({}, {
           prompt_title = "Harpoon",
           finder = require("telescope.finders").new_table({
@@ -135,18 +172,18 @@ return {
           sorter = conf.generic_sorter({}),
         }):find()
       end
-      
+
       vim.keymap.set("n", "<leader>hf", function() toggle_telescope(harpoon:list()) end, { desc = "Harpoon Telescope" })
     end,
   },
-  
+
   -- oil.nvim - Edit filesystem like a buffer
   {
     "stevearc/oil.nvim",
     opts = {
       -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
       default_file_explorer = true,
-      
+
       -- Columns to display
       columns = {
         "icon",
@@ -154,13 +191,13 @@ return {
         -- "size",
         -- "mtime",
       },
-      
+
       -- Buffer-local options to use for oil buffers
       buf_options = {
         buflisted = false,
         bufhidden = "hide",
       },
-      
+
       -- Window-local options to use for oil buffers
       win_options = {
         wrap = false,
@@ -172,16 +209,16 @@ return {
         conceallevel = 3,
         concealcursor = "nvic",
       },
-      
+
       -- Skip the confirmation popup for simple operations
       skip_confirm_for_simple_edits = false,
-      
+
       -- Selecting a new/moved/renamed file will prompt you to save changes first
       prompt_save_on_select_new_entry = true,
-      
+
       -- Oil will automatically delete hidden buffers after this delay
       cleanup_delay_ms = 2000,
-      
+
       -- Keymaps in oil buffer
       keymaps = {
         ["g?"] = "actions.show_help",
@@ -201,10 +238,10 @@ return {
         ["g."] = "actions.toggle_hidden",
         ["g\\"] = "actions.toggle_trash",
       },
-      
+
       -- Set to false to disable all default keymaps
       use_default_keymaps = true,
-      
+
       view_options = {
         -- Show files and directories that start with "."
         show_hidden = false,
@@ -278,30 +315,34 @@ return {
       },
     },
     keys = {
-      { "<C-\\>", desc = "Toggle terminal" },
-      { "<leader>tt", "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
+      { "<C-\\>",     desc = "Toggle terminal" },
+      { "<leader>tt", "<cmd>ToggleTerm<cr>",                              desc = "Toggle terminal" },
       { "<leader>th", "<cmd>ToggleTerm size=15 direction=horizontal<cr>", desc = "Horizontal terminal" },
-      { "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "Vertical terminal" },
-      { "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", desc = "Float terminal" },
-      { "<leader>tg", function()
-        local Terminal = require("toggleterm.terminal").Terminal
-        local lazygit = Terminal:new({
-          cmd = "lazygit",
-          dir = "git_dir",
-          direction = "float",
-          float_opts = {
-            border = "double",
-          },
-          on_open = function(term)
-            vim.cmd("startinsert!")
-            vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-          end,
-          on_close = function(term)
-            vim.cmd("startinsert!")
-          end,
-        })
-        lazygit:toggle()
-      end, desc = "Lazygit" },
+      { "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>",   desc = "Vertical terminal" },
+      { "<leader>tf", "<cmd>ToggleTerm direction=float<cr>",              desc = "Float terminal" },
+      {
+        "<leader>tg",
+        function()
+          local Terminal = require("toggleterm.terminal").Terminal
+          local lazygit = Terminal:new({
+            cmd = "lazygit",
+            dir = "git_dir",
+            direction = "float",
+            float_opts = {
+              border = "double",
+            },
+            on_open = function(term)
+              vim.cmd("startinsert!")
+              vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+            end,
+            on_close = function(term)
+              vim.cmd("startinsert!")
+            end,
+          })
+          lazygit:toggle()
+        end,
+        desc = "Lazygit"
+      },
     },
     config = function(_, opts)
       require("toggleterm").setup(opts)
