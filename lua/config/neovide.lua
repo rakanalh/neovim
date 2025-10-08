@@ -66,18 +66,34 @@ if vim.g.neovide then
   vim.g.neovide_profiler = false
 
   -- Copy/paste keybindings for Neovide
-  vim.keymap.set('n', '<D-s>', ':w<CR>')      -- Save
-  vim.keymap.set('v', '<D-c>', '"+y')         -- Copy
-  vim.keymap.set('n', '<D-v>', '"+P')         -- Paste normal mode
-  vim.keymap.set('v', '<D-v>', '"+P')         -- Paste visual mode
-  vim.keymap.set('c', '<D-v>', '<C-R>+')      -- Paste command mode
-  vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- Paste insert mode
+  -- Use noremap = false to allow neovide to intercept these keys
+  vim.keymap.set('n', '<D-s>', ':w<CR>', { noremap = false })
+  vim.keymap.set('v', '<D-c>', '"+y', { noremap = false })
+  vim.keymap.set('n', '<D-v>', '"+P', { noremap = false })
+  vim.keymap.set('v', '<D-v>', '"+P', { noremap = false })
+  vim.keymap.set('c', '<D-v>', '<C-R>+', { noremap = false })
+  vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli', { noremap = false })
 
-  -- Allow clipboard copy paste in neovim
-  vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true })
+  -- Additional paste bindings for cmdline with Ctrl+V and Ctrl+Shift+V
+  -- Function to paste and force redraw
+  local function paste_and_redraw()
+    local clipboard = vim.fn.getreg('+')
+    vim.api.nvim_feedkeys(clipboard, 'n', true)
+    vim.cmd('redraw')
+    return ''
+  end
+
+  -- For command-line mode, use <C-R>= to call function
+  vim.keymap.set('c', '<C-v>', function()
+    return vim.fn.getreg('+')
+  end, { expr = true })
+  vim.keymap.set('c', '<C-S-v>', function()
+    return vim.fn.getreg('+')
+  end, { expr = true })
+
+  -- For insert mode, regular paste works fine
+  vim.keymap.set('i', '<C-v>', '<C-R>+', { noremap = true })
+  vim.keymap.set('i', '<C-S-v>', '<C-R>+', { noremap = true })
 
   -- Dynamic font size adjustment
   vim.keymap.set('n', '<C-=>', function()
