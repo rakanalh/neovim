@@ -187,6 +187,12 @@ function M.apply()
   if opts.integrations.rainbow_delimiters then
     require("tomorrow-night.integrations.rainbow_delimiters").apply(colors, opts)
   end
+  if opts.integrations.treesitter_context then
+    require("tomorrow-night.integrations.treesitter_context").apply(colors, opts)
+  end
+  if opts.integrations.barbecue then
+    require("tomorrow-night.integrations.barbecue").apply(colors, opts)
+  end
 
   -- Apply custom Git overrides (blue for changes)
   hl("GitSignsChange", { fg = colors.blue })

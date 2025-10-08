@@ -45,6 +45,7 @@ M.options = {
     markdown = true,
     treesitter_context = true,
     rainbow_delimiters = true,
+    barbecue = true,
     indent_blankline = {
       enabled = true,
       scope_color = "",
