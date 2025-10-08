@@ -137,26 +137,26 @@ return {
       },
 
       -- File finding
-      { "<leader>pf", function() require("snacks").picker.files() end,                                                          desc = "Find File in Project" },
-      { "<leader>ps", function() require("snacks").picker.grep() end,                                                           desc = "Search in Project" },
-      { "<leader>pb", function() require("snacks").picker.buffers() end,                                                        desc = "Project Buffers" },
-      { "<leader>pr", function() require("snacks").picker.recent() end,                                                         desc = "Recent Project Files" },
-      { "<leader>p.", function() require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h") }) end,                          desc = "Find File in Current Directory" },
+      { "<leader>pf", function() require("snacks").picker.files() end,                                 desc = "Find File in Project" },
+      { "<leader>ps", function() require("snacks").picker.grep() end,                                  desc = "Search in Project" },
+      { "<leader>pb", function() require("snacks").picker.buffers() end,                               desc = "Project Buffers" },
+      { "<leader>pr", function() require("snacks").picker.recent() end,                                desc = "Recent Project Files" },
+      { "<leader>p.", function() require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h") }) end, desc = "Find File in Current Directory" },
 
       -- Recent files
-      { "<leader>fr", function() require("snacks").picker.recent() end,                                                         desc = "Recent Files" },
-      { "<leader>fR", function() require("snacks").picker.recent({ cwd = vim.uv.cwd() }) end,                                   desc = "Recent Files in CWD" },
+      { "<leader>fr", function() require("snacks").picker.recent() end,                                desc = "Recent Files" },
+      { "<leader>fR", function() require("snacks").picker.recent({ cwd = vim.uv.cwd() }) end,          desc = "Recent Files in CWD" },
 
       -- Buffer management
-      { "<leader>b,", function() require("snacks").picker.buffers() end,                                                        desc = "Tab Buffers" },
+      { "<leader>b,", function() require("snacks").picker.buffers() end,                               desc = "Tab Buffers" },
 
       -- Git integration
-      { "<leader>gc", function() require("snacks").picker.git_log() end,                                                        desc = "Git Commits" },
-      { "<leader>gb", function() require("snacks").picker.git_branches() end,                                                   desc = "Git Branches" },
-      { "<leader>gs", function() require("snacks").picker.git_status() end,                                                     desc = "Git Status" },
+      { "<leader>gc", function() require("snacks").picker.git_log() end,                               desc = "Git Commits" },
+      { "<leader>gb", function() require("snacks").picker.git_branches() end,                          desc = "Git Branches" },
+      { "<leader>gs", function() require("snacks").picker.git_status() end,                            desc = "Git Status" },
 
       -- Search
-      { "<leader>sp", function() require("snacks").picker.grep() end,                                                    desc = "Grep (Search in Project)", mode = "n" },
+      { "<leader>sp", function() require("snacks").picker.grep() end,                                  desc = "Grep (Search in Project)",      mode = "n" },
       {
         "<leader>sp",
         mode = "v",
@@ -169,60 +169,65 @@ return {
         end,
         desc = "Grep Selection"
       },
-      { "<leader>sw", function() require("snacks").picker.grep_word() end,                                               desc = "Word" },
-      { "<leader>sW", function() require("snacks").picker.grep_word({ word_match = true }) end,                          desc = "Word (exact)" },
-      { "<leader>sC", function() require("snacks").picker.commands() end,                                                desc = "Commands" },
-      { "<leader>sk", function() require("snacks").picker.keymaps() end,                                                 desc = "Key Maps" },
-      { "<leader>sh", function() require("snacks").picker.help() end,                                                    desc = "Help Pages" },
-      { "<leader>sM", function() require("snacks").picker.man() end,                                                     desc = "Man Pages" },
-      { "<leader>sm", function() require("snacks").picker.marks() end,                                                   desc = "Jump to Mark" },
-      { "<leader>sR", function() require("snacks").picker.resume() end,                                                  desc = "Resume" },
-      { "<leader>sd", function() require("snacks").picker.diagnostics_buffer() end,                                      desc = "Document Diagnostics" },
-      { "<leader>sD", function() require("snacks").picker.diagnostics() end,                                             desc = "Workspace Diagnostics" },
-      { "<leader>ss", function() require("snacks").picker.lines() end,                                                   desc = "Buffer Lines" },
-      { "<leader>si", function() require("snacks").picker.lsp_symbols() end,                                             desc = "LSP Symbols" },
+      { "<leader>*",       function() require("snacks").picker.grep_word() end,                      desc = "Search Word in Project" },
+      { "<leader>sw",      function() require("snacks").picker.grep_word() end,                      desc = "Word" },
+      { "<leader>sW",      function() require("snacks").picker.grep_word({ word_match = true }) end, desc = "Word (exact)" },
+      { "<leader>sC",      function() require("snacks").picker.commands() end,                       desc = "Commands" },
+      { "<leader>sk",      function() require("snacks").picker.keymaps() end,                        desc = "Key Maps" },
+      { "<leader>sh",      function() require("snacks").picker.help() end,                           desc = "Help Pages" },
+      { "<leader>sM",      function() require("snacks").picker.man() end,                            desc = "Man Pages" },
+      { "<leader>sm",      function() require("snacks").picker.marks() end,                          desc = "Jump to Mark" },
+      { "<leader>sR",      function() require("snacks").picker.resume() end,                         desc = "Resume" },
+      { "<leader>sd",      function() require("snacks").picker.diagnostics_buffer() end,             desc = "Document Diagnostics" },
+      { "<leader>sD",      function() require("snacks").picker.diagnostics() end,                    desc = "Workspace Diagnostics" },
+      { "<leader>ss",      function() require("snacks").picker.lines() end,                          desc = "Search Buffer" },
+      { "<leader>si",      function() require("snacks").picker.lsp_symbols() end,                    desc = "LSP Symbols" },
 
       -- LSP
-      { "gd",         function() require("snacks").picker.lsp_definitions() end,                                         desc = "Goto Definition" },
-      { "gr",         function() require("snacks").picker.lsp_references() end,                                          desc = "References" },
-      { "gI",         function() require("snacks").picker.lsp_implementations() end,                                     desc = "Goto Implementation" },
-      { "gy",         function() require("snacks").picker.lsp_type_definitions() end,                                    desc = "Goto Type Definition" },
-      { "<leader>sS", function() require("snacks").picker.lsp_workspace_symbols() end,                                   desc = "Goto Symbol (Workspace)" },
+      { "gd",              function() require("snacks").picker.lsp_definitions() end,                desc = "Goto Definition" },
+      { "gr",              function() require("snacks").picker.lsp_references() end,                 desc = "References" },
+      { "gI",              function() require("snacks").picker.lsp_implementations() end,            desc = "Goto Implementation" },
+      { "gy",              function() require("snacks").picker.lsp_type_definitions() end,           desc = "Goto Type Definition" },
+      { "<leader>sS",      function() require("snacks").picker.lsp_workspace_symbols() end,          desc = "Goto Symbol (Workspace)" },
 
       -- Additional keybindings
-      { "<leader><space>", function() require("snacks").picker.smart() end,                                              desc = "Smart Find Files" },
-      { "<leader>bd",      function() require("snacks").bufdelete() end,                                                 desc = "Delete Buffer" },
-      { "<leader>cR",      function() require("snacks").rename() end,                                                    desc = "Rename File" },
+      { "<leader><space>", function() require("snacks").picker.smart() end,                          desc = "Smart Find Files" },
+      { "<leader>bd",      function() require("snacks").bufdelete() end,                             desc = "Delete Buffer" },
+      { "<leader>cR",      function() require("snacks").rename() end,                                desc = "Rename File" },
 
       -- Session picker using auto-session
-      { "<leader>ql", function()
-        local sessions = require("auto-session.lib").get_session_files()
-        local items = {}
-        for _, session in ipairs(sessions) do
-          table.insert(items, {
-            file = session,
-            text = vim.fn.fnamemodify(session, ":t:r"),
-          })
-        end
+      {
+        "<leader>ql",
+        function()
+          local sessions = require("auto-session.lib").get_session_files()
+          local items = {}
+          for _, session in ipairs(sessions) do
+            table.insert(items, {
+              file = session,
+              text = vim.fn.fnamemodify(session, ":t:r"),
+            })
+          end
 
-        require("snacks").picker.pick({
-          source = {
-            name = "sessions",
-            get = function()
-              return items
-            end
-          },
-          format = "text",
-          preview = false,
-          confirm = function(picker, item)
-            if not item then return end
-            picker:close()
-            vim.schedule(function()
-              require("auto-session").RestoreSessionFile(item.file)
-            end)
-          end,
-        })
-      end, desc = "List Sessions" },
+          require("snacks").picker.pick({
+            source = {
+              name = "sessions",
+              get = function()
+                return items
+              end
+            },
+            format = "text",
+            preview = false,
+            confirm = function(picker, item)
+              if not item then return end
+              picker:close()
+              vim.schedule(function()
+                require("auto-session").RestoreSessionFile(item.file)
+              end)
+            end,
+          })
+        end,
+        desc = "List Sessions"
+      },
     },
   },
 
@@ -305,23 +310,23 @@ return {
     },
     keys = {
       { "<leader>p", function() require("snacks").picker.registers() end, desc = "Open Yank History" },
-      { "y",         "<Plug>(YankyYank)",                                 mode = { "n", "x" },           desc = "Yank Text" },
-      { "p",         "<Plug>(YankyPutAfter)",                                                    mode = { "n", "x" },                           desc = "Put Yanked Text After Cursor" },
-      { "P",         "<Plug>(YankyPutBefore)",                                                   mode = { "n", "x" },                           desc = "Put Yanked Text Before Cursor" },
-      { "gp",        "<Plug>(YankyGPutAfter)",                                                   mode = { "n", "x" },                           desc = "Put Yanked Text After Selection" },
-      { "gP",        "<Plug>(YankyGPutBefore)",                                                  mode = { "n", "x" },                           desc = "Put Yanked Text Before Selection" },
-      { "[y",        "<Plug>(YankyCycleForward)",                                                desc = "Cycle Forward Through Yank History" },
-      { "]y",        "<Plug>(YankyCycleBackward)",                                               desc = "Cycle Backward Through Yank History" },
-      { "]p",        "<Plug>(YankyPutIndentAfterLinewise)",                                      desc = "Put Indented After Cursor (Linewise)" },
-      { "[p",        "<Plug>(YankyPutIndentBeforeLinewise)",                                     desc = "Put Indented Before Cursor (Linewise)" },
-      { "]P",        "<Plug>(YankyPutIndentAfterLinewise)",                                      desc = "Put Indented After Cursor (Linewise)" },
-      { "[P",        "<Plug>(YankyPutIndentBeforeLinewise)",                                     desc = "Put Indented Before Cursor (Linewise)" },
-      { ">p",        "<Plug>(YankyPutIndentAfterShiftRight)",                                    desc = "Put and Indent Right" },
-      { "<p",        "<Plug>(YankyPutIndentAfterShiftLeft)",                                     desc = "Put and Indent Left" },
-      { ">P",        "<Plug>(YankyPutIndentBeforeShiftRight)",                                   desc = "Put Before and Indent Right" },
-      { "<P",        "<Plug>(YankyPutIndentBeforeShiftLeft)",                                    desc = "Put Before and Indent Left" },
-      { "=p",        "<Plug>(YankyPutAfterFilter)",                                              desc = "Put After Applying a Filter" },
-      { "=P",        "<Plug>(YankyPutBeforeFilter)",                                             desc = "Put Before Applying a Filter" },
+      { "y",         "<Plug>(YankyYank)",                                 mode = { "n", "x" },                           desc = "Yank Text" },
+      { "p",         "<Plug>(YankyPutAfter)",                             mode = { "n", "x" },                           desc = "Put Yanked Text After Cursor" },
+      { "P",         "<Plug>(YankyPutBefore)",                            mode = { "n", "x" },                           desc = "Put Yanked Text Before Cursor" },
+      { "gp",        "<Plug>(YankyGPutAfter)",                            mode = { "n", "x" },                           desc = "Put Yanked Text After Selection" },
+      { "gP",        "<Plug>(YankyGPutBefore)",                           mode = { "n", "x" },                           desc = "Put Yanked Text Before Selection" },
+      { "[y",        "<Plug>(YankyCycleForward)",                         desc = "Cycle Forward Through Yank History" },
+      { "]y",        "<Plug>(YankyCycleBackward)",                        desc = "Cycle Backward Through Yank History" },
+      { "]p",        "<Plug>(YankyPutIndentAfterLinewise)",               desc = "Put Indented After Cursor (Linewise)" },
+      { "[p",        "<Plug>(YankyPutIndentBeforeLinewise)",              desc = "Put Indented Before Cursor (Linewise)" },
+      { "]P",        "<Plug>(YankyPutIndentAfterLinewise)",               desc = "Put Indented After Cursor (Linewise)" },
+      { "[P",        "<Plug>(YankyPutIndentBeforeLinewise)",              desc = "Put Indented Before Cursor (Linewise)" },
+      { ">p",        "<Plug>(YankyPutIndentAfterShiftRight)",             desc = "Put and Indent Right" },
+      { "<p",        "<Plug>(YankyPutIndentAfterShiftLeft)",              desc = "Put and Indent Left" },
+      { ">P",        "<Plug>(YankyPutIndentBeforeShiftRight)",            desc = "Put Before and Indent Right" },
+      { "<P",        "<Plug>(YankyPutIndentBeforeShiftLeft)",             desc = "Put Before and Indent Left" },
+      { "=p",        "<Plug>(YankyPutAfterFilter)",                       desc = "Put After Applying a Filter" },
+      { "=P",        "<Plug>(YankyPutBeforeFilter)",                      desc = "Put Before Applying a Filter" },
     },
   },
 
