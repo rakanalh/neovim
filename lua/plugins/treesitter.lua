@@ -3,6 +3,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    lazy = false, -- Load immediately to ensure parsers are available
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
@@ -11,7 +12,6 @@ return {
       { "<c-space>", desc = "Increment Selection" },
       { "<bs>", desc = "Decrement Selection", mode = "x" },
     },
-    event = { "BufReadPost", "BufNewFile", "BufWritePost" },
     opts = {
       auto_install = true,  -- Automatically install missing parsers when entering buffer
       highlight = {
