@@ -185,7 +185,14 @@ return {
       -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
       separator = "─",
       zindex = 20, -- The Z-index of the context window
-      on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+      on_attach = function(buf)
+        -- Disable for markdown files
+        local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
+        if filetype == "markdown" then
+          return false
+        end
+        return true
+      end,
     },
     keys = {
       { "[c", function() require("treesitter-context").go_to_context(vim.v.count1) end, desc = "Jump to context" },
