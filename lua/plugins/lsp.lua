@@ -1,5 +1,28 @@
 return {
-  -- Breadcrumbs winbar
+  -- Navic for current code context (used by barbecue.nvim)
+  {
+    "SmiteshP/nvim-navic",
+    lazy = true,
+    init = function()
+      vim.g.navic_silence = true
+      require("lazyvim.util").lsp.on_attach(function(client, buffer)
+        if client.supports_method("textDocument/documentSymbol") then
+          require("nvim-navic").attach(client, buffer)
+        end
+      end)
+    end,
+    opts = function()
+      return {
+        separator = " ",
+        highlight = true,
+        depth_limit = 5,
+        icons = require("lazyvim.config").icons.kinds,
+        lazy_update_context = true,
+      }
+    end,
+  },
+
+  -- Barbecue - VS Code-like breadcrumbs
   {
     "utilyre/barbecue.nvim",
     name = "barbecue",
@@ -8,32 +31,25 @@ return {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
     },
-    opts = function()
-      return {
-        -- Show the breadcrumbs winbar
-        show_dirname = false,
-        show_basename = false,
-        show_modified = true,
-
-        -- Theme and appearance
-        theme = "auto", -- Use the current colorscheme
-
-        -- Icons
-        kinds = require("lazyvim.config").icons.kinds,
-
-        -- Context
-        context_follow_icon_color = false,
-
-        -- Performance
-        attach_navic = true,
-        create_autocmd = true,
-
-        exclude_filetypes = { "netrw", "toggleterm", "terminal", "help" },
-      }
-    end,
-    config = function(_, opts)
-      require("barbecue").setup(opts)
-    end,
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      theme = "auto",
+      show_dirname = true,
+      show_basename = true,
+      show_modified = true,
+      show_navic = true,
+      exclude_filetypes = {
+        "netrw",
+        "toggleterm",
+        "dashboard",
+        "neo-tree",
+        "Trouble",
+        "lazy",
+        "mason",
+        "notify",
+        "alpha",
+      },
+    },
   },
 
   -- File operations with LSP support (rename, move, etc.)
