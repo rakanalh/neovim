@@ -211,12 +211,6 @@ map("n", "<leader>TAB", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>,", "<cmd>Telescope buffers<cr>", { desc = "Switch Buffer" })
 map("n", "<leader>.", "<cmd>Telescope find_files<cr>", { desc = "Find File" })
 map("n", "<leader>'", "<cmd>Telescope resume<cr>", { desc = "Resume Last Picker" })
-map("n", "<leader><leader>", function()
-  require("telescope").extensions.frecency.frecency({
-    cwd = require("lazyvim.util").root(),
-    workspace = "CWD"
-  })
-end, { desc = "Find Files (Frecency)" })
 
 -- Override tab keybinding to show tabs momentarily instead of creating new tab
 map("n", "<leader><tab><tab>", function()

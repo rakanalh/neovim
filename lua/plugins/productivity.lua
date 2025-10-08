@@ -39,13 +39,18 @@ return {
       dashboard = {
         enabled = false, -- We're using dashboard-nvim
       },
+      picker = {
+        layout = "bottom", -- Use bottom layout (ivy preset at bottom)
+      },
     },
     keys = {
-      { "<leader>ss", function() require("snacks").picker.lines() end,       desc = "Buffer Lines" },
-      { "<leader>si", function() require("snacks").picker.lsp_symbols() end, desc = "LSP Symbols" },
-      { "<leader>bd", function() require("snacks").bufdelete() end,          desc = "Delete Buffer" },
-      { "<leader>gb", function() require("snacks").git.blame_line() end,     desc = "Git Blame Line" },
-      { "<leader>cR", function() require("snacks").rename() end,             desc = "Rename File" },
+      { "<leader><space>", function() require("snacks").picker.smart() end,     desc = "Smart Find Files" },
+      { "<leader>ss",      function() require("snacks").picker.lines() end,     desc = "Buffer Lines" },
+      { "<leader>si",      function() require("snacks").picker.lsp_symbols() end, desc = "LSP Symbols" },
+      { "<leader>sp",      function() require("snacks").picker.grep() end,      desc = "Grep" },
+      { "<leader>bd",      function() require("snacks").bufdelete() end,        desc = "Delete Buffer" },
+      { "<leader>gb",      function() require("snacks").git.blame_line() end,   desc = "Git Blame Line" },
+      { "<leader>cR",      function() require("snacks").rename() end,           desc = "Rename File" },
     },
   },
 

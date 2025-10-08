@@ -163,7 +163,6 @@ return {
       { "<leader>gs", "<cmd>Telescope git_status<cr>",                                                          desc = "Git Status" },
 
       -- Search
-      { "<leader>sp", "<cmd>Telescope live_grep<cr>",                                                           desc = "Search Project" },
       {
         "<leader>sp",
         mode = "v",
