@@ -73,9 +73,6 @@ map("i", ";", ";<c-g>u")
 -- save file
 map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
 
--- keywordprg
-map("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
-
 -- better indenting
 map("v", "<", "<gv")
 map("v", ">", ">gv")
@@ -124,16 +121,20 @@ map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
 -- toggle options
 map("n", "<leader>uf", function() require("lazyvim.util.format").toggle() end, { desc = "Toggle Auto Format (Global)" })
-map("n", "<leader>uF", function() require("lazyvim.util.format").toggle(true) end, { desc = "Toggle Auto Format (Buffer)" })
+map("n", "<leader>uF", function() require("lazyvim.util.format").toggle(true) end,
+  { desc = "Toggle Auto Format (Buffer)" })
 map("n", "<leader>us", function() require("lazyvim.util").toggle("spell") end, { desc = "Toggle Spelling" })
 map("n", "<leader>uw", function() require("lazyvim.util").toggle("wrap") end, { desc = "Toggle Word Wrap" })
-map("n", "<leader>uL", function() require("lazyvim.util").toggle("relativenumber") end, { desc = "Toggle Relative Line Numbers" })
+map("n", "<leader>uL", function() require("lazyvim.util").toggle("relativenumber") end,
+  { desc = "Toggle Relative Line Numbers" })
 map("n", "<leader>ul", function() require("lazyvim.util").toggle.number() end, { desc = "Toggle Line Numbers" })
 map("n", "<leader>ud", function() require("lazyvim.util").toggle.diagnostics() end, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
-map("n", "<leader>uc", function() require("lazyvim.util").toggle("conceallevel", false, { 0, conceallevel }) end, { desc = "Toggle Conceal" })
+map("n", "<leader>uc", function() require("lazyvim.util").toggle("conceallevel", false, { 0, conceallevel }) end,
+  { desc = "Toggle Conceal" })
 if vim.lsp.inlay_hint then
-  map("n", "<leader>uh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { desc = "Toggle Inlay Hints" })
+  map("n", "<leader>uh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end,
+    { desc = "Toggle Inlay Hints" })
 end
 
 -- Commented out - using Neogit instead of lazygit
@@ -207,7 +208,6 @@ map("n", "<leader><tab>[", function()
 end, { desc = "Previous Tab" })
 
 -- Doom-like mappings
-map("n", "<leader>TAB", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>,", function() require("snacks").picker.buffers() end, { desc = "Switch Buffer" })
 map("n", "<leader>.", function() require("snacks").picker.files() end, { desc = "Find File" })
 map("n", "<leader>'", function() require("snacks").picker.resume() end, { desc = "Resume Last Picker" })
@@ -220,3 +220,4 @@ map("n", "<leader><tab><tab>", function()
     vim.opt.showtabline = 0
   end, 3000)
 end, { desc = "Show Tabs Momentarily" })
+
