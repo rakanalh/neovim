@@ -155,25 +155,35 @@ return {
       vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end, { desc = "Harpoon Previous" })
       vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end, { desc = "Harpoon Next" })
 
-      -- Telescope integration (optional)
-      local conf = require("telescope.config").values
-      local function toggle_telescope(harpoon_files)
-        local file_paths = {}
+      -- Snacks picker integration
+      vim.keymap.set("n", "<leader>hf", function()
+        local harpoon_files = harpoon:list()
+        local items = {}
         for _, item in ipairs(harpoon_files.items) do
-          table.insert(file_paths, item.value)
+          table.insert(items, {
+            file = item.value,
+            text = item.value,
+          })
         end
 
-        require("telescope.pickers").new({}, {
-          prompt_title = "Harpoon",
-          finder = require("telescope.finders").new_table({
-            results = file_paths,
-          }),
-          previewer = conf.file_previewer({}),
-          sorter = conf.generic_sorter({}),
-        }):find()
-      end
-
-      vim.keymap.set("n", "<leader>hf", function() toggle_telescope(harpoon:list()) end, { desc = "Harpoon Telescope" })
+        require("snacks").picker.pick({
+          source = {
+            name = "harpoon",
+            get = function()
+              return items
+            end
+          },
+          format = "file",
+          preview = "file",
+          confirm = function(picker, item)
+            if not item then return end
+            picker:close()
+            vim.schedule(function()
+              vim.cmd("edit " .. vim.fn.fnameescape(item.file))
+            end)
+          end,
+        })
+      end, { desc = "Harpoon Picker" })
     end,
   },
 

@@ -6,7 +6,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim",
       "nvim-treesitter/nvim-treesitter", -- For syntax highlighting
     },
     keys = {
@@ -15,7 +14,7 @@ return {
       { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Git Commit" },
       { "<leader>gp", "<cmd>Neogit pull<cr>", desc = "Git Pull" },
       { "<leader>gP", "<cmd>Neogit push<cr>", desc = "Git Push" },
-      { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Git Branches" },
+      { "<leader>gb", function() require("snacks").picker.git_branches() end, desc = "Git Branches" },
       { "<leader>gl", "<cmd>Neogit log<cr>", desc = "Git Log" },
     },
     opts = {
@@ -26,10 +25,6 @@ return {
       disable_insert_on_commit = "auto",
       auto_refresh = true,
       disable_builtin_notifications = false,
-      use_telescope = true,
-      telescope_sorter = function()
-        return require("telescope").extensions.fzf.native_fzf_sorter()
-      end,
       console_timeout = 2000,
       auto_show_console = true,
       remember_settings = true,
@@ -85,7 +80,6 @@ return {
         section = { "▸", "▾" },
       },
       integrations = {
-        telescope = true,
         diffview = true,
         fzf_lua = false,
       },

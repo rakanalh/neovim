@@ -40,17 +40,189 @@ return {
         enabled = false, -- We're using dashboard-nvim
       },
       picker = {
+        enabled = true,
         layout = "bottom", -- Use bottom layout (ivy preset at bottom)
+        -- Enable frecency scoring for recently/frequently used files
+        matcher = {
+          frecency = true, -- Score files based on frequency and recency of use
+        },
+        -- Optional: Enable debug scores to see frecency values (disable in production)
+        -- debug = {
+        --   scores = true,
+        -- },
+        -- Configure picker sources
+        sources = {
+          buffers = {
+            format = "file",
+            hidden = false,
+          },
+          files = {
+            hidden = false,
+            ignored = false,
+          },
+          grep = {
+            hidden = true,
+          },
+        },
       },
     },
     keys = {
-      { "<leader><space>", function() require("snacks").picker.smart() end,     desc = "Smart Find Files" },
-      { "<leader>ss",      function() require("snacks").picker.lines() end,     desc = "Buffer Lines" },
-      { "<leader>si",      function() require("snacks").picker.lsp_symbols() end, desc = "LSP Symbols" },
-      { "<leader>sp",      function() require("snacks").picker.grep() end,      desc = "Grep" },
-      { "<leader>bd",      function() require("snacks").bufdelete() end,        desc = "Delete Buffer" },
-      { "<leader>gb",      function() require("snacks").git.blame_line() end,   desc = "Git Blame Line" },
-      { "<leader>cR",      function() require("snacks").rename() end,           desc = "Rename File" },
+      -- Project management
+      {
+        "<leader>pp",
+        function()
+          require("snacks").picker.projects({
+            confirm = function(picker, item)
+              if not item then return end
+              picker:close()
+
+              local project_path = vim.fn.fnamemodify(item.file, ":p"):gsub("/$", "")
+
+              -- Check if this project is already open in a tab
+              local tabs = vim.api.nvim_list_tabpages()
+              local existing_tab = nil
+              local has_project_tabs = false
+
+              for _, tab in ipairs(tabs) do
+                local ok, tab_project = pcall(vim.api.nvim_tabpage_get_var, tab, "project_path")
+                if ok and tab_project then
+                  has_project_tabs = true
+                  local normalized_tab_path = vim.fn.fnamemodify(tab_project, ":p"):gsub("/$", "")
+                  if normalized_tab_path == project_path then
+                    existing_tab = tab
+                    break
+                  end
+                end
+              end
+
+              if existing_tab then
+                -- Switch to existing project tab
+                vim.api.nvim_set_current_tabpage(existing_tab)
+              else
+                -- If no project tabs exist yet, replace current tab (dashboard)
+                -- Otherwise create new tab
+                if not has_project_tabs then
+                  vim.cmd("tcd " .. vim.fn.fnameescape(item.file))
+                  vim.api.nvim_tabpage_set_var(0, "project_path", project_path)
+                else
+                  vim.cmd("$tabnew")
+                  vim.cmd("tcd " .. vim.fn.fnameescape(item.file))
+                  vim.api.nvim_tabpage_set_var(0, "project_path", project_path)
+                end
+                -- Open file picker
+                vim.schedule(function()
+                  require("snacks").picker.files()
+                end)
+              end
+            end,
+          })
+        end,
+        desc = "Switch Project (New Tab)"
+      },
+      {
+        "<leader>pP",
+        function()
+          require("snacks").picker.projects({
+            confirm = function(picker, item)
+              if not item then return end
+              picker:close()
+              vim.cmd("tcd " .. vim.fn.fnameescape(item.file))
+              vim.schedule(function()
+                require("snacks").picker.files()
+              end)
+            end,
+          })
+        end,
+        desc = "Open Project in Current Tab"
+      },
+
+      -- File finding
+      { "<leader>pf", function() require("snacks").picker.files() end,                                                          desc = "Find File in Project" },
+      { "<leader>ps", function() require("snacks").picker.grep() end,                                                           desc = "Search in Project" },
+      { "<leader>pb", function() require("snacks").picker.buffers() end,                                                        desc = "Project Buffers" },
+      { "<leader>pr", function() require("snacks").picker.recent() end,                                                         desc = "Recent Project Files" },
+      { "<leader>p.", function() require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h") }) end,                          desc = "Find File in Current Directory" },
+
+      -- Recent files
+      { "<leader>fr", function() require("snacks").picker.recent() end,                                                         desc = "Recent Files" },
+      { "<leader>fR", function() require("snacks").picker.recent({ cwd = vim.uv.cwd() }) end,                                   desc = "Recent Files in CWD" },
+
+      -- Buffer management
+      { "<leader>b,", function() require("snacks").picker.buffers() end,                                                        desc = "Tab Buffers" },
+
+      -- Git integration
+      { "<leader>gc", function() require("snacks").picker.git_log() end,                                                        desc = "Git Commits" },
+      { "<leader>gb", function() require("snacks").picker.git_branches() end,                                                   desc = "Git Branches" },
+      { "<leader>gs", function() require("snacks").picker.git_status() end,                                                     desc = "Git Status" },
+
+      -- Search
+      { "<leader>sp", function() require("snacks").picker.grep() end,                                                    desc = "Grep (Search in Project)", mode = "n" },
+      {
+        "<leader>sp",
+        mode = "v",
+        function()
+          -- Get visual selection
+          vim.cmd('noau normal! "vy"')
+          local text = vim.fn.getreg('v')
+          vim.fn.setreg('v', {})
+          require("snacks").picker.grep({ search = text })
+        end,
+        desc = "Grep Selection"
+      },
+      { "<leader>sw", function() require("snacks").picker.grep_word() end,                                               desc = "Word" },
+      { "<leader>sW", function() require("snacks").picker.grep_word({ word_match = true }) end,                          desc = "Word (exact)" },
+      { "<leader>sC", function() require("snacks").picker.commands() end,                                                desc = "Commands" },
+      { "<leader>sk", function() require("snacks").picker.keymaps() end,                                                 desc = "Key Maps" },
+      { "<leader>sh", function() require("snacks").picker.help() end,                                                    desc = "Help Pages" },
+      { "<leader>sM", function() require("snacks").picker.man() end,                                                     desc = "Man Pages" },
+      { "<leader>sm", function() require("snacks").picker.marks() end,                                                   desc = "Jump to Mark" },
+      { "<leader>sR", function() require("snacks").picker.resume() end,                                                  desc = "Resume" },
+      { "<leader>sd", function() require("snacks").picker.diagnostics_buffer() end,                                      desc = "Document Diagnostics" },
+      { "<leader>sD", function() require("snacks").picker.diagnostics() end,                                             desc = "Workspace Diagnostics" },
+      { "<leader>ss", function() require("snacks").picker.lines() end,                                                   desc = "Buffer Lines" },
+      { "<leader>si", function() require("snacks").picker.lsp_symbols() end,                                             desc = "LSP Symbols" },
+
+      -- LSP
+      { "gd",         function() require("snacks").picker.lsp_definitions() end,                                         desc = "Goto Definition" },
+      { "gr",         function() require("snacks").picker.lsp_references() end,                                          desc = "References" },
+      { "gI",         function() require("snacks").picker.lsp_implementations() end,                                     desc = "Goto Implementation" },
+      { "gy",         function() require("snacks").picker.lsp_type_definitions() end,                                    desc = "Goto Type Definition" },
+      { "<leader>sS", function() require("snacks").picker.lsp_workspace_symbols() end,                                   desc = "Goto Symbol (Workspace)" },
+
+      -- Additional keybindings
+      { "<leader><space>", function() require("snacks").picker.smart() end,                                              desc = "Smart Find Files" },
+      { "<leader>bd",      function() require("snacks").bufdelete() end,                                                 desc = "Delete Buffer" },
+      { "<leader>cR",      function() require("snacks").rename() end,                                                    desc = "Rename File" },
+
+      -- Session picker using auto-session
+      { "<leader>ql", function()
+        local sessions = require("auto-session.lib").get_session_files()
+        local items = {}
+        for _, session in ipairs(sessions) do
+          table.insert(items, {
+            file = session,
+            text = vim.fn.fnamemodify(session, ":t:r"),
+          })
+        end
+
+        require("snacks").picker.pick({
+          source = {
+            name = "sessions",
+            get = function()
+              return items
+            end
+          },
+          format = "text",
+          preview = false,
+          confirm = function(picker, item)
+            if not item then return end
+            picker:close()
+            vim.schedule(function()
+              require("auto-session").RestoreSessionFile(item.file)
+            end)
+          end,
+        })
+      end, desc = "List Sessions" },
     },
   },
 
@@ -132,8 +304,8 @@ return {
       },
     },
     keys = {
-      { "<leader>p", function() require("telescope").extensions.yank_history.yank_history() end, desc = "Open Yank History" },
-      { "y",         "<Plug>(YankyYank)",                                                        mode = { "n", "x" },                           desc = "Yank Text" },
+      { "<leader>p", function() require("snacks").picker.registers() end, desc = "Open Yank History" },
+      { "y",         "<Plug>(YankyYank)",                                 mode = { "n", "x" },           desc = "Yank Text" },
       { "p",         "<Plug>(YankyPutAfter)",                                                    mode = { "n", "x" },                           desc = "Put Yanked Text After Cursor" },
       { "P",         "<Plug>(YankyPutBefore)",                                                   mode = { "n", "x" },                           desc = "Put Yanked Text Before Cursor" },
       { "gp",        "<Plug>(YankyGPutAfter)",                                                   mode = { "n", "x" },                           desc = "Put Yanked Text After Selection" },

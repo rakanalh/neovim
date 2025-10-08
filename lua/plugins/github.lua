@@ -4,7 +4,6 @@ return {
     "pwntester/octo.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
       "nvim-tree/nvim-web-devicons",
     },
     cmd = "Octo",
@@ -15,7 +14,7 @@ return {
         default_remote = { "upstream", "origin" }, -- Order to try remotes
         default_merge_method = "commit",           -- Merge method to use when merging PRs (commit, rebase, squash)
         ssh_aliases = {},                          -- SSH aliases. e.g. `ssh_aliases = {["github.com-work"] = "github.com"}`
-        picker = "telescope",                      -- or "fzf-lua"
+        picker = "snacks",                         -- Using snacks picker
         picker_config = {
           use_emojis = false,                      -- only used by "fzf-lua" picker for now
           mappings = {                             -- mappings for the pickers

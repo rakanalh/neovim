@@ -92,7 +92,7 @@ map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
 -- find files in current file's directory
 map("n", "<leader>fd", function()
-  require("telescope.builtin").find_files({ cwd = vim.fn.expand("%:p:h") })
+  require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h") })
 end, { desc = "Find Files (Current Dir)" })
 
 map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
@@ -139,9 +139,9 @@ end
 -- Commented out - using Neogit instead of lazygit
 -- map("n", "<leader>gg", function() require("lazyvim.util").terminal({ "lazygit" }, { cwd = require("lazyvim.util").root(), esc_esc = false, ctrl_hjkl = false }) end, { desc = "Lazygit (Root Dir)" })
 -- map("n", "<leader>gG", function() require("lazyvim.util").terminal({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end, { desc = "Lazygit (cwd)" })
--- map("n", "<leader>gc", "<cmd>Telescope git_commits<cr>", { desc = "Git Commits" }) -- Conflicts with Neogit commit
-map("n", "<leader>gb", "<cmd>Telescope git_branches<cr>", { desc = "Git Branches" })
-map("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "Git Status" })
+-- map("n", "<leader>gc", function() require("snacks").picker.git_log() end, { desc = "Git Commits" }) -- Conflicts with Neogit commit
+map("n", "<leader>gb", function() require("snacks").picker.git_branches() end, { desc = "Git Branches" })
+map("n", "<leader>gs", function() require("snacks").picker.git_status() end, { desc = "Git Status" })
 
 -- quit with confirmation
 map("n", "<leader>qq", function()
@@ -208,9 +208,9 @@ end, { desc = "Previous Tab" })
 
 -- Doom-like mappings
 map("n", "<leader>TAB", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-map("n", "<leader>,", "<cmd>Telescope buffers<cr>", { desc = "Switch Buffer" })
-map("n", "<leader>.", "<cmd>Telescope find_files<cr>", { desc = "Find File" })
-map("n", "<leader>'", "<cmd>Telescope resume<cr>", { desc = "Resume Last Picker" })
+map("n", "<leader>,", function() require("snacks").picker.buffers() end, { desc = "Switch Buffer" })
+map("n", "<leader>.", function() require("snacks").picker.files() end, { desc = "Find File" })
+map("n", "<leader>'", function() require("snacks").picker.resume() end, { desc = "Resume Last Picker" })
 
 -- Override tab keybinding to show tabs momentarily instead of creating new tab
 map("n", "<leader><tab><tab>", function()

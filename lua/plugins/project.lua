@@ -38,7 +38,7 @@ return {
           end,
         },
       })
-      require("telescope").load_extension("scope")
+      -- Note: scope.nvim works standalone (no picker extension needed)
     end,
   },
 
@@ -46,9 +46,6 @@ return {
   {
     "rmagatti/auto-session",
     lazy = false,
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
     opts = {
       auto_session_enabled = true,
       auto_save_enabled = true,
@@ -90,7 +87,7 @@ return {
     end,
   },
 
-  -- Tab/Workspace management keymaps (not directly telescope-related)
+  -- Tab/Workspace management keymaps
   {
     "nvim-lua/plenary.nvim",
     lazy = false,
@@ -145,7 +142,7 @@ return {
       { "<leader>p4", "<cmd>tabn 4<cr>",                                       desc = "Go to Tab 4" },
       { "<leader>p5", "<cmd>tabn 5<cr>",                                       desc = "Go to Tab 5" },
 
-      -- Session management (non-telescope parts)
+      -- Session management
       { "<leader>qs", function() require("auto-session").SaveSession() end,    desc = "Save Session" },
       { "<leader>qr", function() require("auto-session").RestoreSession() end, desc = "Restore Session" },
       { "<leader>qd", function() require("auto-session").DeleteSession() end,  desc = "Delete Session" },
