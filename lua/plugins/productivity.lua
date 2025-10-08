@@ -167,7 +167,11 @@ return {
       { "<leader>gs", function() require("snacks").picker.git_status() end,                            desc = "Git Status" },
 
       -- Search
-      { "<leader>sp", function() require("snacks").picker.grep() end,                                  desc = "Grep (Search in Project)",      mode = "n" },
+      { "<leader>sd", function() require("snacks").picker.grep({ cwd = vim.fn.expand("%:p:h") }) end,  desc = "Grep (Search in Current Directory)", mode = "n" },
+      { "<leader>sD", false,                                                                           mode = "n" },
+      { "<leader>sg", false,                                                                           mode = "n" },
+      { "<leader>sG", false,                                                                           mode = "n" },
+      { "<leader>sp", function() require("snacks").picker.grep() end,                                  desc = "Grep (Search in Project)",           mode = "n" },
       {
         "<leader>sp",
         mode = "v",
@@ -189,8 +193,8 @@ return {
       { "<leader>sM",      function() require("snacks").picker.man() end,                            desc = "Man Pages" },
       { "<leader>sm",      function() require("snacks").picker.marks() end,                          desc = "Jump to Mark" },
       { "<leader>sR",      function() require("snacks").picker.resume() end,                         desc = "Resume" },
-      { "<leader>sd",      function() require("snacks").picker.diagnostics_buffer() end,             desc = "Document Diagnostics" },
-      { "<leader>sD",      function() require("snacks").picker.diagnostics() end,                    desc = "Workspace Diagnostics" },
+      { "<leader>sx",      function() require("snacks").picker.diagnostics_buffer() end,             desc = "Document Diagnostics" },
+      { "<leader>sX",      function() require("snacks").picker.diagnostics() end,                    desc = "Workspace Diagnostics" },
       { "<leader>ss",      function() require("snacks").picker.lines() end,                          desc = "Search Buffer" },
       { "<leader>si",      function() require("snacks").picker.lsp_symbols() end,                    desc = "LSP Symbols" },
 
