@@ -112,16 +112,20 @@ return {
               else
                 -- If no project tabs exist yet, replace current tab (dashboard)
                 -- Otherwise create new tab
+                local target_tab
                 if not has_project_tabs then
                   vim.cmd("tcd " .. vim.fn.fnameescape(item.file))
                   vim.api.nvim_tabpage_set_var(0, "project_path", project_path)
+                  target_tab = vim.api.nvim_get_current_tabpage()
                 else
                   vim.cmd("$tabnew")
                   vim.cmd("tcd " .. vim.fn.fnameescape(item.file))
-                  vim.api.nvim_tabpage_set_var(0, "project_path", project_path)
+                  target_tab = vim.api.nvim_get_current_tabpage()
+                  vim.api.nvim_tabpage_set_var(target_tab, "project_path", project_path)
                 end
-                -- Open file picker
+                -- Open file picker in the target tab
                 vim.schedule(function()
+                  vim.api.nvim_set_current_tabpage(target_tab)
                   require("snacks").picker.files()
                 end)
               end
