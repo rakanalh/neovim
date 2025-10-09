@@ -21,7 +21,7 @@ opt.fillchars = {
   foldclose = "▸",
   fold = " ",
   foldsep = " ",
-  diff = "╱",
+  diff = " ",  -- Use space instead of diagonal line
   eob = " ",
 }
 opt.formatoptions = "jcroqlnt" -- tcqj
