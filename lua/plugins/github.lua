@@ -15,9 +15,17 @@ return {
         default_merge_method = "commit",           -- Merge method to use when merging PRs (commit, rebase, squash)
         ssh_aliases = {},                          -- SSH aliases. e.g. `ssh_aliases = {["github.com-work"] = "github.com"}`
         picker = "snacks",                         -- Using snacks picker
+        mappings_disable_default = false,          -- Keep default mappings and merge with custom
+        mappings = {
+          review_diff = {
+            select_next_entry = { lhs = "<localleader>]", desc = "next file" },
+            select_prev_entry = { lhs = "<localleader>[", desc = "prev file" },
+            goto_file = { lhs = "<localleader>f", desc = "Go to file" },
+          },
+        },
         picker_config = {
-          use_emojis = false,                      -- only used by "fzf-lua" picker for now
-          mappings = {                             -- mappings for the pickers
+          use_emojis = true, -- only used by "fzf-lua" picker for now
+          mappings = {       -- mappings for the pickers
             open_in_browser = { lhs = "<C-b>", desc = "open issue in browser" },
             copy_url = { lhs = "<C-y>", desc = "copy url to system clipboard" },
             checkout_pr = { lhs = "<C-o>", desc = "checkout pull request" },
@@ -77,22 +85,37 @@ return {
       })
     end,
     keys = {
-      { "<leader>go",  "<cmd>Octo<cr>",              desc = "Octo" },
-      { "<leader>goi", "<cmd>Octo issue list<cr>",   desc = "List Issues" },
-      { "<leader>goI", "<cmd>Octo issue search<cr>", desc = "Search Issues" },
-      { "<leader>gop", "<cmd>Octo pr list<cr>",      desc = "List PRs" },
-      { "<leader>goP", "<cmd>Octo pr search<cr>",    desc = "Search PRs" },
-      { "<leader>gor", "<cmd>Octo repo list<cr>",    desc = "List Repos" },
-      { "<leader>gos", "<cmd>Octo search<cr>",       desc = "Search" },
+      { "<leader>go",      "<cmd>Octo<cr>",              desc = "Octo" },
+      { "<leader>goi",     "<cmd>Octo issue list<cr>",   desc = "List Issues" },
+      { "<leader>goI",     "<cmd>Octo issue search<cr>", desc = "Search Issues" },
+      { "<leader>gop",     "<cmd>Octo pr list<cr>",      desc = "List PRs" },
+      { "<leader>goP",     "<cmd>Octo pr search<cr>",    desc = "Search PRs" },
+      { "<leader>gor",     "<cmd>Octo repo list<cr>",    desc = "List Repos" },
+      { "<leader>gos",     "<cmd>Octo search<cr>",       desc = "Search" },
 
       -- In PR/Issue buffer
-      { "<leader>goa", "<cmd>Octo assignee<cr>",     desc = "Assignee",     ft = "octo" },
-      { "<leader>goc", "<cmd>Octo comment<cr>",      desc = "Comment",      ft = "octo" },
-      { "<leader>gol", "<cmd>Octo label<cr>",        desc = "Label",        ft = "octo" },
-      { "<leader>gor", "<cmd>Octo pr changes<cr>",   desc = "PR Changes",   ft = "octo" },
-      { "<leader>goR", "<cmd>Octo review start<cr>", desc = "Start Review", ft = "octo" },
-      { "<leader>got", "<cmd>Octo thread<cr>",       desc = "Thread",       ft = "octo" },
+      { "<leader>goa",     "<cmd>Octo assignee<cr>",     desc = "Assignee",     ft = "octo" },
+      { "<leader>goc",     "<cmd>Octo comment<cr>",      desc = "Comment",      ft = "octo" },
+      { "<leader>gol",     "<cmd>Octo label<cr>",        desc = "Label",        ft = "octo" },
+      { "<leader>gor",     "<cmd>Octo pr changes<cr>",   desc = "PR Changes",   ft = "octo" },
+      { "<leader>goR",     "<cmd>Octo review start<cr>", desc = "Start Review", ft = "octo" },
+      { "<leader>got",     "<cmd>Octo thread<cr>",       desc = "Thread",       ft = "octo" },
+
+      -- Octo buffer groups (ft = octo)
+      { "<localleader>a",  "",                           desc = "+assignee",    ft = "octo" },
+      { "<localleader>c",  "",                           desc = "+comment",     ft = "octo" },
+      { "<localleader>l",  "",                           desc = "+label",       ft = "octo" },
+      { "<localleader>i",  "",                           desc = "+issue",       ft = "octo" },
+      { "<localleader>r",  "",                           desc = "+react",       ft = "octo" },
+      { "<localleader>s",  "",                           desc = "+suggestion",  ft = "octo" },
+      { "<localleader>p",  "",                           desc = "+pr",          ft = "octo" },
+      { "<localleader>pr", "",                           desc = "+rebase",      ft = "octo" },
+      { "<localleader>ps", "",                           desc = "+squash",      ft = "octo" },
+      { "<localleader>v",  "",                           desc = "+review",      ft = "octo" },
+      { "<localleader>g",  "",                           desc = "+goto_issue",  ft = "octo" },
+
+      { "@",               "@<C-x><C-o>",                mode = "i",            ft = "octo", silent = true },
+      { "#",               "#<C-x><C-o>",                mode = "i",            ft = "octo", silent = true },
     },
   },
 }
-
