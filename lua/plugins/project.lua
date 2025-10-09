@@ -84,6 +84,13 @@ return {
           require("auto-session").RestoreSession()
         end,
       })
+
+      -- Save session on quit
+      vim.api.nvim_create_autocmd("VimLeavePre", {
+        callback = function()
+          require("auto-session").SaveSession()
+        end,
+      })
     end,
   },
 
