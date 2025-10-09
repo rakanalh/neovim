@@ -376,75 +376,6 @@ return {
     },
   },
 
-  -- Auto pairs
-  {
-    "nvim-mini/mini.pairs",
-    event = "VeryLazy",
-    opts = {},
-    keys = {
-      {
-        "<leader>up",
-        function()
-          local util = require("lazy.core.util")
-          vim.g.minipairs_disable = not vim.g.minipairs_disable
-          if vim.g.minipairs_disable then
-            util.warn("Disabled auto pairs", { title = "Option" })
-          else
-            util.info("Enabled auto pairs", { title = "Option" })
-          end
-        end,
-        desc = "Toggle Auto Pairs",
-      },
-    },
-  },
-  
-  -- Surround
-  {
-    "nvim-mini/mini.surround",
-    recommended = true,
-    keys = function(_, keys)
-      -- Populate the keys based on the user's options
-      local opts = require("lazy.core.plugin").values(require("lazy.core.config").spec.plugins["mini.surround"], "opts", false)
-      local mappings = {
-        { opts.mappings.add, desc = "Add Surrounding", mode = { "n", "v" } },
-        { opts.mappings.delete, desc = "Delete Surrounding" },
-        { opts.mappings.find, desc = "Find Right Surrounding" },
-        { opts.mappings.find_left, desc = "Find Left Surrounding" },
-        { opts.mappings.highlight, desc = "Highlight Surrounding" },
-        { opts.mappings.replace, desc = "Replace Surrounding" },
-        { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
-      }
-      mappings = vim.tbl_filter(function(m)
-        return m[1] and #m[1] > 0
-      end, mappings)
-      return vim.list_extend(mappings, keys)
-    end,
-    opts = {
-      mappings = {
-        add = "gsa",
-        delete = "gsd",
-        find = "gsf",
-        find_left = "gsF",
-        highlight = "gsh",
-        replace = "gsr",
-        update_n_lines = "gsn",
-      },
-    },
-  },
-  
-  -- Comments
-  {
-    "nvim-mini/mini.comment",
-    event = "VeryLazy",
-    opts = {
-      options = {
-        custom_commentstring = function()
-          return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
-        end,
-      },
-    },
-  },
-  
   -- Multi-cursor support
   {
     "mg979/vim-visual-multi",
@@ -488,42 +419,6 @@ return {
       { "<leader>m/", mode = { "n" }, desc = "Select via regex" },
       { "<leader>mc", mode = { "v" }, desc = "Create cursors from selection" },
     },
-  },
-  
-  -- Better text objects
-  {
-    "nvim-mini/mini.ai",
-    event = "VeryLazy",
-    opts = function()
-      local ai = require("mini.ai")
-      return {
-        n_lines = 500,
-        custom_textobjects = {
-          o = ai.gen_spec.treesitter({ -- code block
-            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-          }),
-          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
-          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
-          d = { "%f[%d]%d+" }, -- digits
-          e = { -- Word with case
-            { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
-            "^().*()$",
-          },
-          g = function() -- Whole buffer, similar to `gg` and 'G' motion
-            local from = { line = 1, col = 1 }
-            local to = {
-              line = vim.fn.line("$"),
-              col = math.max(vim.fn.getline("$"):len(), 1),
-            }
-            return { from = from, to = to }
-          end,
-          u = ai.gen_spec.function_call(), -- u for "Usage"
-          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
-        },
-      }
-    end,
   },
 
   -- Overseer.nvim - Task runner and job management
