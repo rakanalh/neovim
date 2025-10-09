@@ -154,6 +154,124 @@ return {
       { "<leader><tab>8", "<cmd>tabn 8<cr>",                                   desc = "Go to Tab 8" },
       { "<leader><tab>9", "<cmd>tabn 9<cr>",                                   desc = "Go to Tab 9" },
 
+      -- Project switching
+      {
+        "<leader>pp",
+        function()
+          require("snacks").picker.projects({
+            confirm = function(picker, item)
+              if not item then return end
+              picker:close()
+
+              local project_path = vim.fn.fnamemodify(item.file, ":p"):gsub("/$", "")
+
+              -- Check if this project is already open in a tab
+              local tabs = vim.api.nvim_list_tabpages()
+              local existing_tab = nil
+              local has_project_tabs = false
+
+              for _, tab in ipairs(tabs) do
+                local ok, tab_project = pcall(vim.api.nvim_tabpage_get_var, tab, "project_path")
+                if ok and tab_project then
+                  has_project_tabs = true
+                  local normalized_tab_path = vim.fn.fnamemodify(tab_project, ":p"):gsub("/$", "")
+                  if normalized_tab_path == project_path then
+                    existing_tab = tab
+                    break
+                  end
+                end
+              end
+
+              if existing_tab then
+                -- Switch to existing project tab
+                vim.api.nvim_set_current_tabpage(existing_tab)
+              else
+                -- If no project tabs exist yet, replace current tab (dashboard)
+                -- Otherwise create new tab
+                local target_tab
+                if not has_project_tabs then
+                  vim.cmd("tcd " .. vim.fn.fnameescape(item.file))
+                  vim.api.nvim_tabpage_set_var(0, "project_path", project_path)
+                  target_tab = vim.api.nvim_get_current_tabpage()
+                else
+                  vim.cmd("$tabnew")
+                  vim.cmd("tcd " .. vim.fn.fnameescape(item.file))
+                  target_tab = vim.api.nvim_get_current_tabpage()
+                  vim.api.nvim_tabpage_set_var(target_tab, "project_path", project_path)
+                end
+                -- Open file picker in the target tab
+                vim.schedule(function()
+                  vim.api.nvim_set_current_tabpage(target_tab)
+                  require("snacks").picker.files()
+                end)
+              end
+            end,
+          })
+        end,
+        desc = "Switch Project (New Tab)"
+      },
+      {
+        "<leader>pP",
+        function()
+          require("snacks").picker.projects({
+            confirm = function(picker, item)
+              if not item then return end
+              picker:close()
+              vim.cmd("tcd " .. vim.fn.fnameescape(item.file))
+              vim.schedule(function()
+                require("snacks").picker.files()
+              end)
+            end,
+          })
+        end,
+        desc = "Open Project in Current Tab"
+      },
+      {
+        "<leader>px",
+        function()
+          require("snacks").picker.projects({
+            confirm = function(picker, item)
+              if not item then return end
+              picker:close()
+
+              local project_path = vim.fn.fnamemodify(item.file, ":p"):gsub("/$", "")
+
+              -- Remove project from project.nvim's history file
+              vim.schedule(function()
+                local data_path = vim.fn.stdpath("data")
+                local history_path = data_path .. "/project_nvim/project_history"
+
+                -- Read existing projects
+                local projects = {}
+                local file = io.open(history_path, "r")
+                if file then
+                  for line in file:lines() do
+                    local normalized_line = vim.fn.fnamemodify(line, ":p"):gsub("/$", "")
+                    if line ~= "" and normalized_line ~= project_path then
+                      table.insert(projects, line)
+                    end
+                  end
+                  file:close()
+                end
+
+                -- Write back without the removed project
+                file = io.open(history_path, "w")
+                if file then
+                  for _, proj in ipairs(projects) do
+                    file:write(proj .. "\n")
+                  end
+                  file:close()
+                  vim.notify("Removed project: " .. vim.fn.fnamemodify(project_path, ":t"), vim.log.levels.INFO)
+                else
+                  vim.notify("Failed to remove project", vim.log.levels.ERROR)
+                end
+              end)
+            end,
+          })
+        end,
+        desc = "Remove Project from List"
+      },
+
       -- Session management
       { "<leader>qs", function() require("auto-session").SaveSession() end,    desc = "Save Session" },
       { "<leader>qr", function() require("auto-session").RestoreSession() end, desc = "Restore Session" },
@@ -165,32 +283,6 @@ return {
   {
     "akinsho/bufferline.nvim",
     enabled = false, -- Completely disable bufferline
-  },
-
-  -- Helper for closing buffers
-  {
-    "nvim-mini/mini.bufremove",
-    keys = {
-      {
-        "<leader>bd",
-        function()
-          local bd = require("mini.bufremove").delete
-          if vim.bo.modified then
-            local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
-            if choice == 1 then -- Yes
-              vim.cmd.write()
-              bd(0)
-            elseif choice == 2 then -- No
-              bd(0, true)
-            end
-          else
-            bd(0)
-          end
-        end,
-        desc = "Delete Buffer",
-      },
-      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
-    },
   },
 }
 
