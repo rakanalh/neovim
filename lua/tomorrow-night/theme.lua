@@ -172,6 +172,9 @@ function M.apply()
     -- vim.notify("Loading Tomorrow Night Neogit integration", vim.log.levels.DEBUG)
     require("tomorrow-night.integrations.neogit").apply(colors, opts)
   end
+  if opts.integrations.octo then
+    require("tomorrow-night.integrations.octo").apply(colors, opts)
+  end
   if opts.integrations.notify then
     require("tomorrow-night.integrations.notify").apply(colors, opts)
   end
@@ -192,6 +195,9 @@ function M.apply()
   end
   if opts.integrations.barbecue then
     require("tomorrow-night.integrations.barbecue").apply(colors, opts)
+  end
+  if opts.integrations.snacks then
+    require("tomorrow-night.integrations.snacks").apply(colors, opts)
   end
 
   -- Apply custom Git overrides (blue for changes)
