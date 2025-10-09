@@ -143,11 +143,16 @@ return {
         end,
         desc = "Previous Tab/Workspace"
       },
-      { "<leader>p1", "<cmd>tabn 1<cr>",                                       desc = "Go to Tab 1" },
-      { "<leader>p2", "<cmd>tabn 2<cr>",                                       desc = "Go to Tab 2" },
-      { "<leader>p3", "<cmd>tabn 3<cr>",                                       desc = "Go to Tab 3" },
-      { "<leader>p4", "<cmd>tabn 4<cr>",                                       desc = "Go to Tab 4" },
-      { "<leader>p5", "<cmd>tabn 5<cr>",                                       desc = "Go to Tab 5" },
+      -- Tab switching with <leader><tab> prefix
+      { "<leader><tab>1", "<cmd>tabn 1<cr>",                                   desc = "Go to Tab 1" },
+      { "<leader><tab>2", "<cmd>tabn 2<cr>",                                   desc = "Go to Tab 2" },
+      { "<leader><tab>3", "<cmd>tabn 3<cr>",                                   desc = "Go to Tab 3" },
+      { "<leader><tab>4", "<cmd>tabn 4<cr>",                                   desc = "Go to Tab 4" },
+      { "<leader><tab>5", "<cmd>tabn 5<cr>",                                   desc = "Go to Tab 5" },
+      { "<leader><tab>6", "<cmd>tabn 6<cr>",                                   desc = "Go to Tab 6" },
+      { "<leader><tab>7", "<cmd>tabn 7<cr>",                                   desc = "Go to Tab 7" },
+      { "<leader><tab>8", "<cmd>tabn 8<cr>",                                   desc = "Go to Tab 8" },
+      { "<leader><tab>9", "<cmd>tabn 9<cr>",                                   desc = "Go to Tab 9" },
 
       -- Session management
       { "<leader>qs", function() require("auto-session").SaveSession() end,    desc = "Save Session" },
