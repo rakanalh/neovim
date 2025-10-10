@@ -49,6 +49,7 @@ M.options = {
     barbecue = true,
     snacks = true,
     obsidian = true,
+    render_markdown = true,
     indent_blankline = {
       enabled = true,
       scope_color = "",
