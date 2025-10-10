@@ -56,6 +56,13 @@ return {
         template = "Daily Note Template.md",
       },
 
+      -- Templates folder
+      templates = {
+        folder = "_templates",
+        date_format = "%Y-%m-%d",
+        time_format = "%H:%M",
+      },
+
       -- Optional: completion settings
       completion = {
         nvim_cmp = true,
