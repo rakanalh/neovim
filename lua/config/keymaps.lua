@@ -136,6 +136,7 @@ if vim.lsp.inlay_hint then
   map("n", "<leader>uh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end,
     { desc = "Toggle Inlay Hints" })
 end
+map("n", "<leader>um", "<cmd>Mtm<cr>", { desc = "Toggle Markdown Table" })
 
 -- Commented out - using Neogit instead of lazygit
 -- map("n", "<leader>gg", function() require("lazyvim.util").terminal({ "lazygit" }, { cwd = require("lazyvim.util").root(), esc_esc = false, ctrl_hjkl = false }) end, { desc = "Lazygit (Root Dir)" })
@@ -146,6 +147,8 @@ map("n", "<leader>gs", function() require("snacks").picker.git_status() end, { d
 
 -- Group names
 map("n", "<leader>r", "", { desc = "Rust" })
+map("n", "<leader>oa", "", { desc = "Agenda" })
+map("n", "<leader>oat", "", { desc = "Schedule" })
 
 -- quit with confirmation
 map("n", "<leader>qq", function()
