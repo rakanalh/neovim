@@ -81,7 +81,7 @@ return {
         },
       },
       -- Disable throttling for instant response
-      throttle = 1000/60,
+      throttle = 1000 / 60,
     },
     dependencies = {
       "MunifTanjim/nui.nvim",
@@ -115,10 +115,11 @@ return {
       },
     },
   },
-  
-  -- Dashboard
+
+  -- Dashboard (disabled in favor of Obsidian daily note startup)
   {
     "nvimdev/dashboard-nvim",
+    enabled = false,
     event = "VimEnter",
     opts = function()
       local logo = [[
@@ -129,9 +130,9 @@ return {
         ██║  ██║╚██████╔╝███████║   ██║   ██║  ██║╚██████╗███████╗██║  ██║██║ ╚████║
         ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
       ]]
-      
+
       logo = string.rep("\n", 8) .. logo .. "\n\n"
-      
+
       local opts = {
         theme = "doom",
         hide = {
@@ -157,12 +158,12 @@ return {
           end,
         },
       }
-      
+
       for _, button in ipairs(opts.config.center) do
         button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
         button.key_format = "  %s"
       end
-      
+
       -- close Lazy and re-open when the dashboard is ready
       if vim.o.filetype == "lazy" then
         vim.cmd.close()
@@ -173,11 +174,11 @@ return {
           end,
         })
       end
-      
+
       return opts
     end,
   },
-  
+
   -- Status line
   {
     "nvim-lualine/lualine.nvim",
@@ -196,11 +197,11 @@ return {
     opts = function()
       local lualine_require = require("lualine_require")
       lualine_require.require = require
-      
+
       local icons = require("lazyvim.config").icons
-      
+
       vim.o.laststatus = vim.g.lualine_laststatus
-      
+
       local opts = {
         options = {
           theme = "auto",
@@ -210,7 +211,7 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = { "branch" },
-          
+
           lualine_c = {
             {
               "diagnostics",
@@ -303,7 +304,7 @@ return {
         },
         extensions = { "neo-tree", "lazy" },
       }
-      
+
       -- do not add trouble symbols if aerial is enabled
       if vim.g.trouble_lualine then
         local trouble = require("trouble")
@@ -320,7 +321,7 @@ return {
           cond = symbols and symbols.has,
         })
       end
-      
+
       return opts
     end,
     config = function(_, opts)
@@ -328,7 +329,7 @@ return {
       require("lualine").setup(opts)
     end,
   },
-  
+
   -- Indent guides
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -357,7 +358,7 @@ return {
       },
     },
   },
-  
+
   -- Active indent guide and indent text objects
   {
     "nvim-mini/mini.indentscope",
@@ -388,9 +389,9 @@ return {
       })
     end,
   },
-  
+
   -- Colorscheme Options
-  
+
   -- Carbonfox from Nightfox (ACTIVE) - Dark, muted colors
   {
     "EdenEast/nightfox.nvim",
@@ -428,7 +429,7 @@ return {
         groups = {
           -- Override git modified colors to be blue instead of magenta/pink
           all = {
-            GitSignsChange = { fg = "#7aa2f7" },  -- Blue
+            GitSignsChange = { fg = "#7aa2f7" }, -- Blue
             GitSignsChangeNr = { fg = "#7aa2f7" },
             GitSignsChangeLn = { fg = "#7aa2f7" },
             DiffChange = { fg = "#7aa2f7" },
@@ -438,7 +439,7 @@ return {
         },
       })
       -- vim.cmd.colorscheme("carbonfox")
-      
+
       -- Additional overrides for git colors
       vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#7aa2f7" })
       vim.api.nvim_set_hl(0, "GitSignsChangeNr", { fg = "#7aa2f7" })
@@ -447,7 +448,7 @@ return {
       vim.api.nvim_set_hl(0, "DiffText", { fg = "#7aa2f7", bold = true })
     end,
   },
-  
+
   -- OneDark - Classic Atom theme
   {
     "navarasu/onedark.nvim",
@@ -481,7 +482,7 @@ return {
       })
     end,
   },
-  
+
   -- Catppuccin - Soft, pastel-like colors (ACTIVE)
   {
     "catppuccin/nvim",
@@ -544,7 +545,7 @@ return {
       require("tomorrow-night").load()
     end,
   },
-  
+
   -- Tomorrow Night theme is loaded as a module, not a plugin
   -- Use :lua require("tomorrow-night").load() to activate
   -- or use <leader>ut to switch between themes
@@ -586,13 +587,13 @@ return {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
   },
-  
+
   -- UI components
   {
     "MunifTanjim/nui.nvim",
     lazy = true,
   },
-  
+
   -- Scrollbar
   {
     "petertriho/nvim-scrollbar",
@@ -642,7 +643,7 @@ return {
       end
     end,
   },
-  
+
   -- Better vim.ui
   {
     "stevearc/dressing.nvim",
@@ -660,5 +661,57 @@ return {
       end
     end,
   },
-  
+
+  -- Edgy.nvim - Window layout management
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    init = function()
+      -- Recommended settings
+      vim.opt.laststatus = 3
+      vim.opt.splitkeep = "screen"
+    end,
+    opts = {
+      left = {
+        {
+          title = "Neo-Tree",
+          ft = "neo-tree",
+          filter = function(buf)
+            return vim.b[buf].neo_tree_source == "filesystem"
+          end,
+          size = { width = 30 },
+          pinned = true,
+          open = "Neotree position=left filesystem",
+        },
+      },
+      bottom = {
+        {
+          ft = "toggleterm",
+          size = { height = 0.4 },
+          filter = function(buf, win)
+            return vim.api.nvim_win_get_config(win).relative == ""
+          end,
+        },
+        {
+          ft = "help",
+          size = { height = 20 },
+          filter = function(buf)
+            return vim.bo[buf].buftype == "help"
+          end,
+        },
+      },
+      right = {
+        {
+          title = "Git Status",
+          ft = "neo-tree",
+          filter = function(buf)
+            return vim.b[buf].neo_tree_source == "git_status"
+          end,
+          pinned = true,
+          collapsed = true,
+          open = "Neotree position=right git_status",
+        },
+      },
+    },
+  },
 }

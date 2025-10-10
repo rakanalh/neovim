@@ -121,10 +121,10 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 -- Custom tabline to show project names instead of buffer names
 _G.custom_tabline = function()
-  local s = ''
+  local s = ""
   local current_tab = vim.api.nvim_get_current_tabpage()
 
-  for i = 1, vim.fn.tabpagenr('$') do
+  for i = 1, vim.fn.tabpagenr("$") do
     local tab = vim.api.nvim_list_tabpages()[i]
     local is_current = tab == current_tab
 
@@ -140,10 +140,10 @@ _G.custom_tabline = function()
       local winnr = vim.api.nvim_tabpage_get_win(tab)
       local bufnr = vim.api.nvim_win_get_buf(winnr)
       local bufname = vim.api.nvim_buf_get_name(bufnr)
-      if bufname ~= '' then
+      if bufname ~= "" then
         label = vim.fn.fnamemodify(bufname, ":t")
       else
-        label = '[No Name]'
+        label = "[No Name]"
       end
     end
 
@@ -158,37 +158,36 @@ _G.custom_tabline = function()
     end
 
     -- Add spacing before tab
-    s = s .. '%#TabLineFill# '
+    s = s .. "%#TabLineFill# "
 
     -- Build tab label with proper highlighting
     if is_current then
-      s = s .. '%#TabLineSel#'
+      s = s .. "%#TabLineSel#"
       -- Add padding for current tab
-      s = s .. '  ' .. i .. ': ' .. label
+      s = s .. "  " .. i .. ": " .. label
       if modified then
-        s = s .. ' ●'  -- Use a dot for modified indicator
+        s = s .. " ●" -- Use a dot for modified indicator
       end
-      s = s .. '  '
+      s = s .. "  "
     else
-      s = s .. '%#TabLine#'
+      s = s .. "%#TabLine#"
       -- Normal padding for inactive tabs
-      s = s .. ' ' .. i .. ': ' .. label
+      s = s .. " " .. i .. ": " .. label
       if modified then
-        s = s .. '%#TabLineModified# ●%#TabLine#'  -- Highlight modified indicator
+        s = s .. "%#TabLineModified# ●%#TabLine#" -- Highlight modified indicator
       end
-      s = s .. ' '
+      s = s .. " "
     end
 
     -- Add spacing after tab
-    s = s .. '%#TabLineFill# '
+    s = s .. "%#TabLineFill# "
   end
 
   -- Fill the rest of the line
-  s = s .. '%#TabLineFill#%='  -- Right align any status info
+  s = s .. "%#TabLineFill#%=" -- Right align any status info
 
   return s
 end
 
 -- Set custom tabline
-vim.opt.tabline = '%!v:lua.custom_tabline()'
-
+vim.opt.tabline = "%!v:lua.custom_tabline()"

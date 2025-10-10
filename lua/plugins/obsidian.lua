@@ -3,8 +3,7 @@ return {
   {
     "obsidian-nvim/obsidian.nvim",
     version = "*",
-    lazy = true,
-    ft = "markdown",
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -48,6 +47,7 @@ return {
         folder = "Daily",
         date_format = "%Y-%m-%d",
         alias_format = "%B %-d, %Y",
+        template = "Daily Note Template.md",
       },
 
       -- Optional: completion settings
@@ -55,28 +55,47 @@ return {
         nvim_cmp = true,
         min_chars = 2,
       },
+    },
+    -- Buffer-local keymaps for markdown files
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "markdown",
+        callback = function()
+          -- gf to follow links
+          vim.keymap.set("n", "gf", function()
+            if require("obsidian").util.cursor_on_markdown_link() then
+              return "<cmd>ObsidianFollowLink<cr>"
+            else
+              return "gf"
+            end
+          end, { buffer = true, expr = true })
 
-      -- Optional: mappings
-      mappings = {
-        ["gf"] = {
-          action = function()
-            return require("obsidian").util.gf_passthrough()
-          end,
-          opts = { noremap = false, expr = true, buffer = true },
-        },
-        ["<leader>ch"] = {
-          action = function()
+          -- Toggle checkbox
+          vim.keymap.set("n", "<leader>ch", function()
             return require("obsidian").util.toggle_checkbox()
-          end,
-          opts = { buffer = true },
-        },
-        ["<cr>"] = {
-          action = function()
+          end, { buffer = true })
+
+          -- Smart action on enter
+          vim.keymap.set("n", "<cr>", function()
             return require("obsidian").util.smart_action()
-          end,
-          opts = { buffer = true, expr = true },
-        },
-      },
+          end, { buffer = true, expr = true })
+        end,
+      })
+    end,
+    keys = {
+      { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "New Note" },
+      { "<leader>ot", "<cmd>ObsidianToday<cr>", desc = "Today's Daily Note" },
+      { "<leader>oy", "<cmd>ObsidianYesterday<cr>", desc = "Yesterday's Daily Note" },
+      { "<leader>om", "<cmd>ObsidianTomorrow<cr>", desc = "Tomorrow's Daily Note" },
+      { "<leader>od", "<cmd>ObsidianDailies<cr>", desc = "Daily Notes Picker" },
+      { "<leader>os", "<cmd>ObsidianSearch<cr>", desc = "Search Notes" },
+      { "<leader>ob", "<cmd>ObsidianBacklinks<cr>", desc = "Show Backlinks" },
+      { "<leader>oT", "<cmd>ObsidianTemplate<cr>", desc = "Insert Template" },
+      { "<leader>ol", "<cmd>ObsidianLinks<cr>", desc = "Show Links" },
+      { "<leader>oo", "<cmd>ObsidianOpen<cr>", desc = "Open in Obsidian App" },
+      { "<leader>oq", "<cmd>ObsidianQuickSwitch<cr>", desc = "Quick Switch Notes" },
+      { "<leader>or", "<cmd>ObsidianRename<cr>", desc = "Rename Note" },
+      { "<leader>ow", "<cmd>ObsidianWorkspace<cr>", desc = "Switch Workspace" },
     },
   },
 }

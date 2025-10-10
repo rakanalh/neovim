@@ -35,7 +35,7 @@ return {
       },
       modes = {
         search = {
-          enabled = true,
+          enabled = false,
           highlight = { backdrop = false },
         },
         char = {
@@ -99,8 +99,8 @@ return {
       { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
       -- Doom-like line jumping with 2-char labels
-      { "gj", mode = { "n", "x", "o" }, function() flash_two_char_line_jump(true) end, desc = "Jump to line" },
-      { "gk", mode = { "n", "x", "o" }, function() flash_two_char_line_jump(false) end, desc = "Jump to line (backwards)" },
+      { "gj",    mode = { "n", "x", "o" }, function() flash_two_char_line_jump(true) end,       desc = "Jump to line" },
+      { "gk",    mode = { "n", "x", "o" }, function() flash_two_char_line_jump(false) end,      desc = "Jump to line (backwards)" },
       {
         "gw",
         mode = { "n", "x", "o" },

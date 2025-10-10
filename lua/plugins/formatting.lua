@@ -1,4 +1,12 @@
 -- Code formatting and linting
+
+-- Configuration: Directories to skip linting
+local LINT_IGNORE_DIRS = {
+  "Documents/Obsidian",
+  -- Add more patterns here as needed
+  -- "path/to/ignore",
+}
+
 return {
   -- Conform.nvim - Modern formatting
   {
@@ -57,24 +65,6 @@ return {
 
       -- Merge with existing formatters
       opts.formatters_by_ft = vim.tbl_deep_extend("force", opts.formatters_by_ft or {}, formatters_by_ft)
-
-      opts.format_on_save = function(bufnr)
-        -- Disable with a global or buffer-local variable
-        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-          return
-        end
-        -- Disable for certain filetypes
-        local ignore_filetypes = { "sql", "java" }
-        if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
-          return
-        end
-        -- Disable for large files
-        local line_count = vim.api.nvim_buf_line_count(bufnr)
-        if line_count > 5000 then
-          return
-        end
-        return { timeout_ms = 500, lsp_fallback = true }
-      end
 
       opts.formatters = vim.tbl_deep_extend("force", opts.formatters or {}, {
         shfmt = {
@@ -169,6 +159,14 @@ return {
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
         group = lint_augroup,
         callback = function()
+          -- Skip linting for ignored directories
+          local file_path = vim.api.nvim_buf_get_name(0)
+          for _, pattern in ipairs(LINT_IGNORE_DIRS) do
+            if file_path:match(pattern) then
+              return
+            end
+          end
+
           -- Only lint if the buffer is attached to an LSP client
           local clients = vim.lsp.get_active_clients({ bufnr = 0 })
           if #clients > 0 then

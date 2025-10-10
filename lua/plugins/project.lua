@@ -9,9 +9,8 @@ return {
       detection_methods = { "pattern", "lsp" },
       patterns = { ".git" },
       ignore_lsp = {},
-      exclude_dirs = { "~/" },
       show_hidden = false,
-      silent_chdir = false,
+      silent_chdir = true,
       scope_chdir = "tab", -- Use tab-local directory changes
       datapath = vim.fn.stdpath("data"),
     },
@@ -144,15 +143,15 @@ return {
         desc = "Previous Tab/Workspace"
       },
       -- Tab switching with <leader><tab> prefix
-      { "<leader><tab>1", "<cmd>tabn 1<cr>",                                   desc = "Go to Tab 1" },
-      { "<leader><tab>2", "<cmd>tabn 2<cr>",                                   desc = "Go to Tab 2" },
-      { "<leader><tab>3", "<cmd>tabn 3<cr>",                                   desc = "Go to Tab 3" },
-      { "<leader><tab>4", "<cmd>tabn 4<cr>",                                   desc = "Go to Tab 4" },
-      { "<leader><tab>5", "<cmd>tabn 5<cr>",                                   desc = "Go to Tab 5" },
-      { "<leader><tab>6", "<cmd>tabn 6<cr>",                                   desc = "Go to Tab 6" },
-      { "<leader><tab>7", "<cmd>tabn 7<cr>",                                   desc = "Go to Tab 7" },
-      { "<leader><tab>8", "<cmd>tabn 8<cr>",                                   desc = "Go to Tab 8" },
-      { "<leader><tab>9", "<cmd>tabn 9<cr>",                                   desc = "Go to Tab 9" },
+      { "<leader><tab>1", "<cmd>tabn 1<cr>", desc = "Go to Tab 1" },
+      { "<leader><tab>2", "<cmd>tabn 2<cr>", desc = "Go to Tab 2" },
+      { "<leader><tab>3", "<cmd>tabn 3<cr>", desc = "Go to Tab 3" },
+      { "<leader><tab>4", "<cmd>tabn 4<cr>", desc = "Go to Tab 4" },
+      { "<leader><tab>5", "<cmd>tabn 5<cr>", desc = "Go to Tab 5" },
+      { "<leader><tab>6", "<cmd>tabn 6<cr>", desc = "Go to Tab 6" },
+      { "<leader><tab>7", "<cmd>tabn 7<cr>", desc = "Go to Tab 7" },
+      { "<leader><tab>8", "<cmd>tabn 8<cr>", desc = "Go to Tab 8" },
+      { "<leader><tab>9", "<cmd>tabn 9<cr>", desc = "Go to Tab 9" },
 
       -- Project switching
       {
@@ -285,4 +284,3 @@ return {
     enabled = false, -- Completely disable bufferline
   },
 }
-
