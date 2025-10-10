@@ -9,12 +9,9 @@ return {
     },
     priority = 100,
     opts = {
-      -- Enable UI with custom checkbox rendering
+      -- Disable UI rendering - let render-markdown handle it
       ui = {
-        enable = true,
-        checkbox = {
-          order = { " ", "x" },
-        },
+        enable = false,
       },
 
       workspaces = {
@@ -77,11 +74,6 @@ return {
               return "gf"
             end
           end, { buffer = true, expr = true })
-
-          -- Toggle checkbox
-          vim.keymap.set("n", "<leader>ch", function()
-            return require("obsidian").util.toggle_checkbox()
-          end, { buffer = true })
 
           -- Smart action on enter
           vim.keymap.set("n", "<cr>", function()
