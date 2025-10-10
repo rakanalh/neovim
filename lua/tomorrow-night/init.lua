@@ -50,6 +50,7 @@ M.options = {
     snacks = true,
     obsidian = true,
     render_markdown = true,
+    -- md_agenda = false,
     indent_blankline = {
       enabled = true,
       scope_color = "",
@@ -77,3 +78,4 @@ function M.load()
 end
 
 return M
+
