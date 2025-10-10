@@ -78,6 +78,12 @@ return {
       },
     },
     keys = {
+
+      -- Doom-like mappings
+      { "<leader>,",  function() require("snacks").picker.buffers() end,                               desc = "Switch Buffer" },
+      { "<leader>.",  function() require("snacks").picker.files() end,                                 desc = "Find File" },
+      { "<leader>'",  function() require("snacks").picker.resume() end,                                desc = "Resume Last Picker" },
+
       -- File finding
       { "<leader>pf", function() require("snacks").picker.files() end,                                 desc = "Find File in Project" },
       { "<leader>ps", function() require("snacks").picker.grep() end,                                  desc = "Search in Project" },

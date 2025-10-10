@@ -207,11 +207,6 @@ map("n", "<leader><tab>[", function()
   vim.defer_fn(function() vim.opt.showtabline = 0 end, 2000)
 end, { desc = "Previous Tab" })
 
--- Doom-like mappings
-map("n", "<leader>,", function() require("snacks").picker.buffers() end, { desc = "Switch Buffer" })
-map("n", "<leader>.", function() require("snacks").picker.files() end, { desc = "Find File" })
-map("n", "<leader>'", function() require("snacks").picker.resume() end, { desc = "Resume Last Picker" })
-
 -- Override tab keybinding to show tabs momentarily instead of creating new tab
 map("n", "<leader><tab><tab>", function()
   -- Temporarily show tabs for 3 seconds
@@ -220,4 +215,3 @@ map("n", "<leader><tab><tab>", function()
     vim.opt.showtabline = 0
   end, 3000)
 end, { desc = "Show Tabs Momentarily" })
-
