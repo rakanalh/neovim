@@ -41,16 +41,20 @@ return {
       end,
     },
     keys = {
-      { "zR", function() require("ufo").openAllFolds() end, desc = "Open All Folds" },
-      { "zM", function() require("ufo").closeAllFolds() end, desc = "Close All Folds" },
+      { "zR", function() require("ufo").openAllFolds() end,         desc = "Open All Folds" },
+      { "zM", function() require("ufo").closeAllFolds() end,        desc = "Close All Folds" },
       { "zr", function() require("ufo").openFoldsExceptKinds() end, desc = "Fold Less" },
-      { "zm", function() require("ufo").closeFoldsWith() end, desc = "Fold More" },
-      { "zK", function()
-        local winid = require("ufo").peekFoldedLinesUnderCursor()
-        if not winid then
-          vim.lsp.buf.hover()
-        end
-      end, desc = "Peek Fold or Hover" },
+      { "zm", function() require("ufo").closeFoldsWith() end,       desc = "Fold More" },
+      {
+        "zK",
+        function()
+          local winid = require("ufo").peekFoldedLinesUnderCursor()
+          if not winid then
+            vim.lsp.buf.hover()
+          end
+        end,
+        desc = "Peek Fold or Hover"
+      },
     },
     config = function(_, opts)
       require("ufo").setup(opts)
@@ -109,32 +113,20 @@ return {
       post_hook = nil,
     },
   },
-  
-  -- nvim-surround - Add/change/delete surrounding pairs
-  {
-    "kylechui/nvim-surround",
-    version = "*", -- Use for stability
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("nvim-surround").setup({
-        -- Configuration here, or leave empty to use defaults
-      })
-    end,
-  },
-  
+
   -- todo-comments.nvim - Highlight and search TODO comments
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      signs = true, -- show icons in the signs column
+      signs = true,      -- show icons in the signs column
       sign_priority = 8, -- sign priority
       -- keywords recognized as todo comments
       keywords = {
         FIX = {
-          icon = " ", -- icon used for the sign, and in search results
-          color = "error", -- can be a hex color, or a named color (see below)
+          icon = " ",                                 -- icon used for the sign, and in search results
+          color = "error",                            -- can be a hex color, or a named color (see below)
           alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
         },
         TODO = { icon = " ", color = "info" },
@@ -158,54 +150,21 @@ return {
       },
     },
     keys = {
-      { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-      { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
-      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
+      { "]t",         function() require("todo-comments").jump_next() end,                                                        desc = "Next todo comment" },
+      { "[t",         function() require("todo-comments").jump_prev() end,                                                        desc = "Previous todo comment" },
+      { "<leader>xt", "<cmd>TodoTrouble<cr>",                                                                                     desc = "Todo (Trouble)" },
+      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",                                                             desc = "Todo/Fix/Fixme (Trouble)" },
       { "<leader>st", function() require("snacks").picker.grep({ search = "\\b(TODO|FIXME|FIX|HACK|WARN|PERF|NOTE|TEST):" }) end, desc = "Todo" },
-      { "<leader>sT", function() require("snacks").picker.grep({ search = "\\b(TODO|FIX|FIXME):" }) end, desc = "Todo/Fix/Fixme" },
+      { "<leader>sT", function() require("snacks").picker.grep({ search = "\\b(TODO|FIX|FIXME):" }) end,                          desc = "Todo/Fix/Fixme" },
     },
   },
-  
-  
-  -- nvim-treesitter-context - Sticky header showing current context
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    event = "VeryLazy",
-    opts = {
-      enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-      multiwindow = true, -- Enable context for all windows (not just the current one)
-      max_lines = 3, -- How many lines the window should span. Values <= 0 mean no limit.
-      min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-      line_numbers = true,
-      multiline_threshold = 20, -- Maximum number of lines to show for a single context
-      trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-      mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
-      -- Separator between context and content. Should be a single character string, like '-'.
-      -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-      separator = "─",
-      zindex = 20, -- The Z-index of the context window
-      on_attach = function(buf)
-        -- Disable for markdown files
-        local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
-        if filetype == "markdown" then
-          return false
-        end
-        return true
-      end,
-    },
-    keys = {
-      { "[c", function() require("treesitter-context").go_to_context(vim.v.count1) end, desc = "Jump to context" },
-      { "<leader>uC", "<cmd>TSContextToggle<cr>", desc = "Toggle Treesitter Context" },
-    },
-  },
-  
+
   -- EditorConfig support
   {
     "editorconfig/editorconfig-vim",
     event = { "BufReadPre", "BufNewFile" },
   },
-  
+
   -- File explorer
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -225,8 +184,8 @@ return {
         desc = "Explorer NeoTree (Root Dir)",
       },
       { "<leader>fE", function() require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() }) end, desc = "Explorer NeoTree (cwd)" },
-      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
+      { "<leader>e",  "<leader>fe",                                                                              desc = "Explorer NeoTree (Root Dir)", remap = true },
+      { "<leader>E",  "<leader>fE",                                                                              desc = "Explorer NeoTree (cwd)",      remap = true },
       {
         "<leader>ge",
         function()
@@ -317,7 +276,7 @@ return {
       },
     },
   },
-  
+
   -- which-key for keybinding hints
   {
     "folke/which-key.nvim",
@@ -327,11 +286,11 @@ return {
       vim.o.timeoutlen = 300
     end,
     opts = {
-      preset = "classic", -- This forces bottom layout
+      preset = "classic",               -- This forces bottom layout
       layout = {
-        width = { max = 999 }, -- Use maximum available width
+        width = { max = 999 },          -- Use maximum available width
         height = { min = 1, max = 10 }, -- Reduce height (default is usually 25)
-        align = "left", -- Align to left to use full width
+        align = "left",                 -- Align to left to use full width
       },
     },
     config = function(_, opts)
@@ -339,32 +298,32 @@ return {
       wk.setup(opts)
       -- Register key groups
       wk.add({
-        { "<leader>", group = "Leader" },
-        { "<leader>b", group = "buffer" },
-        { "<leader>c", group = "code" },
-        { "<leader>f", group = "file/find" },
-        { "<leader>g", group = "git" },
-        { "<leader>gh", group = "hunks" },
-        { "<leader>h", group = "harpoon" },
-        { "<leader>m", group = "multi-cursor" },
-        { "<leader>o", group = "overseer" },
-        { "<leader>p", group = "project" },
-        { "<leader>q", group = "quit/session" },
-        { "<leader>s", group = "search" },
-        { "<leader>t", group = "terminal" },
-        { "<leader>u", group = "ui" },
-        { "<leader>w", group = "windows" },
-        { "<leader>x", group = "diagnostics/quickfix" },
+        { "<leader>",      group = "Leader" },
+        { "<leader>b",     group = "buffer" },
+        { "<leader>c",     group = "code" },
+        { "<leader>f",     group = "file/find" },
+        { "<leader>g",     group = "git" },
+        { "<leader>gh",    group = "hunks" },
+        { "<leader>h",     group = "harpoon" },
+        { "<leader>m",     group = "multi-cursor" },
+        { "<leader>o",     group = "overseer" },
+        { "<leader>p",     group = "project" },
+        { "<leader>q",     group = "quit/session" },
+        { "<leader>s",     group = "search" },
+        { "<leader>t",     group = "terminal" },
+        { "<leader>u",     group = "ui" },
+        { "<leader>w",     group = "windows" },
+        { "<leader>x",     group = "diagnostics/quickfix" },
         { "<leader><tab>", group = "tabs" },
-        { "g", group = "goto" },
-        { "gs", group = "surround" },
-        { "z", group = "fold" },
-        { "[", group = "prev" },
-        { "]", group = "next" },
+        { "g",             group = "goto" },
+        { "gs",            group = "surround" },
+        { "z",             group = "fold" },
+        { "[",             group = "prev" },
+        { "]",             group = "next" },
       })
     end,
   },
-  
+
   -- Search/replace in multiple files
   {
     "nvim-pack/nvim-spectre",
@@ -383,21 +342,21 @@ return {
     event = "VeryLazy",
     init = function()
       vim.g.VM_maps = {
-        ["Find Under"] = "<C-n>",         -- Select word under cursor
-        ["Find Subword Under"] = "<C-n>", -- Select subword under cursor
-        ["Select All"] = "<leader>ma",    -- Select all occurrences
-        ["Select h"] = "<C-Left>",        -- Reduce selection
-        ["Select l"] = "<C-Right>",       -- Expand selection
-        ["Add Cursor Down"] = "<C-M-j>",  -- Add cursor down
-        ["Add Cursor Up"] = "<C-M-k>",    -- Add cursor up
-        ["Add Cursor At Pos"] = "<C-M-p>", -- Add cursor at click position
-        ["Visual Regex"] = "<leader>m/",  -- Select via regex
-        ["Visual All"] = "<leader>mA",    -- Select all in visual mode
-        ["Visual Add"] = "<leader>ma",    -- Add selection in visual mode
-        ["Visual Find"] = "<leader>mf",   -- Find in visual mode
-        ["Visual Cursors"] = "<leader>mc", -- Create cursors from visual selection
-        ["Mouse Cursor"] = "<C-LeftMouse>", -- Add cursor with mouse
-        ["Mouse Word"] = "<C-RightMouse>", -- Select word with mouse
+        ["Find Under"] = "<C-n>",              -- Select word under cursor
+        ["Find Subword Under"] = "<C-n>",      -- Select subword under cursor
+        ["Select All"] = "<leader>ma",         -- Select all occurrences
+        ["Select h"] = "<C-Left>",             -- Reduce selection
+        ["Select l"] = "<C-Right>",            -- Expand selection
+        ["Add Cursor Down"] = "<C-M-j>",       -- Add cursor down
+        ["Add Cursor Up"] = "<C-M-k>",         -- Add cursor up
+        ["Add Cursor At Pos"] = "<C-M-p>",     -- Add cursor at click position
+        ["Visual Regex"] = "<leader>m/",       -- Select via regex
+        ["Visual All"] = "<leader>mA",         -- Select all in visual mode
+        ["Visual Add"] = "<leader>ma",         -- Add selection in visual mode
+        ["Visual Find"] = "<leader>mf",        -- Find in visual mode
+        ["Visual Cursors"] = "<leader>mc",     -- Create cursors from visual selection
+        ["Mouse Cursor"] = "<C-LeftMouse>",    -- Add cursor with mouse
+        ["Mouse Word"] = "<C-RightMouse>",     -- Select word with mouse
         ["Mouse Column"] = "<M-C-RightMouse>", -- Column selection with mouse
       }
       -- Theme - use default to inherit from colorscheme
@@ -412,12 +371,12 @@ return {
       vim.g.VM_theme_set_by_colorscheme = 1
     end,
     keys = {
-      { "<C-n>", mode = { "n", "v" }, desc = "Select word/selection" },
-      { "<C-M-j>", mode = { "n" }, desc = "Add cursor down" },
-      { "<C-M-k>", mode = { "n" }, desc = "Add cursor up" },
+      { "<C-n>",      mode = { "n", "v" }, desc = "Select word/selection" },
+      { "<C-M-j>",    mode = { "n" },      desc = "Add cursor down" },
+      { "<C-M-k>",    mode = { "n" },      desc = "Add cursor up" },
       { "<leader>ma", mode = { "n", "v" }, desc = "Select all occurrences" },
-      { "<leader>m/", mode = { "n" }, desc = "Select via regex" },
-      { "<leader>mc", mode = { "v" }, desc = "Create cursors from selection" },
+      { "<leader>m/", mode = { "n" },      desc = "Select via regex" },
+      { "<leader>mc", mode = { "v" },      desc = "Create cursors from selection" },
     },
   },
 
@@ -508,12 +467,13 @@ return {
       },
     },
     keys = {
-      { "<leader>oo", "<cmd>OverseerToggle<cr>", desc = "Overseer Toggle" },
-      { "<leader>or", "<cmd>OverseerRun<cr>", desc = "Overseer Run" },
-      { "<leader>ob", "<cmd>OverseerBuild<cr>", desc = "Overseer Build" },
-      { "<leader>oi", "<cmd>OverseerInfo<cr>", desc = "Overseer Info" },
+      { "<leader>oo", "<cmd>OverseerToggle<cr>",     desc = "Overseer Toggle" },
+      { "<leader>or", "<cmd>OverseerRun<cr>",        desc = "Overseer Run" },
+      { "<leader>ob", "<cmd>OverseerBuild<cr>",      desc = "Overseer Build" },
+      { "<leader>oi", "<cmd>OverseerInfo<cr>",       desc = "Overseer Info" },
       { "<leader>oa", "<cmd>OverseerTaskAction<cr>", desc = "Overseer Task Action" },
       { "<leader>oc", "<cmd>OverseerClearCache<cr>", desc = "Overseer Clear Cache" },
     },
   },
 }
+
