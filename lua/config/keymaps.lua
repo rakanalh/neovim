@@ -144,6 +144,9 @@ end
 map("n", "<leader>gb", function() require("snacks").picker.git_branches() end, { desc = "Git Branches" })
 map("n", "<leader>gs", function() require("snacks").picker.git_status() end, { desc = "Git Status" })
 
+-- Group names
+map("n", "<leader>r", "", { desc = "Rust" })
+
 -- quit with confirmation
 map("n", "<leader>qq", function()
   local choice = vim.fn.confirm("Do you really want to quit?", "&Yes\n&No", 2)
