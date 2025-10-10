@@ -22,8 +22,8 @@ if vim.g.neovide then
   -- Disable cursor particles effects
   vim.g.neovide_cursor_vfx_mode = ""
 
-  -- Font configuration
-  vim.o.guifont = "Fira Code Retina:h10"
+  -- Font configuration with fallback for better Unicode symbols
+  vim.o.guifont = "Fira Code Retina,Symbols Nerd Font Mono:h10"
 
   -- Performance settings
   vim.g.neovide_refresh_rate = 60
@@ -113,8 +113,8 @@ if vim.g.neovide then
   end, { desc = "Decrease font size" })
 
   vim.keymap.set('n', '<C-0>', function()
-    vim.o.guifont = "Fira Code Retina:h9"
-    vim.notify("Font size reset to 9")
+    vim.o.guifont = "Fira Code Retina,Symbols Nerd Font Mono:h10"
+    vim.notify("Font size reset to 10")
   end, { desc = "Reset font size" })
 end
 

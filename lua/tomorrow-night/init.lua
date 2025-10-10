@@ -48,6 +48,7 @@ M.options = {
     rainbow_delimiters = true,
     barbecue = true,
     snacks = true,
+    obsidian = true,
     indent_blankline = {
       enabled = true,
       scope_color = "",

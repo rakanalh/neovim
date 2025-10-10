@@ -199,6 +199,9 @@ function M.apply()
   if opts.integrations.snacks then
     require("tomorrow-night.integrations.snacks").apply(colors, opts)
   end
+  if opts.integrations.obsidian then
+    require("tomorrow-night.integrations.obsidian").apply(colors, opts)
+  end
 
   -- Apply custom Git overrides (blue for changes)
   hl("GitSignsChange", { fg = colors.blue })

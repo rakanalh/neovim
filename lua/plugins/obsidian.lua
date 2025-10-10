@@ -7,7 +7,16 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
+    priority = 100,
     opts = {
+      -- Enable UI with custom checkbox rendering
+      ui = {
+        enable = true,
+        checkbox = {
+          order = { " ", "x" },
+        },
+      },
+
       workspaces = {
         {
           name = "Desktop",
@@ -56,7 +65,6 @@ return {
         min_chars = 2,
       },
     },
-    -- Buffer-local keymaps for markdown files
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "markdown",
@@ -83,19 +91,19 @@ return {
       })
     end,
     keys = {
-      { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "New Note" },
-      { "<leader>ot", "<cmd>ObsidianToday<cr>", desc = "Today's Daily Note" },
-      { "<leader>oy", "<cmd>ObsidianYesterday<cr>", desc = "Yesterday's Daily Note" },
-      { "<leader>om", "<cmd>ObsidianTomorrow<cr>", desc = "Tomorrow's Daily Note" },
-      { "<leader>od", "<cmd>ObsidianDailies<cr>", desc = "Daily Notes Picker" },
-      { "<leader>os", "<cmd>ObsidianSearch<cr>", desc = "Search Notes" },
-      { "<leader>ob", "<cmd>ObsidianBacklinks<cr>", desc = "Show Backlinks" },
-      { "<leader>oT", "<cmd>ObsidianTemplate<cr>", desc = "Insert Template" },
-      { "<leader>ol", "<cmd>ObsidianLinks<cr>", desc = "Show Links" },
-      { "<leader>oo", "<cmd>ObsidianOpen<cr>", desc = "Open in Obsidian App" },
+      { "<leader>on", "<cmd>ObsidianNew<cr>",         desc = "New Note" },
+      { "<leader>ot", "<cmd>ObsidianToday<cr>",       desc = "Today's Daily Note" },
+      { "<leader>oy", "<cmd>ObsidianYesterday<cr>",   desc = "Yesterday's Daily Note" },
+      { "<leader>om", "<cmd>ObsidianTomorrow<cr>",    desc = "Tomorrow's Daily Note" },
+      { "<leader>od", "<cmd>ObsidianDailies<cr>",     desc = "Daily Notes Picker" },
+      { "<leader>os", "<cmd>ObsidianSearch<cr>",      desc = "Search Notes" },
+      { "<leader>ob", "<cmd>ObsidianBacklinks<cr>",   desc = "Show Backlinks" },
+      { "<leader>oT", "<cmd>ObsidianTemplate<cr>",    desc = "Insert Template" },
+      { "<leader>ol", "<cmd>ObsidianLinks<cr>",       desc = "Show Links" },
+      { "<leader>oo", "<cmd>ObsidianOpen<cr>",        desc = "Open in Obsidian App" },
       { "<leader>oq", "<cmd>ObsidianQuickSwitch<cr>", desc = "Quick Switch Notes" },
-      { "<leader>or", "<cmd>ObsidianRename<cr>", desc = "Rename Note" },
-      { "<leader>ow", "<cmd>ObsidianWorkspace<cr>", desc = "Switch Workspace" },
+      { "<leader>or", "<cmd>ObsidianRename<cr>",      desc = "Rename Note" },
+      { "<leader>ow", "<cmd>ObsidianWorkspace<cr>",   desc = "Switch Workspace" },
     },
   },
 }
