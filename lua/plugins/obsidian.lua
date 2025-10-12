@@ -17,15 +17,11 @@ return {
       workspaces = {
         {
           name = "Desktop",
-          path = "~/Documents/Obsidian/Desktop",
+          path = vim.g.obsidian_vault_path,
         },
         {
           name = "Mobile",
           path = "~/Documents/Obsidian/Mobile",
-        },
-        {
-          name = "Trading",
-          path = "~/Documents/Obsidian/Trading",
         },
         {
           name = "Work",
@@ -54,6 +50,7 @@ return {
         date_format = "%Y-%m-%d",
         alias_format = "%B %-d, %Y",
         template = "Daily Note Template.md",
+        workdays_only = false,
       },
 
       -- Templates folder

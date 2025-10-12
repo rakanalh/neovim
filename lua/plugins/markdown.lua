@@ -166,9 +166,8 @@ return {
 
       require("md-agenda").setup({
         agendaFiles = {
-          "~/Documents/Obsidian/Desktop",
+          vim.g.obsidian_vault_path,
           "~/Documents/Obsidian/Mobile",
-          "~/Documents/Obsidian/Trading",
           "~/Documents/Obsidian/Work",
         },
         agendaViewSplitOrientation = "vertical",
@@ -178,28 +177,30 @@ return {
         remindScheduledInDays = 10,
 
         -- Tomorrow Night theme colors
-        titleColor = palette.cyan,          -- Dates in calm cyan
-        todoTypeColor = palette.yellow,     -- TODO items stand out in yellow
-        habitTypeColor = palette.blue,      -- HABIT items in blue
-        habitTitleColor = palette.violet,   -- Habit titles in violet
-        infoTypeColor = palette.green,      -- INFO items in green
-        dueTypeColor = palette.orange,      -- DUE items in orange (warning)
-        doneTypeColor = palette.green,      -- DONE items in green (success)
-        cancelledTypeColor = palette.red,   -- CANCELLED items in red
-        completionColor = palette.green,    -- Completion percentage in green
-        scheduledTimeColor = palette.yellow,-- Scheduled time in yellow
-        deadlineTimeColor = palette.orange, -- Deadline time in orange
-        tagColor = palette.subtext1,        -- Tags in muted gray
+        titleColor = "#81a2be",           -- Dates in blue
+        todoTypeColor = "#1d1f21",        -- TODO dark text
+        todoTypeColorBg = "#f0c674",      -- TODO yellow background
+        habitTypeColor = "#8abeb7",       -- HABIT items in cyan
+        habitTitleColor = palette.violet, -- Habit titles in violet
+        infoTypeColor = "#b5bd68",        -- INFO items in green
+        dueTypeColor = "#f0c674",         -- DUE items in yellow
+        doneTypeColor = "#b5bd68",        -- DONE items in green
+        cancelledTypeColor = "#cc6666",   -- CANCELLED items in red
+        completionColor = "#b5bd68",      -- Completion percentage in green
+        scheduledTimeColor = "#81a2be",   -- Scheduled time in blue
+        deadlineTimeColor = "#f0c674",    -- Deadline time in yellow
+        tagColor = palette.subtext1,      -- Tags in muted gray
 
         -- Habit view colors (solid symbols need same fg+bg)
-        habitScheduledColor = palette.orange,    -- Scheduled habits in orange
-        habitDoneColor = palette.green,          -- Done habits in green
-        habitProgressColor = palette.yellow,     -- Progress in yellow
-        habitPastScheduledColor = palette.red,   -- Past scheduled in red
-        habitFreeTimeColor = palette.blue,       -- Free time in blue
-        habitNotDoneColor = palette.red,         -- Not done in red
-        habitDeadlineColor = palette.subtext1,   -- Deadline in gray
-        habitTodayColor = palette.cyan,          -- Today marker in cyan
+        habitScheduledColor = palette.orange,  -- Scheduled habits in orange
+        habitDoneColor = palette.green,        -- Done habits in green
+        habitProgressColor = palette.yellow,   -- Progress in yellow
+        habitPastScheduledColor = palette.red, -- Past scheduled in red
+        habitFreeTimeColor = "#4f5051",        -- Free time in grey (50% transparent)
+        habitNotDoneColor = palette.red,       -- Not done in red
+        habitDeadlineColor = palette.subtext1, -- Deadline in gray
+        habitTodayColor = palette.cyan,        -- Today marker in cyan
+        habitDateMarkerColor = "#1d1f21",      -- Date marker dots (invisible)
       })
     end,
     keys = {
