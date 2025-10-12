@@ -50,12 +50,7 @@ map("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
 map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and Clear hlsearch" })
 
 -- Clear search, diff update and redraw
-map(
-  "n",
-  "<leader>ur",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / Clear hlsearch / Diff Update" }
-)
+map("n", "<leader>ur", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>", { desc = "Redraw / Clear hlsearch / Diff Update" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
@@ -111,6 +106,7 @@ local diagnostic_goto = function(next, severity)
     go({ severity = severity })
   end
 end
+
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
 map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
@@ -120,21 +116,35 @@ map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
 -- toggle options
-map("n", "<leader>uf", function() require("lazyvim.util.format").toggle() end, { desc = "Toggle Auto Format (Global)" })
-map("n", "<leader>uF", function() require("lazyvim.util.format").toggle(true) end,
-  { desc = "Toggle Auto Format (Buffer)" })
-map("n", "<leader>us", function() require("lazyvim.util").toggle("spell") end, { desc = "Toggle Spelling" })
-map("n", "<leader>uw", function() require("lazyvim.util").toggle("wrap") end, { desc = "Toggle Word Wrap" })
-map("n", "<leader>uL", function() require("lazyvim.util").toggle("relativenumber") end,
-  { desc = "Toggle Relative Line Numbers" })
-map("n", "<leader>ul", function() require("lazyvim.util").toggle.number() end, { desc = "Toggle Line Numbers" })
-map("n", "<leader>ud", function() require("lazyvim.util").toggle.diagnostics() end, { desc = "Toggle Diagnostics" })
+map("n", "<leader>uf", function()
+  require("lazyvim.util.format").toggle()
+end, { desc = "Toggle Auto Format (Global)" })
+map("n", "<leader>uF", function()
+  require("lazyvim.util.format").toggle(true)
+end, { desc = "Toggle Auto Format (Buffer)" })
+map("n", "<leader>us", function()
+  require("lazyvim.util").toggle("spell")
+end, { desc = "Toggle Spelling" })
+map("n", "<leader>uw", function()
+  require("lazyvim.util").toggle("wrap")
+end, { desc = "Toggle Word Wrap" })
+map("n", "<leader>uL", function()
+  require("lazyvim.util").toggle("relativenumber")
+end, { desc = "Toggle Relative Line Numbers" })
+map("n", "<leader>ul", function()
+  require("lazyvim.util").toggle.number()
+end, { desc = "Toggle Line Numbers" })
+map("n", "<leader>ud", function()
+  require("lazyvim.util").toggle.diagnostics()
+end, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
-map("n", "<leader>uc", function() require("lazyvim.util").toggle("conceallevel", false, { 0, conceallevel }) end,
-  { desc = "Toggle Conceal" })
+map("n", "<leader>uc", function()
+  require("lazyvim.util").toggle("conceallevel", false, { 0, conceallevel })
+end, { desc = "Toggle Conceal" })
 if vim.lsp.inlay_hint then
-  map("n", "<leader>uh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end,
-    { desc = "Toggle Inlay Hints" })
+  map("n", "<leader>uh", function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+  end, { desc = "Toggle Inlay Hints" })
 end
 map("n", "<leader>um", "<cmd>Mtm<cr>", { desc = "Toggle Markdown Table" })
 
@@ -142,8 +152,12 @@ map("n", "<leader>um", "<cmd>Mtm<cr>", { desc = "Toggle Markdown Table" })
 -- map("n", "<leader>gg", function() require("lazyvim.util").terminal({ "lazygit" }, { cwd = require("lazyvim.util").root(), esc_esc = false, ctrl_hjkl = false }) end, { desc = "Lazygit (Root Dir)" })
 -- map("n", "<leader>gG", function() require("lazyvim.util").terminal({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end, { desc = "Lazygit (cwd)" })
 -- map("n", "<leader>gc", function() require("snacks").picker.git_log() end, { desc = "Git Commits" }) -- Conflicts with Neogit commit
-map("n", "<leader>gb", function() require("snacks").picker.git_branches() end, { desc = "Git Branches" })
-map("n", "<leader>gs", function() require("snacks").picker.git_status() end, { desc = "Git Status" })
+map("n", "<leader>gb", function()
+  require("snacks").picker.git_branches()
+end, { desc = "Git Branches" })
+map("n", "<leader>gs", function()
+  require("snacks").picker.git_status()
+end, { desc = "Git Status" })
 
 -- Group names
 map("n", "<leader>r", "", { desc = "Rust" })
@@ -182,22 +196,28 @@ map("n", "<leader>w1", "<C-W>o", { desc = "Close Other Windows", remap = true })
 map("n", "<leader><tab>l", function()
   vim.opt.showtabline = 2
   vim.cmd("tablast")
-  vim.defer_fn(function() vim.opt.showtabline = 0 end, 2000)
+  vim.defer_fn(function()
+    vim.opt.showtabline = 0
+  end, 2000)
 end, { desc = "Last Tab" })
 map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
 map("n", "<leader><tab>f", function()
   vim.opt.showtabline = 2
   vim.cmd("tabfirst")
-  vim.defer_fn(function() vim.opt.showtabline = 0 end, 2000)
+  vim.defer_fn(function()
+    vim.opt.showtabline = 0
+  end, 2000)
 end, { desc = "First Tab" })
 -- Removed - using custom <tab><tab> functionality below instead
 map("n", "<leader><tab>]", function()
   vim.opt.showtabline = 2
   vim.cmd("tabnext")
-  vim.defer_fn(function() vim.opt.showtabline = 0 end, 2000)
+  vim.defer_fn(function()
+    vim.opt.showtabline = 0
+  end, 2000)
 end, { desc = "Next Tab" })
 map("n", "<leader><tab>d", function()
-  local tab_count = vim.fn.tabpagenr('$')
+  local tab_count = vim.fn.tabpagenr("$")
   if tab_count == 1 then
     -- If only one tab, show dashboard
     vim.cmd("enew")
@@ -210,7 +230,9 @@ end, { desc = "Close Tab" })
 map("n", "<leader><tab>[", function()
   vim.opt.showtabline = 2
   vim.cmd("tabprevious")
-  vim.defer_fn(function() vim.opt.showtabline = 0 end, 2000)
+  vim.defer_fn(function()
+    vim.opt.showtabline = 0
+  end, 2000)
 end, { desc = "Previous Tab" })
 
 -- Override tab keybinding to show tabs momentarily instead of creating new tab
