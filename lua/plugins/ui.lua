@@ -293,7 +293,7 @@ return {
             },
           },
           lualine_y = {
-            { "progress", separator = " ", padding = { left = 1, right = 0 } },
+            { "progress", separator = " ",                  padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
           },
           lualine_z = {
@@ -309,13 +309,13 @@ return {
       if vim.g.trouble_lualine then
         local trouble = require("trouble")
         local symbols = trouble.statusline
-          and trouble.statusline({
-            mode = "symbols",
-            groups = {},
-            title = false,
-            filter = { range = true },
-            format = "{kind_icon}{symbol.name:Normal}",
-          })
+            and trouble.statusline({
+              mode = "symbols",
+              groups = {},
+              title = false,
+              filter = { range = true },
+              format = "{kind_icon}{symbol.name:Normal}",
+            })
         table.insert(opts.sections.lualine_c, {
           symbols and symbols.get,
           cond = symbols and symbols.has,
@@ -672,6 +672,10 @@ return {
       vim.opt.splitkeep = "screen"
     end,
     opts = {
+      options = {
+        left = { size = 30 },
+        right = { size = 30 },
+      },
       left = {
         {
           title = "Neo-Tree",
@@ -684,32 +688,30 @@ return {
           open = "Neotree position=left filesystem",
         },
       },
-      bottom = {
-        {
-          ft = "toggleterm",
-          size = { height = 0.4 },
-          filter = function(buf, win)
-            return vim.api.nvim_win_get_config(win).relative == ""
-          end,
-        },
-        {
-          ft = "help",
-          size = { height = 20 },
-          filter = function(buf)
-            return vim.bo[buf].buftype == "help"
-          end,
-        },
-      },
       right = {
         {
-          title = "Git Status",
-          ft = "neo-tree",
+          title = false,
+          ft = "md-agenda",
           filter = function(buf)
-            return vim.b[buf].neo_tree_source == "git_status"
+            return vim.b[buf].md_agenda_type == "agenda"
           end,
+          size = { width = 0.2 },
           pinned = true,
-          collapsed = true,
-          open = "Neotree position=right git_status",
+          open = function()
+            vim.cmd("AgendaView")
+          end,
+        },
+        {
+          title = false,
+          ft = "md-agenda",
+          filter = function(buf)
+            return vim.b[buf].md_agenda_type == "habit"
+          end,
+          size = { height = 0.5 },
+          pinned = true,
+          open = function()
+            vim.cmd("HabitView")
+          end,
         },
       },
     },
