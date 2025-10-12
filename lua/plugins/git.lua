@@ -283,8 +283,6 @@ return {
       keymaps = {
         disable_defaults = false,
         view = {
-          ["<tab>"]      = false, -- Disabled to not conflict with your custom tab bindings
-          ["<s-tab>"]    = false, -- Disabled to not conflict with your custom tab bindings
           ["gf"]         = "<cmd>DiffviewGotoFile<cr>",
           ["<C-w><C-f>"] = "<cmd>DiffviewGotoFile split<cr>",
           ["<C-w>gf"]    = "<cmd>DiffviewGotoFile tab<cr>",
@@ -302,69 +300,6 @@ return {
         },
         diff4 = {
           ["g?"] = "<cmd>DiffviewHelp<cr>",
-        },
-        file_panel = {
-          ["j"]             = false,
-          ["<down>"]        = false,
-          ["k"]             = false,
-          ["<up>"]          = false,
-          ["<cr>"]          = false,
-          ["o"]             = false,
-          ["<2-LeftMouse>"] = false,
-          ["-"]             = false,
-          ["S"]             = false,
-          ["s"]             = false,
-          ["R"]             = false,
-          ["<tab>"]         = false, -- Disabled to not conflict with your custom tab bindings
-          ["i"]             = false,
-          ["f"]             = false,
-          ["<c-b>"]         = false,
-          ["<c-f>"]         = false,
-          ["<c-d>"]         = false,
-          ["<c-u>"]         = false,
-          ["]d"]            = false,
-          ["[d"]            = false,
-          ["gf"]            = false,
-          ["<C-w><C-f>"]    = false,
-          ["<C-w>gf"]       = false,
-          ["<leader>e"]     = false,
-          ["<leader>b"]     = false,
-          ["g<C-x>"]        = false,
-          ["g?"]            = false,
-        },
-        file_history_panel = {
-          ["g!"]            = false,
-          ["<C-A-d>"]       = false,
-          ["<C-d>"]         = false,
-          ["<tab>"]         = false, -- Disabled to not conflict with your custom tab bindings
-          ["<s-tab>"]       = false, -- Disabled to not conflict with your custom tab bindings
-          ["gf"]            = false,
-          ["<C-w><C-f>"]    = false,
-          ["<C-w>gf"]       = false,
-          ["o"]             = false,
-          ["<cr>"]          = false,
-          ["<2-LeftMouse>"] = false,
-          ["y"]             = false,
-          ["L"]             = false,
-          ["zR"]            = false,
-          ["zM"]            = false,
-          ["j"]             = false,
-          ["<down>"]        = false,
-          ["k"]             = false,
-          ["<up>"]          = false,
-          ["]d"]            = false,
-          ["[d"]            = false,
-          ["<leader>e"]     = false,
-          ["<leader>b"]     = false,
-          ["g<C-x>"]        = false,
-          ["g?"]            = false,
-        },
-        option_panel = {
-          ["<tab>"] = false, -- Disabled to not conflict with your custom tab bindings
-          ["q"]     = false,
-        },
-        help_panel = {
-          ["q"] = false,
         },
       },
     },
