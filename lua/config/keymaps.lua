@@ -65,6 +65,9 @@ map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
+-- Delete word backwards with M-backspace (like C-w)
+map("i", "<M-BS>", "<C-w>", { desc = "Delete Word Backwards" })
+
 -- save file
 map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
 
