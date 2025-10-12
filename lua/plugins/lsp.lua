@@ -286,7 +286,6 @@ return {
         "eslint_d",
 
         -- Rust
-        "rust-analyzer",
         "rustfmt",
 
         -- Markdown
