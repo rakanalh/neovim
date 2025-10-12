@@ -438,16 +438,14 @@ return {
         ["Mouse Word"] = "<C-RightMouse>", -- Select word with mouse
         ["Mouse Column"] = "<M-C-RightMouse>", -- Column selection with mouse
       }
-      -- Theme - use default to inherit from colorscheme
-      vim.g.VM_theme = "default"
+      -- Theme - empty string to not set default links, we'll define colors ourselves
+      vim.g.VM_theme = ""
       -- Show messages
       vim.g.VM_show_warnings = 1
       -- Highlight matches
       vim.g.VM_highlight_matches = "underline"
       -- Use single leader for mappings
       vim.g.VM_leader = "\\\\"
-      -- Don't override color scheme highlights
-      vim.g.VM_theme_set_by_colorscheme = 1
     end,
     keys = {
       { "<C-n>", mode = { "n", "v" }, desc = "Select word/selection" },

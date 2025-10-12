@@ -11,7 +11,9 @@ function M.apply()
 
   -- Utility function for styles
   local function apply_styles(base, styles)
-    if not styles then return base end
+    if not styles then
+      return base
+    end
     for _, style in ipairs(styles) do
       if style == "italic" then
         base.italic = true
@@ -73,13 +75,13 @@ function M.apply()
   hl("StatusLineNC", { fg = colors.surface1, bg = opts.transparent_background and "NONE" or colors.mantle })
 
   -- Tabline - Improved styling with better contrast and visual hierarchy
-  hl("TabLine", { fg = colors.overlay1, bg = colors.mantle })  -- Inactive tabs with subtle background
-  hl("TabLineFill", { bg = opts.transparent_background and "NONE" or colors.crust })  -- Background fill
-  hl("TabLineSel", { fg = colors.blue, bg = colors.surface0, bold = true })  -- Active tab with blue text for distinction
+  hl("TabLine", { fg = colors.overlay1, bg = colors.mantle }) -- Inactive tabs with subtle background
+  hl("TabLineFill", { bg = opts.transparent_background and "NONE" or colors.crust }) -- Background fill
+  hl("TabLineSel", { fg = colors.blue, bg = colors.surface0, bold = true }) -- Active tab with blue text for distinction
 
   -- Additional tabline groups for better customization
-  hl("TabLineSeparator", { fg = colors.surface1, bg = colors.crust })  -- Tab separators
-  hl("TabLineModified", { fg = colors.orange })  -- Modified indicator in orange
+  hl("TabLineSeparator", { fg = colors.surface1, bg = colors.crust }) -- Tab separators
+  hl("TabLineModified", { fg = colors.orange }) -- Modified indicator in orange
 
   -- Non-text characters
   hl("NonText", { fg = colors.overlay0 })
@@ -95,7 +97,7 @@ function M.apply()
 
   -- Diff
   hl("DiffAdd", { fg = colors.green, bg = colors.surface0 })
-  hl("DiffChange", { fg = colors.blue, bg = colors.surface0 })  -- Use blue for changes
+  hl("DiffChange", { fg = colors.blue, bg = colors.surface0 }) -- Use blue for changes
   hl("DiffDelete", { fg = colors.red, bg = colors.surface0 })
   hl("DiffText", { fg = colors.blue, bg = colors.surface1, bold = true })
 
@@ -204,6 +206,9 @@ function M.apply()
   end
   if opts.integrations.render_markdown then
     require("tomorrow-night.integrations.render_markdown").apply(colors, opts)
+  end
+  if opts.integrations.visual_multi then
+    require("tomorrow-night.integrations.visual_multi").apply(colors, opts)
   end
   if opts.integrations.md_agenda then
     require("tomorrow-night.integrations.md_agenda").apply(colors, opts)
