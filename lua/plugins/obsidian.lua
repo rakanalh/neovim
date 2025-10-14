@@ -3,11 +3,12 @@ return {
   {
     "obsidian-nvim/obsidian.nvim",
     version = "*",
+    -- Load on markdown files OR on VeryLazy (for startup layout)
     event = "VeryLazy",
+    ft = "markdown",
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    priority = 100,
     opts = {
       -- Disable UI rendering - let render-markdown handle it
       ui = {
@@ -60,29 +61,42 @@ return {
         time_format = "%H:%M",
       },
 
-      -- Optional: completion settings
+      -- Completion settings
       completion = {
         nvim_cmp = true,
         min_chars = 2,
       },
     },
     init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "markdown",
-        callback = function()
-          -- gf to follow links
-          vim.keymap.set("n", "gf", function()
-            if require("obsidian").util.cursor_on_markdown_link() then
-              return "<cmd>ObsidianFollowLink<cr>"
-            else
-              return "gf"
+      -- Override obsidian's default <CR> keymap to be completion-aware
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "*.md",
+        callback = function(ev)
+          -- Wait a bit for obsidian's autocmds to run first
+          vim.defer_fn(function()
+            if not vim.api.nvim_buf_is_valid(ev.buf) then
+              return
             end
-          end, { buffer = true, expr = true })
 
-          -- Smart action on enter
-          vim.keymap.set("n", "<cr>", function()
-            return require("obsidian").util.smart_action()
-          end, { buffer = true, expr = true })
+            -- Override the <CR> mapping in normal mode to check for completion
+            vim.keymap.set("n", "<cr>", function()
+              local cmp_ok, cmp = pcall(require, "cmp")
+              if cmp_ok and cmp.visible() then
+                return cmp.confirm({ select = true })
+              end
+              -- Call obsidian's smart_action only if not completing
+              return require("obsidian").util.smart_action()
+            end, { buffer = ev.buf, expr = true, desc = "Obsidian Smart Action (cmp-aware)" })
+
+            -- In insert mode, prioritize completion over obsidian
+            vim.keymap.set("i", "<cr>", function()
+              local cmp_ok, cmp = pcall(require, "cmp")
+              if cmp_ok and cmp.visible() then
+                return cmp.confirm({ select = true })
+              end
+              return "<cr>"
+            end, { buffer = ev.buf, expr = true, desc = "Confirm completion" })
+          end, 10)
         end,
       })
     end,
