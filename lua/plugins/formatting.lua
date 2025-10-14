@@ -78,17 +78,19 @@ return {
         },
       })
 
+      -- LazyVim handles format_on_save automatically, don't set it here
+
       return opts
     end,
     init = function()
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
-      -- Commands to toggle format on save
+      -- Commands to toggle format on save (using LazyVim's autoformat variable)
       vim.api.nvim_create_user_command("ConformDisable", function(args)
         if args.bang then
-          vim.b.disable_autoformat = true
+          vim.b.autoformat = false
         else
-          vim.g.disable_autoformat = true
+          vim.g.autoformat = false
         end
       end, {
         desc = "Disable autoformat-on-save",
@@ -96,8 +98,8 @@ return {
       })
 
       vim.api.nvim_create_user_command("ConformEnable", function()
-        vim.b.disable_autoformat = false
-        vim.g.disable_autoformat = false
+        vim.b.autoformat = true
+        vim.g.autoformat = true
       end, {
         desc = "Re-enable autoformat-on-save",
       })
