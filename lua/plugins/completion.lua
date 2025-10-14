@@ -58,6 +58,14 @@ return {
         }, {
           { name = "buffer" },
         }),
+        window = {
+          completion = cmp.config.window.bordered({
+            winhighlight = "Normal:Pmenu,FloatBorder:PmenuBorder,CursorLine:PmenuSel,Search:None",
+          }),
+          documentation = cmp.config.window.bordered({
+            winhighlight = "Normal:CmpDocumentation,FloatBorder:CmpDocumentationBorder",
+          }),
+        },
         formatting = {
           format = function(entry, item)
             local icons = require("lazyvim.config").icons.kinds
@@ -86,6 +94,7 @@ return {
       end
       local cmp = require("cmp")
       cmp.setup(opts)
+
       -- Setup cmp_nvim_lsp properly after cmp is loaded
       require("cmp_nvim_lsp").setup()
     end,
