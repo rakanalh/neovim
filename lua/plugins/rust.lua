@@ -145,4 +145,57 @@ return {
       })
     end,
   },
+
+  -- Cargo.nvim - Direct Cargo command integration
+  {
+    "rakanalh/cargo.nvim",
+    branch = "plugin-config",
+    ft = { "rust" },
+    build = "cargo build --release",
+    opts = {
+      float_window = false,
+      split_direction = "horizontal", -- "horizontal" (bottom) or "vertical" (right)
+      split_size = 20,
+      border = "rounded",
+      auto_close = false,
+    },
+    keys = {
+      { "<leader>rb", "<cmd>CargoBuild<cr>",  desc = "Cargo Build" },
+      { "<leader>rt", "<cmd>CargoTest<cr>",   desc = "Cargo Test" },
+      { "<leader>rk", "<cmd>CargoCheck<cr>",  desc = "Cargo Check" },
+      { "<leader>rl", "<cmd>CargoClippy<cr>", desc = "Cargo Clippy" },
+      { "<leader>rf", "<cmd>CargoFmt<cr>",    desc = "Cargo Format" },
+      { "<leader>rd", "<cmd>CargoDoc<cr>",    desc = "Cargo Doc" },
+      { "<leader>ra", "<cmd>CargoAdd<cr>",    desc = "Cargo Add Dependency" },
+      { "<leader>rx", "<cmd>CargoRemove<cr>", desc = "Cargo Remove Dependency" },
+    },
+  },
+
+  -- Crates.nvim - Cargo.toml dependency management
+  {
+    "Saecki/crates.nvim",
+    event = { "BufRead Cargo.toml" },
+    opts = {
+      completion = {
+        crates = {
+          enabled = true,
+        },
+      },
+      lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
+      },
+    },
+    keys = {
+      { "<leader>rcu", function() require("crates").update_crate() end,       desc = "Update Crate",        ft = "toml" },
+      { "<leader>rca", function() require("crates").update_all_crates() end,  desc = "Update All Crates",   ft = "toml" },
+      { "<leader>rcU", function() require("crates").upgrade_crate() end,      desc = "Upgrade Crate",       ft = "toml" },
+      { "<leader>rcA", function() require("crates").upgrade_all_crates() end, desc = "Upgrade All Crates",  ft = "toml" },
+      { "<leader>rch", function() require("crates").open_homepage() end,      desc = "Open Crate Homepage", ft = "toml" },
+      { "<leader>rcd", function() require("crates").open_documentation() end, desc = "Open Crate Docs",     ft = "toml" },
+      { "<leader>rcr", function() require("crates").open_repository() end,    desc = "Open Crate Repo",     ft = "toml" },
+    },
+  },
 }
