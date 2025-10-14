@@ -1,4 +1,10 @@
 return {
+  -- Direnv integration - automatically load .envrc files
+  {
+    "direnv/direnv.vim",
+    lazy = false,
+  },
+
   -- UFO - Better folding
   {
     "kevinhwang91/nvim-ufo",
