@@ -57,7 +57,7 @@ return {
             hidden = false,
           },
           files = {
-            hidden = false,
+            hidden = true,
             ignored = false,
           },
           grep = {
@@ -68,84 +68,308 @@ return {
           input = {
             keys = {
               ["<Esc>"] = { "close", mode = { "n" } },
-              ["J"] = { "preview_scroll_down", mode = { "n", "i" } },
-              ["K"] = { "preview_scroll_up", mode = { "n", "i" } },
-              ["H"] = { "preview_scroll_left", mode = { "n", "i" } },
-              ["L"] = { "preview_scroll_right", mode = { "n", "i" } },
-            }
-          }
+              ["J"] = { "preview_scroll_down", mode = { "n" } },
+              ["K"] = { "preview_scroll_up", mode = { "n" } },
+              ["H"] = { "preview_scroll_left", mode = { "n" } },
+              ["L"] = { "preview_scroll_right", mode = { "n" } },
+            },
+          },
         },
       },
     },
     keys = {
 
       -- Doom-like mappings
-      { "<leader>,",  function() require("snacks").picker.buffers() end,                               desc = "Switch Buffer" },
-      { "<leader>.",  function() require("snacks").picker.files() end,                                 desc = "Find File" },
-      { "<leader>'",  function() require("snacks").picker.resume() end,                                desc = "Resume Last Picker" },
+      {
+        "<leader>,",
+        function()
+          require("snacks").picker.buffers()
+        end,
+        desc = "Switch Buffer",
+      },
+      {
+        "<leader>.",
+        function()
+          require("snacks").picker.files()
+        end,
+        desc = "Find File",
+      },
+      {
+        "<leader>'",
+        function()
+          require("snacks").picker.resume()
+        end,
+        desc = "Resume Last Picker",
+      },
 
       -- File finding
-      { "<leader>pf", function() require("snacks").picker.files() end,                                 desc = "Find File in Project" },
-      { "<leader>ps", function() require("snacks").picker.grep() end,                                  desc = "Search in Project" },
-      { "<leader>pb", function() require("snacks").picker.buffers() end,                               desc = "Project Buffers" },
-      { "<leader>pr", function() require("snacks").picker.recent() end,                                desc = "Recent Project Files" },
-      { "<leader>p.", function() require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h") }) end, desc = "Find File in Current Directory" },
+      {
+        "<leader>pf",
+        function()
+          require("snacks").picker.files()
+        end,
+        desc = "Find File in Project",
+      },
+      {
+        "<leader>ps",
+        function()
+          require("snacks").picker.grep()
+        end,
+        desc = "Search in Project",
+      },
+      {
+        "<leader>pb",
+        function()
+          require("snacks").picker.buffers()
+        end,
+        desc = "Project Buffers",
+      },
+      {
+        "<leader>pr",
+        function()
+          require("snacks").picker.recent()
+        end,
+        desc = "Recent Project Files",
+      },
+      {
+        "<leader>p.",
+        function()
+          require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h") })
+        end,
+        desc = "Find File in Current Directory",
+      },
 
       -- Recent files
-      { "<leader>fr", function() require("snacks").picker.recent() end,                                desc = "Recent Files" },
-      { "<leader>fR", function() require("snacks").picker.recent({ cwd = vim.uv.cwd() }) end,          desc = "Recent Files in CWD" },
+      {
+        "<leader>fr",
+        function()
+          require("snacks").picker.recent()
+        end,
+        desc = "Recent Files",
+      },
+      {
+        "<leader>fR",
+        function()
+          require("snacks").picker.recent({ cwd = vim.uv.cwd() })
+        end,
+        desc = "Recent Files in CWD",
+      },
 
       -- Buffer management
-      { "<leader>b,", function() require("snacks").picker.buffers() end,                               desc = "Tab Buffers" },
+      {
+        "<leader>b,",
+        function()
+          require("snacks").picker.buffers()
+        end,
+        desc = "Tab Buffers",
+      },
 
       -- Git integration
-      { "<leader>gc", function() require("snacks").picker.git_log() end,                               desc = "Git Commits" },
-      { "<leader>gb", function() require("snacks").picker.git_branches() end,                          desc = "Git Branches" },
-      { "<leader>gs", function() require("snacks").picker.git_status() end,                            desc = "Git Status" },
+      {
+        "<leader>gc",
+        function()
+          require("snacks").picker.git_log()
+        end,
+        desc = "Git Commits",
+      },
+      {
+        "<leader>gb",
+        function()
+          require("snacks").picker.git_branches()
+        end,
+        desc = "Git Branches",
+      },
+      {
+        "<leader>gs",
+        function()
+          require("snacks").picker.git_status()
+        end,
+        desc = "Git Status",
+      },
 
       -- Search
-      { "<leader>sd", function() require("snacks").picker.grep({ cwd = vim.fn.expand("%:p:h") }) end,  desc = "Grep (Search in Current Directory)", mode = "n" },
-      { "<leader>sD", false,                                                                           mode = "n" },
-      { "<leader>sg", false,                                                                           mode = "n" },
-      { "<leader>sG", false,                                                                           mode = "n" },
-      { "<leader>sp", function() require("snacks").picker.grep() end,                                  desc = "Grep (Search in Project)",           mode = "n" },
+      {
+        "<leader>sd",
+        function()
+          require("snacks").picker.grep({ cwd = vim.fn.expand("%:p:h") })
+        end,
+        desc = "Grep (Search in Current Directory)",
+        mode = "n",
+      },
+      { "<leader>sD", false, mode = "n" },
+      { "<leader>sg", false, mode = "n" },
+      { "<leader>sG", false, mode = "n" },
+      {
+        "<leader>sp",
+        function()
+          require("snacks").picker.grep()
+        end,
+        desc = "Grep (Search in Project)",
+        mode = "n",
+      },
       {
         "<leader>sp",
         mode = "v",
         function()
           -- Get visual selection
           vim.cmd('noau normal! "vy"')
-          local text = vim.fn.getreg('v')
-          vim.fn.setreg('v', {})
+          local text = vim.fn.getreg("v")
+          vim.fn.setreg("v", {})
           require("snacks").picker.grep({ search = text })
         end,
-        desc = "Grep Selection"
+        desc = "Grep Selection",
       },
-      { "<leader>*",       function() require("snacks").picker.grep_word() end,                      desc = "Search Word in Project" },
-      { "<leader>sw",      function() require("snacks").picker.grep_word() end,                      desc = "Word" },
-      { "<leader>sW",      function() require("snacks").picker.grep_word({ word_match = true }) end, desc = "Word (exact)" },
-      { "<leader>sC",      function() require("snacks").picker.commands() end,                       desc = "Commands" },
-      { "<leader>sk",      function() require("snacks").picker.keymaps() end,                        desc = "Key Maps" },
-      { "<leader>sh",      function() require("snacks").picker.help() end,                           desc = "Help Pages" },
-      { "<leader>sM",      function() require("snacks").picker.man() end,                            desc = "Man Pages" },
-      { "<leader>sm",      function() require("snacks").picker.marks() end,                          desc = "Jump to Mark" },
-      { "<leader>sR",      function() require("snacks").picker.resume() end,                         desc = "Resume" },
-      { "<leader>sx",      function() require("snacks").picker.diagnostics_buffer() end,             desc = "Document Diagnostics" },
-      { "<leader>sX",      function() require("snacks").picker.diagnostics() end,                    desc = "Workspace Diagnostics" },
-      { "<leader>ss",      function() require("snacks").picker.lines() end,                          desc = "Search Buffer" },
-      { "<leader>si",      function() require("snacks").picker.lsp_symbols() end,                    desc = "LSP Symbols" },
+      {
+        "<leader>*",
+        function()
+          require("snacks").picker.grep_word()
+        end,
+        desc = "Search Word in Project",
+      },
+      {
+        "<leader>sw",
+        function()
+          require("snacks").picker.grep_word()
+        end,
+        desc = "Word",
+      },
+      {
+        "<leader>sW",
+        function()
+          require("snacks").picker.grep_word({ word_match = true })
+        end,
+        desc = "Word (exact)",
+      },
+      {
+        "<leader>sC",
+        function()
+          require("snacks").picker.commands()
+        end,
+        desc = "Commands",
+      },
+      {
+        "<leader>sk",
+        function()
+          require("snacks").picker.keymaps()
+        end,
+        desc = "Key Maps",
+      },
+      {
+        "<leader>sh",
+        function()
+          require("snacks").picker.help()
+        end,
+        desc = "Help Pages",
+      },
+      {
+        "<leader>sM",
+        function()
+          require("snacks").picker.man()
+        end,
+        desc = "Man Pages",
+      },
+      {
+        "<leader>sm",
+        function()
+          require("snacks").picker.marks()
+        end,
+        desc = "Jump to Mark",
+      },
+      {
+        "<leader>sR",
+        function()
+          require("snacks").picker.resume()
+        end,
+        desc = "Resume",
+      },
+      {
+        "<leader>sx",
+        function()
+          require("snacks").picker.diagnostics_buffer()
+        end,
+        desc = "Document Diagnostics",
+      },
+      {
+        "<leader>sX",
+        function()
+          require("snacks").picker.diagnostics()
+        end,
+        desc = "Workspace Diagnostics",
+      },
+      {
+        "<leader>ss",
+        function()
+          require("snacks").picker.lines()
+        end,
+        desc = "Search Buffer",
+      },
+      {
+        "<leader>si",
+        function()
+          require("snacks").picker.lsp_symbols()
+        end,
+        desc = "LSP Symbols",
+      },
 
       -- LSP
-      { "gd",              function() require("snacks").picker.lsp_definitions() end,                desc = "Goto Definition" },
-      { "gr",              function() require("snacks").picker.lsp_references() end,                 desc = "References" },
-      { "gI",              function() require("snacks").picker.lsp_implementations() end,            desc = "Goto Implementation" },
-      { "gy",              function() require("snacks").picker.lsp_type_definitions() end,           desc = "Goto Type Definition" },
-      { "<leader>sS",      function() require("snacks").picker.lsp_workspace_symbols() end,          desc = "Goto Symbol (Workspace)" },
+      {
+        "gd",
+        function()
+          require("snacks").picker.lsp_definitions()
+        end,
+        desc = "Goto Definition",
+      },
+      {
+        "gr",
+        function()
+          require("snacks").picker.lsp_references()
+        end,
+        desc = "References",
+      },
+      {
+        "gI",
+        function()
+          require("snacks").picker.lsp_implementations()
+        end,
+        desc = "Goto Implementation",
+      },
+      {
+        "gy",
+        function()
+          require("snacks").picker.lsp_type_definitions()
+        end,
+        desc = "Goto Type Definition",
+      },
+      {
+        "<leader>sS",
+        function()
+          require("snacks").picker.lsp_workspace_symbols()
+        end,
+        desc = "Goto Symbol (Workspace)",
+      },
 
       -- Additional keybindings
-      { "<leader><space>", function() require("snacks").picker.smart() end,                          desc = "Smart Find Files" },
-      { "<leader>bd",      function() require("snacks").bufdelete() end,                             desc = "Delete Buffer" },
-      { "<leader>cR",      function() require("snacks").rename() end,                                desc = "Rename File" },
+      {
+        "<leader><space>",
+        function()
+          require("snacks").picker.smart()
+        end,
+        desc = "Smart Find Files",
+      },
+      {
+        "<leader>bd",
+        function()
+          require("snacks").bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
+      {
+        "<leader>cR",
+        function()
+          require("snacks").rename()
+        end,
+        desc = "Rename File",
+      },
 
       -- Session picker using auto-session
       {
@@ -165,12 +389,14 @@ return {
               name = "sessions",
               get = function()
                 return items
-              end
+              end,
             },
             format = "text",
             preview = false,
             confirm = function(picker, item)
-              if not item then return end
+              if not item then
+                return
+              end
               picker:close()
               vim.schedule(function()
                 require("auto-session").RestoreSessionFile(item.file)
@@ -178,7 +404,7 @@ return {
             end,
           })
         end,
-        desc = "List Sessions"
+        desc = "List Sessions",
       },
     },
   },
@@ -194,9 +420,27 @@ return {
       save_empty = false,
     },
     keys = {
-      { "<leader>qs", function() require("persistence").load() end,                desc = "Restore Session" },
-      { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
-      { "<leader>qd", function() require("persistence").stop() end,                desc = "Don't Save Current Session" },
+      {
+        "<leader>qs",
+        function()
+          require("persistence").load()
+        end,
+        desc = "Restore Session",
+      },
+      {
+        "<leader>ql",
+        function()
+          require("persistence").load({ last = true })
+        end,
+        desc = "Restore Last Session",
+      },
+      {
+        "<leader>qd",
+        function()
+          require("persistence").stop()
+        end,
+        desc = "Don't Save Current Session",
+      },
     },
   },
 
@@ -209,7 +453,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       highlight = {
-        on_put = false,  -- No animation on paste
+        on_put = false, -- No animation on paste
         on_yank = false, -- No animation on yank
         timer = 200,
       },
@@ -225,24 +469,30 @@ return {
       },
     },
     keys = {
-      { "<leader>R", function() require("snacks").picker.registers() end, desc = "Open Yank History" },
-      { "y",         "<Plug>(YankyYank)",                                 mode = { "n", "x" },                           desc = "Yank Text" },
-      { "p",         "<Plug>(YankyPutAfter)",                             mode = { "n", "x" },                           desc = "Put Yanked Text After Cursor" },
-      { "P",         "<Plug>(YankyPutBefore)",                            mode = { "n", "x" },                           desc = "Put Yanked Text Before Cursor" },
-      { "gp",        "<Plug>(YankyGPutAfter)",                            mode = { "n", "x" },                           desc = "Put Yanked Text After Selection" },
-      { "gP",        "<Plug>(YankyGPutBefore)",                           mode = { "n", "x" },                           desc = "Put Yanked Text Before Selection" },
-      { "[y",        "<Plug>(YankyCycleForward)",                         desc = "Cycle Forward Through Yank History" },
-      { "]y",        "<Plug>(YankyCycleBackward)",                        desc = "Cycle Backward Through Yank History" },
-      { "]p",        "<Plug>(YankyPutIndentAfterLinewise)",               desc = "Put Indented After Cursor (Linewise)" },
-      { "[p",        "<Plug>(YankyPutIndentBeforeLinewise)",              desc = "Put Indented Before Cursor (Linewise)" },
-      { "]P",        "<Plug>(YankyPutIndentAfterLinewise)",               desc = "Put Indented After Cursor (Linewise)" },
-      { "[P",        "<Plug>(YankyPutIndentBeforeLinewise)",              desc = "Put Indented Before Cursor (Linewise)" },
-      { ">p",        "<Plug>(YankyPutIndentAfterShiftRight)",             desc = "Put and Indent Right" },
-      { "<p",        "<Plug>(YankyPutIndentAfterShiftLeft)",              desc = "Put and Indent Left" },
-      { ">P",        "<Plug>(YankyPutIndentBeforeShiftRight)",            desc = "Put Before and Indent Right" },
-      { "<P",        "<Plug>(YankyPutIndentBeforeShiftLeft)",             desc = "Put Before and Indent Left" },
-      { "=p",        "<Plug>(YankyPutAfterFilter)",                       desc = "Put After Applying a Filter" },
-      { "=P",        "<Plug>(YankyPutBeforeFilter)",                      desc = "Put Before Applying a Filter" },
+      {
+        "<leader>R",
+        function()
+          require("snacks").picker.registers()
+        end,
+        desc = "Open Yank History",
+      },
+      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank Text" },
+      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put Yanked Text After Cursor" },
+      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put Yanked Text Before Cursor" },
+      { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put Yanked Text After Selection" },
+      { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put Yanked Text Before Selection" },
+      { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle Forward Through Yank History" },
+      { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle Backward Through Yank History" },
+      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (Linewise)" },
+      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (Linewise)" },
+      { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (Linewise)" },
+      { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (Linewise)" },
+      { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and Indent Right" },
+      { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and Indent Left" },
+      { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put Before and Indent Right" },
+      { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put Before and Indent Left" },
+      { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put After Applying a Filter" },
+      { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put Before Applying a Filter" },
     },
   },
 
@@ -268,14 +518,26 @@ return {
       },
     },
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",                                       desc = "Diagnostics (Trouble)" },
-      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",                          desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",                               desc = "Symbols (Trouble)" },
-      { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",                desc = "LSP Definitions / references / ... (Trouble)" },
-      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                                           desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                                            desc = "Quickfix List (Trouble)" },
-      { "[x",         function() require("trouble").prev({ skip_groups = true, jump = true }) end, desc = "Previous Trouble Item" },
-      { "]x",         function() require("trouble").next({ skip_groups = true, jump = true }) end, desc = "Next Trouble Item" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+      {
+        "[x",
+        function()
+          require("trouble").prev({ skip_groups = true, jump = true })
+        end,
+        desc = "Previous Trouble Item",
+      },
+      {
+        "]x",
+        function()
+          require("trouble").next({ skip_groups = true, jump = true })
+        end,
+        desc = "Next Trouble Item",
+      },
     },
   },
 
