@@ -89,10 +89,12 @@ return {
     },
   },
 
-  -- Disable LazyVim's mason-lspconfig
+  -- Mason-lspconfig integration
   {
     "mason-org/mason-lspconfig.nvim",
-    enabled = false,
+    opts = {
+      automatic_installation = false, -- mason-tool-installer handles this
+    },
   },
 
   -- LSP Configuration
