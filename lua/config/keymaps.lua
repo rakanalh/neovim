@@ -75,6 +75,9 @@ map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
+-- disable macro recording
+map("n", "q", "<nop>", { desc = "Disabled" })
+
 -- commenting
 map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
 map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
@@ -164,6 +167,7 @@ end, { desc = "Git Status" })
 
 -- Group names
 map("n", "<leader>r", "", { desc = "Rust" })
+map("n", "<leader>rc", "", { desc = "Cargo" })
 map("n", "<leader>oa", "", { desc = "Agenda" })
 map("n", "<leader>oat", "", { desc = "Schedule" })
 
