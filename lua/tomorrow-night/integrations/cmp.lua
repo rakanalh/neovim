@@ -40,10 +40,14 @@ function M.apply(colors, opts)
   -- Menu highlights
   hl(0, "CmpItemMenu", { fg = colors.subtext1 })
 
+  -- Documentation window
+  hl(0, "CmpDocumentation", { fg = colors.text, bg = opts.transparent_background and "NONE" or colors.surface0 })
+  hl(0, "CmpDocumentationBorder", { fg = colors.blue, bg = opts.transparent_background and "NONE" or colors.surface0 })
+
   -- Selection
-  hl(0, "PmenuSel", { bg = colors.surface0, bold = true })
-  hl(0, "Pmenu", { fg = colors.text, bg = opts.transparent_background and "NONE" or colors.mantle })
-  hl(0, "PmenuBorder", { fg = colors.blue, bg = opts.transparent_background and "NONE" or colors.mantle })
+  hl(0, "PmenuSel", { bg = colors.surface1, bold = true })
+  hl(0, "Pmenu", { fg = colors.text, bg = opts.transparent_background and "NONE" or colors.surface0 })
+  hl(0, "PmenuBorder", { fg = colors.blue, bg = opts.transparent_background and "NONE" or colors.surface0 })
 
   -- Scrollbar
   hl(0, "PmenuSbar", { bg = colors.surface1 })
