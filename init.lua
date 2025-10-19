@@ -114,3 +114,12 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
+
+-- Load localleader configuration after plugins are loaded
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  once = true,
+  callback = function()
+    require("config.localleader")
+  end,
+})

@@ -195,12 +195,12 @@ return {
         desc = "Previous todo comment",
       },
       {
-        "<leader>xt",
+        "<leader>cxt",
         "<cmd>TodoTrouble<cr>",
         desc = "Todo (Trouble)",
       },
       {
-        "<leader>xT",
+        "<leader>cxT",
         "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",
         desc = "Todo/Fix/Fixme (Trouble)",
       },
@@ -382,7 +382,7 @@ return {
         { "<leader>g", group = "git" },
         { "<leader>gh", group = "hunks" },
         { "<leader>h", group = "harpoon" },
-        { "<leader>m", group = "multi-cursor" },
+        { "gz", group = "multi-cursor" },
         { "<leader>o", group = "obsidian" },
         { "<leader>O", group = "overseer" },
         { "<leader>p", group = "project" },
@@ -391,7 +391,7 @@ return {
         { "<leader>t", group = "terminal" },
         { "<leader>u", group = "ui" },
         { "<leader>w", group = "windows" },
-        { "<leader>x", group = "diagnostics/quickfix" },
+        { "<leader>cx", group = "diagnostics/quickfix" },
         { "<leader><tab>", group = "tabs" },
         { "g", group = "goto" },
         { "gs", group = "surround" },
@@ -402,19 +402,35 @@ return {
     end,
   },
 
-  -- Search/replace in multiple files
+  -- Search/replace in multiple files - grug-far
   {
-    "nvim-pack/nvim-spectre",
-    build = false,
-    cmd = "Spectre",
-    opts = { open_cmd = "noswapfile vnew" },
+    "MagicDuck/grug-far.nvim",
+    opts = {
+      headerMaxWidth = 80,
+      keymaps = {
+        replace = { n = "<localleader>r" },
+        qflist = { n = "<localleader>q" },
+        syncLocations = { n = "<localleader>s" },
+        syncLine = { n = "<localleader>l" },
+        close = { n = "<localleader>c" },
+        historyOpen = { n = "<localleader>h" },
+        historyAdd = { n = "<localleader>a" },
+        refresh = { n = "<localleader>f" },
+        openLocation = { n = "<localleader>o" },
+        gotoLocation = { n = "<enter>" },
+        pickHistoryEntry = { n = "<enter>" },
+        abort = { n = "<localleader>b" },
+      },
+    },
+    cmd = "GrugFar",
     keys = {
       {
         "<leader>sr",
         function()
-          require("spectre").open()
+          require("grug-far").open({ transient = true })
         end,
-        desc = "Replace in Files (Spectre)",
+        mode = { "n", "v" },
+        desc = "Search and Replace",
       },
     },
   },
@@ -428,17 +444,19 @@ return {
       vim.g.VM_maps = {
         ["Find Under"] = "<C-n>", -- Select word under cursor
         ["Find Subword Under"] = "<C-n>", -- Select subword under cursor
-        ["Select All"] = "<leader>ma", -- Select all occurrences
+        ["Select All"] = "gza", -- Select all occurrences
         ["Select h"] = "<C-Left>", -- Reduce selection
         ["Select l"] = "<C-Right>", -- Expand selection
         ["Add Cursor Down"] = "<C-M-j>", -- Add cursor down
         ["Add Cursor Up"] = "<C-M-k>", -- Add cursor up
         ["Add Cursor At Pos"] = "<C-M-p>", -- Add cursor at click position
-        ["Visual Regex"] = "<leader>m/", -- Select via regex
-        ["Visual All"] = "<leader>mA", -- Select all in visual mode
-        ["Visual Add"] = "<leader>ma", -- Add selection in visual mode
-        ["Visual Find"] = "<leader>mf", -- Find in visual mode
-        ["Visual Cursors"] = "<leader>mc", -- Create cursors from visual selection
+        ["Skip Region"] = "q", -- Skip current match and find next (explicit)
+        ["Remove Region"] = "Q", -- Remove current region entirely (explicit)
+        ["Visual Regex"] = "gz/", -- Select via regex
+        ["Visual All"] = "gzA", -- Select all in visual mode
+        ["Visual Add"] = "gza", -- Add selection in visual mode
+        ["Visual Find"] = "gzf", -- Find in visual mode
+        ["Visual Cursors"] = "gzc", -- Create cursors from visual selection
         ["Mouse Cursor"] = "<C-LeftMouse>", -- Add cursor with mouse
         ["Mouse Word"] = "<C-RightMouse>", -- Select word with mouse
         ["Mouse Column"] = "<M-C-RightMouse>", -- Column selection with mouse
@@ -456,9 +474,9 @@ return {
       { "<C-n>", mode = { "n", "v" }, desc = "Select word/selection" },
       { "<C-M-j>", mode = { "n" }, desc = "Add cursor down" },
       { "<C-M-k>", mode = { "n" }, desc = "Add cursor up" },
-      { "<leader>ma", mode = { "n", "v" }, desc = "Select all occurrences" },
-      { "<leader>m/", mode = { "n" }, desc = "Select via regex" },
-      { "<leader>mc", mode = { "v" }, desc = "Create cursors from selection" },
+      { "gza", mode = { "n", "v" }, desc = "Select all occurrences" },
+      { "gz/", mode = { "n" }, desc = "Select via regex" },
+      { "gzc", mode = { "v" }, desc = "Create cursors from selection" },
     },
   },
 

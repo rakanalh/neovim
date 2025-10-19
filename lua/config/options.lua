@@ -4,6 +4,9 @@
 -- Tell LazyVim to use nvim-cmp
 vim.g.lazyvim_cmp = "nvim-cmp"
 
+-- Set localleader to <leader>m for buffer-local "major mode" keymaps
+vim.g.maplocalleader = " m"
+
 local opt = vim.opt
 
 opt.autowrite = true                                    -- Enable auto write

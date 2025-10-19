@@ -41,13 +41,13 @@ return {
               { buffer = bufnr, desc = "Code Action (Rust)" })
             vim.keymap.set("n", "<leader>dr", function() vim.cmd.RustLsp('debuggables') end,
               { buffer = bufnr, desc = "Rust Debuggables" })
-            vim.keymap.set("n", "<leader>rr", function() vim.cmd.RustLsp('runnables') end,
+            vim.keymap.set("n", "<localleader>r", function() vim.cmd.RustLsp('runnables') end,
               { buffer = bufnr, desc = "Rust Runnables" })
-            vim.keymap.set("n", "<leader>re", function() vim.cmd.RustLsp('expandMacro') end,
+            vim.keymap.set("n", "<localleader>e", function() vim.cmd.RustLsp('expandMacro') end,
               { buffer = bufnr, desc = "Expand Macro (Rust)" })
-            vim.keymap.set("n", "<leader>rc", function() vim.cmd.RustLsp('openCargo') end,
+            vim.keymap.set("n", "<localleader>o", function() vim.cmd.RustLsp('openCargo') end,
               { buffer = bufnr, desc = "Open Cargo.toml" })
-            vim.keymap.set("n", "<leader>rp", function() vim.cmd.RustLsp('parentModule') end,
+            vim.keymap.set("n", "<localleader>p", function() vim.cmd.RustLsp('parentModule') end,
               { buffer = bufnr, desc = "Parent Module (Rust)" })
             vim.keymap.set("n", "K", function() vim.cmd.RustLsp('hover', 'actions') end,
               { buffer = bufnr, desc = "Hover Actions (Rust)" })
@@ -160,14 +160,13 @@ return {
       auto_close = false,
     },
     keys = {
-      { "<leader>rb", "<cmd>CargoBuild<cr>",  desc = "Cargo Build" },
-      { "<leader>rt", "<cmd>CargoTest<cr>",   desc = "Cargo Test" },
-      { "<leader>rk", "<cmd>CargoCheck<cr>",  desc = "Cargo Check" },
-      { "<leader>rl", "<cmd>CargoClippy<cr>", desc = "Cargo Clippy" },
-      { "<leader>rf", "<cmd>CargoFmt<cr>",    desc = "Cargo Format" },
-      { "<leader>rd", "<cmd>CargoDoc<cr>",    desc = "Cargo Doc" },
-      { "<leader>ra", "<cmd>CargoAdd<cr>",    desc = "Cargo Add Dependency" },
-      { "<leader>rx", "<cmd>CargoRemove<cr>", desc = "Cargo Remove Dependency" },
+      { "<localleader>b", "<cmd>CargoBuild<cr>",  desc = "Cargo Build", ft = "rust" },
+      { "<localleader>k", "<cmd>CargoCheck<cr>",  desc = "Cargo Check", ft = "rust" },
+      { "<localleader>l", "<cmd>CargoClippy<cr>", desc = "Cargo Clippy", ft = "rust" },
+      { "<localleader>f", "<cmd>CargoFmt<cr>",    desc = "Cargo Format", ft = "rust" },
+      { "<localleader>d", "<cmd>CargoDoc<cr>",    desc = "Cargo Doc", ft = "rust" },
+      { "<localleader>a", "<cmd>CargoAdd<cr>",    desc = "Cargo Add Dependency", ft = "rust" },
+      { "<localleader>x", "<cmd>CargoRemove<cr>", desc = "Cargo Remove Dependency", ft = "rust" },
     },
   },
 
@@ -189,13 +188,13 @@ return {
       },
     },
     keys = {
-      { "<leader>rcu", function() require("crates").update_crate() end,       desc = "Update Crate",        ft = "toml" },
-      { "<leader>rca", function() require("crates").update_all_crates() end,  desc = "Update All Crates",   ft = "toml" },
-      { "<leader>rcU", function() require("crates").upgrade_crate() end,      desc = "Upgrade Crate",       ft = "toml" },
-      { "<leader>rcA", function() require("crates").upgrade_all_crates() end, desc = "Upgrade All Crates",  ft = "toml" },
-      { "<leader>rch", function() require("crates").open_homepage() end,      desc = "Open Crate Homepage", ft = "toml" },
-      { "<leader>rcd", function() require("crates").open_documentation() end, desc = "Open Crate Docs",     ft = "toml" },
-      { "<leader>rcr", function() require("crates").open_repository() end,    desc = "Open Crate Repo",     ft = "toml" },
+      { "<localleader>cu", function() require("crates").update_crate() end,       desc = "Update Crate",        ft = "toml" },
+      { "<localleader>ca", function() require("crates").update_all_crates() end,  desc = "Update All Crates",   ft = "toml" },
+      { "<localleader>cU", function() require("crates").upgrade_crate() end,      desc = "Upgrade Crate",       ft = "toml" },
+      { "<localleader>cA", function() require("crates").upgrade_all_crates() end, desc = "Upgrade All Crates",  ft = "toml" },
+      { "<localleader>ch", function() require("crates").open_homepage() end,      desc = "Open Crate Homepage", ft = "toml" },
+      { "<localleader>cd", function() require("crates").open_documentation() end, desc = "Open Crate Docs",     ft = "toml" },
+      { "<localleader>cr", function() require("crates").open_repository() end,    desc = "Open Crate Repo",     ft = "toml" },
     },
   },
 }
