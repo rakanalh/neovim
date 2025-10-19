@@ -4,7 +4,7 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown" },
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
       heading = {
         enabled = true,
@@ -158,7 +158,7 @@ return {
   -- Markdown agenda and habit tracker
   {
     "rakanalh/md-agenda.nvim",
-    branch = "splits",
+    branch = "main",
     lazy = false, -- Load immediately for startup
     priority = 50,
     config = function()

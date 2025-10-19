@@ -29,7 +29,6 @@ return {
     version = "*",
     dependencies = {
       "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons",
     },
     event = { "BufReadPost", "BufNewFile" },
     opts = {
@@ -63,7 +62,6 @@ return {
       require("lsp-file-operations").setup()
     end,
   },
-
 
   -- Show code actions as virtual text
   {
@@ -213,6 +211,19 @@ return {
         -- Markdown
         marksman = {
           filetypes = { "markdown", "markdown.mdx" },
+        },
+
+        -- TOML (Taplo)
+        taplo = {
+          root_dir = function(fname, bufnr)
+            -- Handle both fname and bufnr arguments
+            local filepath = type(fname) == "string" and fname or vim.api.nvim_buf_get_name(fname)
+            -- Exclude cargo registry to prevent spam warnings
+            if filepath:match("%.cargo/registry") then
+              return nil
+            end
+            return require("lspconfig.util").find_git_ancestor(filepath)
+          end,
         },
       }
 

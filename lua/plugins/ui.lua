@@ -582,12 +582,6 @@ return {
     end,
   },
 
-  -- Icons
-  {
-    "nvim-tree/nvim-web-devicons",
-    lazy = true,
-  },
-
   -- UI components
   {
     "MunifTanjim/nui.nvim",
