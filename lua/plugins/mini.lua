@@ -241,6 +241,20 @@ return {
     },
   },
 
+  -- Jump to character
+  {
+    "nvim-mini/mini.jump",
+    event = "VeryLazy",
+    opts = {},
+  },
+
+  -- Bracket navigation (]b, [b, ]d, [d, etc.)
+  {
+    "nvim-mini/mini.bracketed",
+    event = "VeryLazy",
+    opts = {},
+  },
+
   -- Helper for closing buffers
   {
     "nvim-mini/mini.bufremove",
