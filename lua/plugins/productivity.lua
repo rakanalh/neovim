@@ -352,7 +352,7 @@ return {
       {
         "<leader><space>",
         function()
-          require("snacks").picker.smart()
+          require("snacks").picker.smart({ cwd = vim.fn.getcwd() })
         end,
         desc = "Smart Find Files",
       },
