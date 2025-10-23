@@ -39,6 +39,39 @@ return {
       dashboard = {
         enabled = false, -- We're using dashboard-nvim
       },
+      scratch = {
+        enabled = true,
+        name = "Scratch",
+        ft = function()
+          if vim.bo.buftype == "" and vim.bo.filetype ~= "" then
+            return vim.bo.filetype
+          end
+          return "markdown"
+        end,
+        root = vim.fn.stdpath("data") .. "/scratch",
+        autowrite = true,
+        filekey = {
+          cwd = true,
+          branch = true,
+          count = true,
+        },
+        win = { style = "scratch" },
+        win_by_ft = {
+          lua = {
+            keys = {
+              ["source"] = {
+                "<cr>",
+                function(self)
+                  local name = "scratch." .. vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self.buf), ":e")
+                  require("snacks").debug.run({ buf = self.buf, name = name })
+                end,
+                desc = "Source buffer",
+                mode = { "n", "x" },
+              },
+            },
+          },
+        },
+      },
       picker = {
         enabled = true,
         layout = "bottom", -- Use bottom layout (ivy preset at bottom)
@@ -346,6 +379,22 @@ return {
           require("snacks").picker.lsp_workspace_symbols()
         end,
         desc = "Goto Symbol (Workspace)",
+      },
+
+      -- Scratch buffers
+      {
+        "<leader>n",
+        function()
+          require("snacks").scratch()
+        end,
+        desc = "Toggle Scratch Buffer",
+      },
+      {
+        "<leader>N",
+        function()
+          require("snacks").scratch.select()
+        end,
+        desc = "Select Scratch Buffer",
       },
 
       -- Additional keybindings
