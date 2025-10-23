@@ -35,8 +35,8 @@ return {
             sorting_strategy = "ascending",
             layout_strategy = "bottom_pane",
             layout_config = {
-              height = 0.2,
-              prompt_position = "bottom",
+              height = 0.3,
+              prompt_position = "top",
             },
             display_stat = { date = true, size = true, mode = true },
             git_status = true,

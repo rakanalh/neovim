@@ -74,7 +74,12 @@ return {
       },
       picker = {
         enabled = true,
-        layout = "bottom", -- Use bottom layout (ivy preset at bottom)
+        layout = {
+          preset = "bottom",
+          layout = {
+            height = 0.3,
+          },
+        },
         -- Enable frecency scoring for recently/frequently used files
         matcher = {
           frecency = true, -- Score files based on frequency and recency of use
@@ -401,9 +406,9 @@ return {
       {
         "<leader><space>",
         function()
-          require("snacks").picker.smart({ cwd = vim.fn.getcwd() })
+          require("snacks").picker.files({ cwd = vim.fn.getcwd() })
         end,
-        desc = "Smart Find Files",
+        desc = "Find Files",
       },
       {
         "<leader>bd",
