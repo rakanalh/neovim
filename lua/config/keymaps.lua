@@ -79,12 +79,22 @@ map("v", ">", ">gv")
 -- disable macro recording
 map("n", "q", "<nop>", { desc = "Disabled" })
 
+-- disable LazyVim's default mappings
+vim.schedule(function()
+  pcall(vim.keymap.del, "n", "<leader>K")
+  pcall(vim.keymap.del, "n", "<leader>L")
+  pcall(vim.keymap.del, "n", "<leader>l")
+end)
+
 -- commenting
 map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
 map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
 
 -- lazy
-map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
+map("n", "<leader>ol", "<cmd>Lazy<cr>", { desc = "Lazy" })
+map("n", "<leader>oL", function()
+  require("lazyvim").news.changelog()
+end, { desc = "LazyVim Changelog" })
 
 -- new file
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
