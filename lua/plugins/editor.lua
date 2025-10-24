@@ -150,13 +150,13 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      signs = true, -- show icons in the signs column
+      signs = true,      -- show icons in the signs column
       sign_priority = 8, -- sign priority
       -- keywords recognized as todo comments
       keywords = {
         FIX = {
-          icon = " ", -- icon used for the sign, and in search results
-          color = "error", -- can be a hex color, or a named color (see below)
+          icon = " ",                                 -- icon used for the sign, and in search results
+          color = "error",                            -- can be a hex color, or a named color (see below)
           alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
         },
         TODO = { icon = " ", color = "info" },
@@ -363,11 +363,11 @@ return {
       vim.o.timeoutlen = 300
     end,
     opts = {
-      preset = "classic", -- This forces bottom layout
+      preset = "classic",               -- This forces bottom layout
       layout = {
-        width = { max = 999 }, -- Use maximum available width
+        width = { max = 999 },          -- Use maximum available width
         height = { min = 1, max = 10 }, -- Reduce height (default is usually 25)
-        align = "left", -- Align to left to use full width
+        align = "left",                 -- Align to left to use full width
       },
     },
     config = function(_, opts)
@@ -375,29 +375,29 @@ return {
       wk.setup(opts)
       -- Register key groups
       wk.add({
-        { "<leader>", group = "Leader" },
-        { "<leader>b", group = "buffer" },
-        { "<leader>c", group = "code" },
-        { "<leader>f", group = "file/find" },
-        { "<leader>g", group = "git" },
-        { "<leader>gh", group = "hunks" },
-        { "<leader>h", group = "harpoon" },
-        { "gz", group = "multi-cursor" },
-        { "<leader>o", group = "obsidian" },
-        { "<leader>O", group = "overseer" },
-        { "<leader>p", group = "project" },
-        { "<leader>q", group = "quit/session" },
-        { "<leader>s", group = "search" },
-        { "<leader>t", group = "terminal" },
-        { "<leader>u", group = "ui" },
-        { "<leader>w", group = "windows" },
-        { "<leader>cx", group = "diagnostics/quickfix" },
+        { "<leader>",      group = "Leader" },
+        { "<leader>b",     group = "buffer" },
+        { "<leader>c",     group = "code" },
+        { "<leader>f",     group = "file" },
+        { "<leader>g",     group = "git" },
+        { "<leader>gh",    group = "hunks" },
+        { "<leader>h",     group = "harpoon" },
+        { "gz",            group = "multi-cursor" },
+        { "<leader>o",     group = "obsidian" },
+        { "<leader>O",     group = "overseer" },
+        { "<leader>p",     group = "project" },
+        { "<leader>q",     group = "quit/session" },
+        { "<leader>s",     group = "search" },
+        { "<leader>t",     group = "terminal" },
+        { "<leader>u",     group = "ui" },
+        { "<leader>w",     group = "windows" },
+        { "<leader>cx",    group = "diagnostics/quickfix" },
         { "<leader><tab>", group = "tabs" },
-        { "g", group = "goto" },
-        { "gs", group = "surround" },
-        { "z", group = "fold" },
-        { "[", group = "prev" },
-        { "]", group = "next" },
+        { "g",             group = "goto" },
+        { "gs",            group = "surround" },
+        { "z",             group = "fold" },
+        { "[",             group = "prev" },
+        { "]",             group = "next" },
       })
     end,
   },
@@ -442,23 +442,23 @@ return {
     event = "VeryLazy",
     init = function()
       vim.g.VM_maps = {
-        ["Find Under"] = "<C-n>", -- Select word under cursor
-        ["Find Subword Under"] = "<C-n>", -- Select subword under cursor
-        ["Select All"] = "gza", -- Select all occurrences
-        ["Select h"] = "<C-Left>", -- Reduce selection
-        ["Select l"] = "<C-Right>", -- Expand selection
-        ["Add Cursor Down"] = "<C-M-j>", -- Add cursor down
-        ["Add Cursor Up"] = "<C-M-k>", -- Add cursor up
-        ["Add Cursor At Pos"] = "<C-M-p>", -- Add cursor at click position
-        ["Skip Region"] = "q", -- Skip current match and find next (explicit)
-        ["Remove Region"] = "Q", -- Remove current region entirely (explicit)
-        ["Visual Regex"] = "gz/", -- Select via regex
-        ["Visual All"] = "gzA", -- Select all in visual mode
-        ["Visual Add"] = "gza", -- Add selection in visual mode
-        ["Visual Find"] = "gzf", -- Find in visual mode
-        ["Visual Cursors"] = "gzc", -- Create cursors from visual selection
-        ["Mouse Cursor"] = "<C-LeftMouse>", -- Add cursor with mouse
-        ["Mouse Word"] = "<C-RightMouse>", -- Select word with mouse
+        ["Find Under"] = "<C-n>",              -- Select word under cursor
+        ["Find Subword Under"] = "<C-n>",      -- Select subword under cursor
+        ["Select All"] = "gza",                -- Select all occurrences
+        ["Select h"] = "<C-Left>",             -- Reduce selection
+        ["Select l"] = "<C-Right>",            -- Expand selection
+        ["Add Cursor Down"] = "<C-M-j>",       -- Add cursor down
+        ["Add Cursor Up"] = "<C-M-k>",         -- Add cursor up
+        ["Add Cursor At Pos"] = "<C-M-p>",     -- Add cursor at click position
+        ["Skip Region"] = "q",                 -- Skip current match and find next (explicit)
+        ["Remove Region"] = "Q",               -- Remove current region entirely (explicit)
+        ["Visual Regex"] = "gz/",              -- Select via regex
+        ["Visual All"] = "gzA",                -- Select all in visual mode
+        ["Visual Add"] = "gza",                -- Add selection in visual mode
+        ["Visual Find"] = "gzf",               -- Find in visual mode
+        ["Visual Cursors"] = "gzc",            -- Create cursors from visual selection
+        ["Mouse Cursor"] = "<C-LeftMouse>",    -- Add cursor with mouse
+        ["Mouse Word"] = "<C-RightMouse>",     -- Select word with mouse
         ["Mouse Column"] = "<M-C-RightMouse>", -- Column selection with mouse
       }
       -- Theme - empty string to not set default links, we'll define colors ourselves
@@ -471,12 +471,12 @@ return {
       vim.g.VM_leader = "\\\\"
     end,
     keys = {
-      { "<C-n>", mode = { "n", "v" }, desc = "Select word/selection" },
-      { "<C-M-j>", mode = { "n" }, desc = "Add cursor down" },
-      { "<C-M-k>", mode = { "n" }, desc = "Add cursor up" },
-      { "gza", mode = { "n", "v" }, desc = "Select all occurrences" },
-      { "gz/", mode = { "n" }, desc = "Select via regex" },
-      { "gzc", mode = { "v" }, desc = "Create cursors from selection" },
+      { "<C-n>",   mode = { "n", "v" }, desc = "Select word/selection" },
+      { "<C-M-j>", mode = { "n" },      desc = "Add cursor down" },
+      { "<C-M-k>", mode = { "n" },      desc = "Add cursor up" },
+      { "gza",     mode = { "n", "v" }, desc = "Select all occurrences" },
+      { "gz/",     mode = { "n" },      desc = "Select via regex" },
+      { "gzc",     mode = { "v" },      desc = "Create cursors from selection" },
     },
   },
 
@@ -567,10 +567,10 @@ return {
       },
     },
     keys = {
-      { "<leader>Oo", "<cmd>OverseerToggle<cr>", desc = "Overseer Toggle" },
-      { "<leader>Or", "<cmd>OverseerRun<cr>", desc = "Overseer Run" },
-      { "<leader>Ob", "<cmd>OverseerBuild<cr>", desc = "Overseer Build" },
-      { "<leader>Oi", "<cmd>OverseerInfo<cr>", desc = "Overseer Info" },
+      { "<leader>Oo", "<cmd>OverseerToggle<cr>",     desc = "Overseer Toggle" },
+      { "<leader>Or", "<cmd>OverseerRun<cr>",        desc = "Overseer Run" },
+      { "<leader>Ob", "<cmd>OverseerBuild<cr>",      desc = "Overseer Build" },
+      { "<leader>Oi", "<cmd>OverseerInfo<cr>",       desc = "Overseer Info" },
       { "<leader>Oa", "<cmd>OverseerTaskAction<cr>", desc = "Overseer Task Action" },
       { "<leader>Oc", "<cmd>OverseerClearCache<cr>", desc = "Overseer Clear Cache" },
     },
