@@ -303,4 +303,100 @@ return {
       start_delay = 3000,
     },
   },
+
+  -- Trouble.nvim v3 - Better diagnostics
+  {
+    "folke/trouble.nvim",
+    branch = "main", -- Use v3
+    cmd = { "Trouble" },
+    opts = {
+      modes = {
+        cascade = {
+          mode = "diagnostics", -- Start with diagnostics
+          filter = function(items)
+            local severity = vim.diagnostic.severity.HINT
+            for _, item in ipairs(items) do
+              severity = math.min(severity, item.severity)
+            end
+            return vim.tbl_filter(function(item)
+              return item.severity == severity
+            end, items)
+          end,
+        },
+      },
+    },
+    keys = {
+      { "<leader>cxx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>cxX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)" },
+      { "<leader>cxL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+      { "<leader>cxQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+      {
+        "[x",
+        function()
+          require("trouble").prev({ skip_groups = true, jump = true })
+        end,
+        desc = "Previous Trouble Item",
+      },
+      {
+        "]x",
+        function()
+          require("trouble").next({ skip_groups = true, jump = true })
+        end,
+        desc = "Next Trouble Item",
+      },
+    },
+  },
+
+  -- vim-illuminate - Highlight word under cursor
+  {
+    "RRethy/vim-illuminate",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      delay = 100, -- Fast highlight
+      large_file_cutoff = 2000,
+      large_file_overrides = {
+        providers = { "lsp" },
+      },
+      -- No animation, instant highlight
+      filetypes_denylist = {
+        "dirvish",
+        "fugitive",
+        "alpha",
+        "NvimTree",
+        "neo-tree",
+        "lazy",
+        "Trouble",
+        "trouble",
+        "dashboard",
+        "help",
+      },
+    },
+    config = function(_, opts)
+      require("illuminate").configure(opts)
+
+      local function map(key, dir, buffer)
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+      end
+
+      map("]]", "next")
+      map("[[", "prev")
+
+      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map("]]", "next", buffer)
+          map("[[", "prev", buffer)
+        end,
+      })
+    end,
+    keys = {
+      { "]]", desc = "Next Reference" },
+      { "[[", desc = "Prev Reference" },
+    },
+  },
 }

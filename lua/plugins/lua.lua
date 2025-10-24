@@ -1,10 +1,9 @@
 -- Lua-specific tooling and keymaps
 return {
-  -- Neodev for Neovim Lua development
+  -- Neodev disabled in favor of lazydev.nvim (provided by LazyVim)
   {
     "folke/neodev.nvim",
-    ft = "lua",
-    opts = {},
+    enabled = false,
   },
 
   -- Additional Lua keymaps for Neovim config development
