@@ -4,6 +4,9 @@ return {
     "DrKJeff16/project.nvim",
     event = "VeryLazy",
     main = "project",
+    init = function()
+      vim.g.project_lsp_nowarn = 1
+    end,
     opts = {
       manual_mode = false,
       detection_methods = { "pattern", "lsp" },
