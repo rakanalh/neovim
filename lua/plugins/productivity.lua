@@ -386,21 +386,34 @@ return {
         desc = "Goto Symbol (Workspace)",
       },
 
+      -- Notifications
+      {
+        "<leader>on",
+        function()
+          require("snacks").picker.notifications()
+        end,
+        desc = "Notifications",
+      },
+
       -- Scratch buffers
       {
-        "<leader>n",
+        "<leader>osn",
         function()
           require("snacks").scratch()
         end,
-        desc = "Toggle Scratch Buffer",
+        desc = "New/Toggle",
       },
       {
-        "<leader>N",
+        "<leader>oss",
         function()
           require("snacks").scratch.select()
         end,
-        desc = "Select Scratch Buffer",
+        desc = "Select",
       },
+      -- Disable LazyVim defaults
+      { "<leader>n", false },
+      { "<leader>N", false },
+      { "<leader>S", false },
 
       -- Additional keybindings
       {

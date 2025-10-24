@@ -142,7 +142,7 @@ return {
       -- REQUIRED
 
       -- Basic keymaps
-      vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end, { desc = "Harpoon Add File" })
+      vim.keymap.set("n", "<leader>tha", function() harpoon:list():add() end, { desc = "Add File" })
       vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon Menu" })
 
       -- Navigation keymaps
@@ -156,7 +156,7 @@ return {
       vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end, { desc = "Harpoon Next" })
 
       -- Snacks picker integration
-      vim.keymap.set("n", "<leader>hf", function()
+      vim.keymap.set("n", "<leader>thf", function()
         local harpoon_files = harpoon:list()
         local items = {}
         for _, item in ipairs(harpoon_files.items) do
@@ -178,7 +178,7 @@ return {
             end)
           end,
         })
-      end, { desc = "Harpoon Picker" })
+      end, { desc = "Picker" })
     end,
   },
 
@@ -318,34 +318,11 @@ return {
       },
     },
     keys = {
-      { "<C-\\>",     desc = "Toggle terminal" },
-      { "<leader>tt", "<cmd>ToggleTerm<cr>",                              desc = "Toggle terminal" },
-      { "<leader>th", "<cmd>ToggleTerm size=15 direction=horizontal<cr>", desc = "Horizontal terminal" },
-      { "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>",   desc = "Vertical terminal" },
-      { "<leader>tf", "<cmd>ToggleTerm direction=float<cr>",              desc = "Float terminal" },
-      {
-        "<leader>tg",
-        function()
-          local Terminal = require("toggleterm.terminal").Terminal
-          local lazygit = Terminal:new({
-            cmd = "lazygit",
-            dir = "git_dir",
-            direction = "float",
-            float_opts = {
-              border = "double",
-            },
-            on_open = function(term)
-              vim.cmd("startinsert!")
-              vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-            end,
-            on_close = function(term)
-              vim.cmd("startinsert!")
-            end,
-          })
-          lazygit:toggle()
-        end,
-        desc = "Lazygit"
-      },
+      { "<C-\\>",       desc = "Toggle terminal" },
+      { "<leader>ott",  "<cmd>ToggleTerm<cr>",                              desc = "Toggle" },
+      { "<leader>oth",  "<cmd>ToggleTerm size=15 direction=horizontal<cr>", desc = "Horizontal" },
+      { "<leader>otv",  "<cmd>ToggleTerm size=80 direction=vertical<cr>",   desc = "Vertical" },
+      { "<leader>otf",  "<cmd>ToggleTerm direction=float<cr>",              desc = "Float" },
     },
     config = function(_, opts)
       require("toggleterm").setup(opts)

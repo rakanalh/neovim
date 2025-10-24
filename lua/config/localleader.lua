@@ -55,9 +55,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
               local desc = map.desc or ""
               -- Keep only Octo keymaps (everything else goes)
               local is_octo = desc:match("[Rr]eview") or desc:match("[Cc]omment")
-                           or desc:match("[Ss]uggestion") or desc:match("PR")
-                           or desc:match("viewer") or desc:match("file")
-                           or map.lhs:match("^ m%]$") or map.lhs:match("^ m%[$")
+                  or desc:match("[Ss]uggestion") or desc:match("PR")
+                  or desc:match("viewer") or desc:match("file")
+                  or map.lhs:match("^ m%]$") or map.lhs:match("^ m%[$")
 
               if not is_octo then
                 pcall(vim.keymap.del, "n", map.lhs, { buffer = bufnr })
@@ -89,9 +89,9 @@ vim.api.nvim_create_autocmd("FileType", {
       else
         local wk = require("which-key")
         wk.add({
-          { "<leader>m",  group = "Rust Actions", buffer = bufnr },
-          { "<leader>mt", group = "Tests",        buffer = bufnr },
-          { "<leader>mc", group = "Crates",       buffer = bufnr },
+          { "<leader>m",  group = "Rust",   buffer = bufnr },
+          { "<leader>mt", group = "Tests",  buffer = bufnr },
+          { "<leader>mc", group = "Crates", buffer = bufnr },
         })
       end
     end)

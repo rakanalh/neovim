@@ -1,11 +1,10 @@
 -- Mini.nvim plugins collection
 return {
-  -- Auto pairs
+  -- Auto pairs - Extend LazyVim's configuration
   {
     "nvim-mini/mini.pairs",
-    event = "VeryLazy",
-    opts = {},
     keys = {
+      -- Add toggle keymap to LazyVim's defaults
       {
         "<leader>up",
         function()

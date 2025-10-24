@@ -87,7 +87,7 @@ return {
     },
   },
 
-  -- Mason-lspconfig integration
+  -- Mason-lspconfig integration - Extend LazyVim's configuration
   {
     "mason-org/mason-lspconfig.nvim",
     opts = {
@@ -95,14 +95,9 @@ return {
     },
   },
 
-  -- LSP Configuration
+  -- LSP Configuration - Extend LazyVim's configuration
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      "mason.nvim",
-      "hrsh7th/cmp-nvim-lsp",
-      "kosayoda/nvim-lightbulb",
-    },
     opts = function(_, opts)
       -- Override LazyVim's default LSP keymaps to prevent conflicts
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
@@ -114,7 +109,7 @@ return {
         end
       end
 
-      -- Language-specific LSP servers
+      -- Extend LazyVim's servers with our language-specific configurations
       local servers = {
         -- Bash
         bashls = {
@@ -207,12 +202,10 @@ return {
             },
           },
         },
-
         -- Markdown
         marksman = {
           filetypes = { "markdown", "markdown.mdx" },
         },
-
         -- TOML (Taplo)
         taplo = {
           root_dir = function(fname, bufnr)
@@ -244,14 +237,14 @@ return {
     end,
   },
 
-  -- Mason package manager for LSP servers
+  -- Mason package manager - Extend LazyVim's configuration
   {
     "mason-org/mason.nvim",
-    cmd = "Mason",
-    build = ":MasonUpdate",
+    opts_extend = { "ensure_installed" },
     opts = {
       ensure_installed = {
-        -- Language-specific tools are now managed in langs/*.lua files
+        -- Language-specific tools are now managed in individual language files
+        -- This list is extended by LazyVim's ensure_installed
       },
     },
   },
@@ -262,8 +255,8 @@ return {
     dependencies = { "mason-org/mason.nvim" },
     cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
     event = { "BufReadPre", "BufNewFile" },
-    opts = function()
-      local tools = {
+    opts = {
+      ensure_installed = {
         -- General tools
         "yamllint",
         "jsonlint",
@@ -304,17 +297,10 @@ return {
         -- Markdown
         "marksman",
         "markdownlint",
-      }
-
-      return {
-        ensure_installed = tools,
-        auto_update = false,
-        run_on_start = true,
-        start_delay = 3000,
-      }
-    end,
-    config = function(_, opts)
-      require("mason-tool-installer").setup(opts)
-    end,
+      },
+      auto_update = false,
+      run_on_start = true,
+      start_delay = 3000,
+    },
   },
 }

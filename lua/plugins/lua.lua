@@ -1,37 +1,5 @@
 -- Lua-specific tooling and keymaps
 return {
-  -- Lua REPL integration
-  {
-    "Vigemus/iron.nvim",
-    ft = "lua",
-    keys = {
-      {
-        "<localleader>i",
-        "<cmd>IronRepl<cr>",
-        desc = "Start Lua REPL",
-        ft = "lua",
-      },
-      {
-        "<localleader>r",
-        "<cmd>IronRestart<cr>",
-        desc = "Restart REPL",
-        ft = "lua",
-      },
-      {
-        "<localleader>F",
-        "<cmd>IronFocus<cr>",
-        desc = "Focus REPL",
-        ft = "lua",
-      },
-      {
-        "<localleader>h",
-        "<cmd>IronHide<cr>",
-        desc = "Hide REPL",
-        ft = "lua",
-      },
-    },
-  },
-
   -- Neodev for Neovim Lua development
   {
     "folke/neodev.nvim",

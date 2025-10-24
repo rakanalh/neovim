@@ -1,9 +1,9 @@
--- Python-specific tooling and keymaps
+-- REPL integration for Python and Lua
 return {
-  -- Python REPL integration
+  -- Iron.nvim - REPL integration
   {
     "Vigemus/iron.nvim",
-    ft = "python",
+    ft = { "python", "lua" },
     config = function()
       local iron = require("iron.core")
       iron.setup({
@@ -12,6 +12,10 @@ return {
           repl_definition = {
             python = {
               command = { "python3" },
+              format = require("iron.fts.common").bracketed_paste,
+            },
+            lua = {
+              command = { "lua" },
               format = require("iron.fts.common").bracketed_paste,
             },
           },
@@ -39,26 +43,26 @@ return {
       {
         "<localleader>i",
         "<cmd>IronRepl<cr>",
-        desc = "Start Python REPL",
-        ft = "python",
+        desc = "Start REPL",
+        ft = { "python", "lua" },
       },
       {
         "<localleader>r",
         "<cmd>IronRestart<cr>",
         desc = "Restart REPL",
-        ft = "python",
+        ft = { "python", "lua" },
       },
       {
         "<localleader>F",
         "<cmd>IronFocus<cr>",
         desc = "Focus REPL",
-        ft = "python",
+        ft = { "python", "lua" },
       },
       {
         "<localleader>h",
         "<cmd>IronHide<cr>",
         desc = "Hide REPL",
-        ft = "python",
+        ft = { "python", "lua" },
       },
     },
   },

@@ -10,6 +10,17 @@ return {
     },
   },
 
+  -- Which-key group for Rust
+  {
+    "folke/which-key.nvim",
+    opts = {
+      spec = {
+        { "<localleader>", group = "rust", icon = { cat = "filetype", name = "rust" } },
+        { "<localleader>c", group = "crates", icon = { icon = "📦", color = "orange" } },
+      },
+    },
+  },
+
   -- Rustaceanvim - Better Rust development (successor to rust-tools)
   {
     "mrcjkb/rustaceanvim",

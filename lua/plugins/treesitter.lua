@@ -1,89 +1,32 @@
 return {
-  -- Treesitter for better syntax highlighting
+  -- Treesitter - Override LazyVim's parser list with our own
   {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    lazy = false, -- Load immediately to ensure parsers are available
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-    keys = {
-      { "<c-space>", desc = "Increment Selection" },
-      { "<bs>",      desc = "Decrement Selection", mode = "x" },
-    },
     opts = {
       auto_install = true, -- Automatically install missing parsers when entering buffer
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-      indent = {
-        enable = true,
-        disable = { "python" },
-      },
+      -- Replace LazyVim's ensure_installed with only our parsers
       ensure_installed = {
-        "bash",
-        "c",
         "cmake",
         "comment",
-        "cpp",
         "css",
-        "diff",
         "dockerfile",
         "git_config",
         "git_rebase",
         "gitattributes",
         "gitcommit",
         "gitignore",
-        "go",
-        "gomod",
-        "gosum",
-        "gowork",
         "graphql",
-        "html",
         "http",
-        "ini",
-        "java",
-        "javascript",
-        "jsdoc",
-        "json",
         "json5",
-        "jsonc",
-        "kotlin",
-        "lua",
-        "luadoc",
-        "luap",
         "make",
-        "markdown",
-        "markdown_inline",
-        "ninja",
-        "nix",
-        "php",
-        "phpdoc",
-        "prisma",
         "proto",
-        "python",
-        "query",
-        "regex",
-        "rst",
-        "ruby",
         "rust",
-        "scala",
         "scss",
         "sql",
-        "svelte",
-        "swift",
-        "terraform",
-        "toml",
-        "tsx",
-        "typescript",
-        "vim",
-        "vimdoc",
-        "vue",
-        "xml",
-        "yaml",
-        "zig",
+      },
+      indent = {
+        enable = true,
+        disable = { "python" },
       },
       incremental_selection = {
         enable = true,
@@ -92,97 +35,6 @@ return {
           node_incremental = "<C-space>",
           scope_incremental = false,
           node_decremental = "<bs>",
-        },
-      },
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-            ["al"] = "@loop.outer",
-            ["il"] = "@loop.inner",
-            ["ab"] = "@block.outer",
-            ["ib"] = "@block.inner",
-            ["ap"] = "@parameter.outer",
-            ["ip"] = "@parameter.inner",
-            ["as"] = "@statement.outer",
-            ["is"] = "@statement.inner",
-            ["am"] = "@comment.outer",
-            ["im"] = "@comment.inner",
-            ["ai"] = "@conditional.outer",
-            ["ii"] = "@conditional.inner",
-          },
-          selection_modes = {
-            ["@parameter.outer"] = "v", -- charwise
-            ["@function.outer"] = "V",  -- linewise
-            ["@class.outer"] = "<c-v>", -- blockwise
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true, -- whether to set jumps in the jumplist
-          goto_next_start = {
-            ["]f"] = "@function.outer",
-            ["]c"] = "@class.outer",
-            ["]l"] = "@loop.outer",
-            ["]b"] = "@block.outer",
-            ["]p"] = "@parameter.outer",
-            ["]s"] = "@statement.outer",
-            ["]m"] = "@comment.outer",
-            ["]i"] = "@conditional.outer",
-          },
-          goto_next_end = {
-            ["]F"] = "@function.outer",
-            ["]C"] = "@class.outer",
-            ["]L"] = "@loop.outer",
-            ["]B"] = "@block.outer",
-            ["]P"] = "@parameter.outer",
-            ["]S"] = "@statement.outer",
-            ["]M"] = "@comment.outer",
-            ["]I"] = "@conditional.outer",
-          },
-          goto_previous_start = {
-            ["[f"] = "@function.outer",
-            ["[c"] = "@class.outer",
-            ["[l"] = "@loop.outer",
-            ["[b"] = "@block.outer",
-            ["[p"] = "@parameter.outer",
-            ["[s"] = "@statement.outer",
-            ["[m"] = "@comment.outer",
-            ["[i"] = "@conditional.outer",
-          },
-          goto_previous_end = {
-            ["[F"] = "@function.outer",
-            ["[C"] = "@class.outer",
-            ["[L"] = "@loop.outer",
-            ["[B"] = "@block.outer",
-            ["[P"] = "@parameter.outer",
-            ["[S"] = "@statement.outer",
-            ["[M"] = "@comment.outer",
-            ["[I"] = "@conditional.outer",
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = {
-            ["<leader>a"] = "@parameter.inner",
-          },
-          swap_previous = {
-            ["<leader>A"] = "@parameter.inner",
-          },
-        },
-        lsp_interop = {
-          enable = true,
-          border = "none",
-          floating_preview_opts = {},
-          peek_definition_code = {
-            ["<leader>df"] = "@function.outer",
-            ["<leader>dF"] = "@class.outer",
-          },
         },
       },
       autotag = {
@@ -219,19 +71,100 @@ return {
         },
       },
     },
-    config = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        local added = {}
-        opts.ensure_installed = vim.tbl_filter(function(lang)
-          if added[lang] then
-            return false
-          end
-          added[lang] = true
-          return true
-        end, opts.ensure_installed)
-      end
-      require("nvim-treesitter").setup(opts)
-    end,
+    keys = {
+      { "<c-space>", desc = "Increment Selection" },
+      { "<bs>",      desc = "Decrement Selection", mode = "x" },
+    },
+  },
+
+  -- nvim-treesitter-textobjects - Extend LazyVim's configuration
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    opts = {
+      select = {
+        enable = true,
+        lookahead = true,
+        keymaps = {
+          -- LazyVim doesn't provide select textobjects by default, add our custom ones
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ac"] = "@class.outer",
+          ["ic"] = "@class.inner",
+          ["al"] = "@loop.outer",
+          ["il"] = "@loop.inner",
+          ["ab"] = "@block.outer",
+          ["ib"] = "@block.inner",
+          ["ap"] = "@parameter.outer",
+          ["ip"] = "@parameter.inner",
+          ["as"] = "@statement.outer",
+          ["is"] = "@statement.inner",
+          ["am"] = "@comment.outer",
+          ["im"] = "@comment.inner",
+          ["ai"] = "@conditional.outer",
+          ["ii"] = "@conditional.inner",
+        },
+        selection_modes = {
+          ["@parameter.outer"] = "v", -- charwise
+          ["@function.outer"] = "V",  -- linewise
+          ["@class.outer"] = "<c-v>", -- blockwise
+        },
+      },
+      move = {
+        enable = true,
+        set_jumps = true,
+        -- Extend LazyVim's move keymaps with additional textobjects
+        goto_next_start = {
+          ["]l"] = "@loop.outer",
+          ["]b"] = "@block.outer",
+          ["]p"] = "@parameter.outer",
+          ["]s"] = "@statement.outer",
+          ["]m"] = "@comment.outer",
+          ["]i"] = "@conditional.outer",
+        },
+        goto_next_end = {
+          ["]L"] = "@loop.outer",
+          ["]B"] = "@block.outer",
+          ["]P"] = "@parameter.outer",
+          ["]S"] = "@statement.outer",
+          ["]M"] = "@comment.outer",
+          ["]I"] = "@conditional.outer",
+        },
+        goto_previous_start = {
+          ["[l"] = "@loop.outer",
+          ["[b"] = "@block.outer",
+          ["[p"] = "@parameter.outer",
+          ["[s"] = "@statement.outer",
+          ["[m"] = "@comment.outer",
+          ["[i"] = "@conditional.outer",
+        },
+        goto_previous_end = {
+          ["[L"] = "@loop.outer",
+          ["[B"] = "@block.outer",
+          ["[P"] = "@parameter.outer",
+          ["[S"] = "@statement.outer",
+          ["[M"] = "@comment.outer",
+          ["[I"] = "@conditional.outer",
+        },
+      },
+      swap = {
+        enable = true,
+        swap_next = {
+          ["<leader>a"] = "@parameter.inner",
+        },
+        swap_previous = {
+          ["<leader>A"] = "@parameter.inner",
+        },
+      },
+      lsp_interop = {
+        enable = true,
+        border = "none",
+        floating_preview_opts = {},
+        peek_definition_code = {
+          ["<leader>df"] = "@function.outer",
+          ["<leader>dF"] = "@class.outer",
+        },
+      },
+    },
   },
 
   -- nvim-treesitter-context - Sticky header showing current context
@@ -239,18 +172,16 @@ return {
     "nvim-treesitter/nvim-treesitter-context",
     event = "VeryLazy",
     opts = {
-      enable = true,            -- Enable this plugin (Can be enabled/disabled later via commands)
-      multiwindow = true,       -- Enable context for all windows (not just the current one)
-      max_lines = 3,            -- How many lines the window should span. Values <= 0 mean no limit.
-      min_window_height = 0,    -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+      enable = true,
+      multiwindow = true,
+      max_lines = 3,
+      min_window_height = 0,
       line_numbers = true,
-      multiline_threshold = 20, -- Maximum number of lines to show for a single context
-      trim_scope = "outer",     -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-      mode = "cursor",          -- Line used to calculate context. Choices: 'cursor', 'topline'
-      -- Separator between context and content. Should be a single character string, like '-'.
-      -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+      multiline_threshold = 20,
+      trim_scope = "outer",
+      mode = "cursor",
       separator = "─",
-      zindex = 20, -- The Z-index of the context window
+      zindex = 20,
       on_attach = function(buf)
         -- Disable for markdown files
         local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
@@ -261,17 +192,15 @@ return {
       end,
     },
     keys = {
-      { "[c",         function() require("treesitter-context").go_to_context(vim.v.count1) end, desc = "Jump to context" },
-      { "<leader>uC", "<cmd>TSContextToggle<cr>",                                               desc = "Toggle Treesitter Context" },
+      {
+        "[c",
+        function()
+          require("treesitter-context").go_to_context(vim.v.count1)
+        end,
+        desc = "Jump to context",
+      },
+      { "<leader>uC", "<cmd>TSContextToggle<cr>", desc = "Toggle Treesitter Context" },
     },
-  },
-
-  -- Autotag for HTML/JSX
-  {
-    "windwp/nvim-ts-autotag",
-    event = "VeryLazy",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    opts = {},
   },
 
   -- Better % navigate and highlight matching words
@@ -283,4 +212,3 @@ return {
     end,
   },
 }
-

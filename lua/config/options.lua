@@ -60,12 +60,17 @@ opt.termguicolors = true   -- True color support
 opt.timeoutlen = 300
 opt.undofile = true
 opt.undolevels = 10000
-opt.updatetime = 200               -- Save swap file and trigger CursorHold
+opt.updatetime = 100               -- Faster completion (save swap file and trigger CursorHold)
 opt.virtualedit = "block"          -- Allow cursor to move where there is no text in visual block mode
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5                -- Minimum window width
 opt.wrap = false                   -- Disable line wrap
 opt.showtabline = 0                -- Never show tab line
+
+-- Performance optimizations
+opt.redrawtime = 1500  -- Allow more time before timing out
+opt.ttimeoutlen = 10   -- Faster key response
+opt.synmaxcol = 240    -- Don't syntax highlight long lines
 
 if vim.fn.has("nvim-0.10") == 1 then
   opt.smoothscroll = true
@@ -83,4 +88,19 @@ end
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
+
+-- Disable unused providers for faster startup
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+
+-- Defer shada (session data) writing for faster startup
+opt.shadafile = "NONE"
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  pattern = "*",
+  once = true,
+  callback = function()
+    opt.shadafile = ""
+    vim.cmd("silent! rshada!")
+  end,
+})
 

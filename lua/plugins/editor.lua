@@ -144,20 +144,18 @@ return {
     },
   },
 
-  -- todo-comments.nvim - Highlight and search TODO comments
+  -- todo-comments.nvim - Extend LazyVim's configuration
   {
     "folke/todo-comments.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    event = { "BufReadPost", "BufNewFile" },
     opts = {
-      signs = true,      -- show icons in the signs column
-      sign_priority = 8, -- sign priority
-      -- keywords recognized as todo comments
+      signs = true,
+      sign_priority = 8,
+      -- Custom keywords with different icons
       keywords = {
         FIX = {
-          icon = " ",                                 -- icon used for the sign, and in search results
-          color = "error",                            -- can be a hex color, or a named color (see below)
-          alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+          icon = " ",
+          color = "error",
+          alt = { "FIXME", "BUG", "FIXIT", "ISSUE" },
         },
         TODO = { icon = " ", color = "info" },
         HACK = { icon = " ", color = "warning" },
@@ -166,44 +164,22 @@ return {
         NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
         TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
       },
-      -- Configure search
-      search = {
-        command = "rg",
-        args = {
-          "--color=never",
-          "--no-heading",
-          "--with-filename",
-          "--line-number",
-          "--column",
-        },
-        pattern = [[\b(KEYWORDS):]], -- ripgrep regex
-      },
     },
     keys = {
-      {
-        "]t",
-        function()
-          require("todo-comments").jump_next()
-        end,
-        desc = "Next todo comment",
-      },
-      {
-        "[t",
-        function()
-          require("todo-comments").jump_prev()
-        end,
-        desc = "Previous todo comment",
-      },
+      -- Override LazyVim's <leader>x prefix with <leader>cx
+      { "<leader>xt", false }, -- Disable LazyVim's default
+      { "<leader>xT", false }, -- Disable LazyVim's default
       {
         "<leader>cxt",
-        "<cmd>TodoTrouble<cr>",
+        "<cmd>Trouble todo toggle<cr>",
         desc = "Todo (Trouble)",
       },
       {
         "<leader>cxT",
-        "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",
+        "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>",
         desc = "Todo/Fix/Fixme (Trouble)",
       },
+      -- Keep search commands using Snacks picker
       {
         "<leader>st",
         function()
@@ -252,13 +228,13 @@ return {
         desc = "Explorer NeoTree (cwd)",
       },
       {
-        "<leader>e",
+        "<leader>oe",
         "<leader>fe",
         desc = "Explorer NeoTree (Root Dir)",
         remap = true,
       },
       {
-        "<leader>E",
+        "<leader>oE",
         "<leader>fE",
         desc = "Explorer NeoTree (cwd)",
         remap = true,
@@ -354,59 +330,45 @@ return {
     },
   },
 
-  -- which-key for keybinding hints
+  -- which-key - Extend LazyVim's configuration
   {
     "folke/which-key.nvim",
-    event = "VeryLazy",
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
+    opts_extend = { "spec" },
     opts = {
-      preset = "classic",               -- This forces bottom layout
+      preset = "classic", -- Override LazyVim's "helix" preset
       layout = {
-        width = { max = 999 },          -- Use maximum available width
-        height = { min = 1, max = 10 }, -- Reduce height (default is usually 25)
-        align = "left",                 -- Align to left to use full width
+        width = { max = 999 },
+        height = { min = 1, max = 10 },
+        align = "left",
+      },
+      spec = {
+        -- Hide LazyVim's debug/profiler groups (we don't use DAP)
+        { "<leader>d", group = "debug", hidden = true },
+        { "<leader>dp", group = "profiler", hidden = true },
+        { "<leader>x", group = "diagnostics/quickfix", hidden = true },
+        { "<leader>e", hidden = true },
+        { "<leader>E", hidden = true },
+
+        -- Add our custom groups to LazyVim's defaults
+        { "gz", group = "multi-cursor", icon = { icon = "󰇀", color = "purple" } },
+        { "<leader>m", group = "markdown/obsidian", icon = { icon = "󰍔", color = "blue" } },
+        { "<leader>o", group = "open", icon = { icon = "󰏌", color = "cyan" } },
+        { "<leader>os", group = "scratch", icon = { icon = "󰎞", color = "yellow" } },
+        { "<leader>ot", group = "terminal", icon = { icon = "", color = "red" } },
+        { "<leader>p", group = "project", icon = { icon = "󰉋", color = "azure" } },
+        { "<leader>t", group = "tools", icon = { icon = "󰒓", color = "orange" } },
+        { "<leader>th", group = "harpoon", icon = { icon = "󰛢", color = "azure" } },
+        { "<leader>to", group = "overseer", icon = { icon = "󰜎", color = "green" } },
+        { "<leader>cx", group = "diagnostics/quickfix", icon = { icon = "󱖫", color = "green" } },
       },
     },
-    config = function(_, opts)
-      local wk = require("which-key")
-      wk.setup(opts)
-      -- Register key groups
-      wk.add({
-        { "<leader>",      group = "Leader" },
-        { "<leader>b",     group = "buffer" },
-        { "<leader>c",     group = "code" },
-        { "<leader>f",     group = "file" },
-        { "<leader>g",     group = "git" },
-        { "<leader>gh",    group = "hunks" },
-        { "<leader>h",     group = "harpoon" },
-        { "gz",            group = "multi-cursor" },
-        { "<leader>o",     group = "obsidian" },
-        { "<leader>O",     group = "overseer" },
-        { "<leader>p",     group = "project" },
-        { "<leader>q",     group = "quit/session" },
-        { "<leader>s",     group = "search" },
-        { "<leader>t",     group = "terminal" },
-        { "<leader>u",     group = "ui" },
-        { "<leader>w",     group = "windows" },
-        { "<leader>cx",    group = "diagnostics/quickfix" },
-        { "<leader><tab>", group = "tabs" },
-        { "g",             group = "goto" },
-        { "gs",            group = "surround" },
-        { "z",             group = "fold" },
-        { "[",             group = "prev" },
-        { "]",             group = "next" },
-      })
-    end,
   },
 
-  -- Search/replace in multiple files - grug-far
+  -- Search/replace in multiple files - Extend LazyVim's configuration
   {
     "MagicDuck/grug-far.nvim",
+    -- LazyVim already sets headerMaxWidth = 80, just customize keymaps
     opts = {
-      headerMaxWidth = 80,
       keymaps = {
         replace = { n = "<localleader>r" },
         qflist = { n = "<localleader>q" },
@@ -422,8 +384,8 @@ return {
         abort = { n = "<localleader>b" },
       },
     },
-    cmd = "GrugFar",
     keys = {
+      -- Override LazyVim's key to remove file filtering
       {
         "<leader>sr",
         function()
@@ -567,12 +529,12 @@ return {
       },
     },
     keys = {
-      { "<leader>Oo", "<cmd>OverseerToggle<cr>",     desc = "Overseer Toggle" },
-      { "<leader>Or", "<cmd>OverseerRun<cr>",        desc = "Overseer Run" },
-      { "<leader>Ob", "<cmd>OverseerBuild<cr>",      desc = "Overseer Build" },
-      { "<leader>Oi", "<cmd>OverseerInfo<cr>",       desc = "Overseer Info" },
-      { "<leader>Oa", "<cmd>OverseerTaskAction<cr>", desc = "Overseer Task Action" },
-      { "<leader>Oc", "<cmd>OverseerClearCache<cr>", desc = "Overseer Clear Cache" },
+      { "<leader>too", "<cmd>OverseerToggle<cr>",     desc = "Toggle" },
+      { "<leader>tor", "<cmd>OverseerRun<cr>",        desc = "Run" },
+      { "<leader>tob", "<cmd>OverseerBuild<cr>",      desc = "Build" },
+      { "<leader>toi", "<cmd>OverseerInfo<cr>",       desc = "Info" },
+      { "<leader>toa", "<cmd>OverseerTaskAction<cr>", desc = "Task Action" },
+      { "<leader>toc", "<cmd>OverseerClearCache<cr>", desc = "Clear Cache" },
     },
   },
 }
