@@ -582,12 +582,6 @@ return {
     end,
   },
 
-  -- UI components
-  {
-    "MunifTanjim/nui.nvim",
-    lazy = true,
-  },
-
   -- Scrollbar
   {
     "petertriho/nvim-scrollbar",
