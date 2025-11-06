@@ -41,6 +41,7 @@ M.options = {
     dashboard = true,
     neotree = true,
     neogit = true,
+    diffview = true,
     octo = true,
     lsp = true,
     markdown = true,

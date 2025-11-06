@@ -95,11 +95,25 @@ function M.apply()
   -- Title
   hl("Title", { fg = colors.blue, bold = true })
 
-  -- Diff
-  hl("DiffAdd", { fg = colors.green, bg = colors.surface0 })
-  hl("DiffChange", { fg = colors.blue, bg = colors.surface0 }) -- Use blue for changes
-  hl("DiffDelete", { fg = colors.red, bg = colors.surface0 })
-  hl("DiffText", { fg = colors.blue, bg = colors.surface1, bold = true })
+  -- Diff (with colored backgrounds, GitHub-style)
+  hl("DiffAdd", { bg = colors.diff_add_bg, fg = "NONE" })
+  hl("DiffDelete", { fg = colors.red, bg = colors.diff_delete_bg })
+  -- Changed lines use same backgrounds but darker for exact changes
+  hl("DiffChange", { bg = colors.diff_add_bg, fg = "NONE" })  -- Changed lines appear as additions
+  hl("DiffText", { bg = colors.diff_add_text, fg = "NONE", bold = true })  -- Exact changed text in darker green, NO BLUE!
+
+  -- Diff syntax (used by diffview.nvim and vim diff syntax)
+  hl("Added", { fg = colors.green })
+  hl("Removed", { fg = colors.red })
+  hl("Changed", { fg = colors.yellow })
+  hl("diffAdded", { fg = colors.green })
+  hl("diffRemoved", { fg = colors.red })
+  hl("diffChanged", { fg = colors.yellow })
+  hl("diffOldFile", { fg = colors.red })
+  hl("diffNewFile", { fg = colors.green })
+  hl("diffFile", { fg = colors.blue })
+  hl("diffLine", { fg = colors.cyan })
+  hl("diffIndexLine", { fg = colors.violet })
 
   -- Spell
   hl("SpellBad", { sp = colors.red, undercurl = true })
@@ -174,6 +188,9 @@ function M.apply()
     -- vim.notify("Loading Tomorrow Night Neogit integration", vim.log.levels.DEBUG)
     require("tomorrow-night.integrations.neogit").apply(colors, opts)
   end
+  if opts.integrations.diffview then
+    require("tomorrow-night.integrations.diffview").apply(colors, opts)
+  end
   if opts.integrations.octo then
     require("tomorrow-night.integrations.octo").apply(colors, opts)
   end
@@ -214,10 +231,10 @@ function M.apply()
     require("tomorrow-night.integrations.md_agenda").apply(colors, opts)
   end
 
-  -- Apply custom Git overrides (blue for changes)
-  hl("GitSignsChange", { fg = colors.blue })
-  hl("GitSignsChangeNr", { fg = colors.blue })
-  hl("GitSignsChangeLn", { fg = colors.blue })
+  -- Apply custom Git overrides (yellow for changes)
+  hl("GitSignsChange", { fg = colors.yellow })
+  hl("GitSignsChangeNr", { fg = colors.yellow })
+  hl("GitSignsChangeLn", { fg = colors.yellow })
 
   -- Apply terminal colors if enabled
   if opts.term_colors then

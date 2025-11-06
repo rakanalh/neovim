@@ -43,4 +43,10 @@ return {
   flamingo = "#de935f",   -- Secondary accent (using orange)
   peach = "#de935f",      -- Same as orange
   maroon = "#cc6666",     -- Error variant (using red)
+
+  -- Diff background colors (GitHub-style)
+  diff_add_bg = "#283d28",    -- Medium green background for additions (less bright)
+  diff_delete_bg = "#4a2d2d", -- Bright red background for deletions
+  diff_add_text = "#1a2d1a",  -- Darker green for exact added text (like GitHub)
+  diff_delete_text = "#3a1a1a", -- Darker red for exact deleted text (like GitHub)
 }

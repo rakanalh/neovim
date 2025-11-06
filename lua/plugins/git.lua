@@ -151,6 +151,14 @@ return {
       enhanced_diff_hl = false,
       git_cmd = { "git" },
       use_icons = true,
+      view = {
+        default = {
+          winbar_info = false,
+        },
+        file_history = {
+          winbar_info = false,
+        },
+      },
       show_help_hints = true,
       watch_index = true,
       icons = {
