@@ -44,35 +44,35 @@ return {
       use_default_keymaps = true,
       kind = "vsplit",
       commit_editor = {
-        kind = "vsplit",
+        kind = "floating",
         show_staged_diff = true,
       },
       commit_select_view = {
-        kind = "vsplit",
+        kind = "floating",
       },
       commit_view = {
-        kind = "vsplit",
+        kind = "floating",
       },
       log_view = {
-        kind = "vsplit",
+        kind = "floating",
       },
       rebase_editor = {
-        kind = "vsplit",
+        kind = "floating",
       },
       reflog_view = {
-        kind = "vsplit",
+        kind = "floating",
       },
       merge_editor = {
-        kind = "vsplit",
+        kind = "floating",
       },
       tag_editor = {
-        kind = "vsplit",
+        kind = "floating",
       },
       preview_buffer = {
-        kind = "vsplit",
+        kind = "floating",
       },
       popup = {
-        kind = "vsplit",
+        kind = "floating",
       },
       signs = {
         hunk = { "", "" },
