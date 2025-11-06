@@ -260,6 +260,7 @@ return {
       },
 
       -- Git integration
+      { "<leader>gd", false }, -- Disable LazyVim's git diff, use diffview instead
       {
         "<leader>gc",
         function()
