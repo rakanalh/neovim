@@ -321,6 +321,11 @@ return {
             end, items)
           end,
         },
+        symbols = {
+          win = {
+            size = 0.2, -- 20% of horizontal space
+          },
+        },
       },
     },
     keys = {
