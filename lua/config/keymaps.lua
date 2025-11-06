@@ -14,10 +14,10 @@ map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
 
--- Cycle scroll position: zt -> zz -> zb
+-- Cycle scroll position: zz -> zt -> zb
 local scroll_state = 1
 map("n", "<C-l>", function()
-  local cmds = { "zt", "zz", "zb" }
+  local cmds = { "zz", "zt", "zb" }
   vim.cmd("normal! " .. cmds[scroll_state])
   scroll_state = (scroll_state % 3) + 1
 end, { desc = "Cycle Scroll Position" })

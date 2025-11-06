@@ -247,6 +247,61 @@ return {
         desc = "Git Explorer",
       },
       {
+        "<leader>gE",
+        function()
+          -- Detect main branch dynamically by asking git/remote
+          local function get_main_branch()
+            -- Ask the remote what its default branch is (most reliable)
+            local handle = io.popen("git ls-remote --symref origin HEAD 2>/dev/null | head -1")
+            if handle then
+              local result = handle:read("*a")
+              handle:close()
+              if result and result ~= "" then
+                -- Parse: "ref: refs/heads/main	HEAD"
+                local branch = result:match("ref:%s*refs/heads/([^%s\t]+)")
+                if branch then
+                  return vim.trim(branch)
+                end
+              end
+            end
+
+            -- Fallback: check git config default branch
+            local config = io.popen("git config init.defaultBranch 2>/dev/null")
+            if config then
+              local branch = config:read("*a")
+              config:close()
+              if branch and branch ~= "" then
+                return vim.trim(branch)
+              end
+            end
+
+            -- Fallback: check for common main branch names
+            local candidates = { "main", "master", "nightly", "develop" }
+            for _, branch in ipairs(candidates) do
+              local check = io.popen("git rev-parse --verify " .. branch .. " 2>/dev/null")
+              if check then
+                local output = check:read("*a")
+                check:close()
+                if output and output ~= "" then
+                  return branch
+                end
+              end
+            end
+
+            -- Default to HEAD if all else fails
+            return "HEAD"
+          end
+
+          local main_branch = get_main_branch()
+          require("neo-tree.command").execute({
+            source = "git_status",
+            toggle = true,
+            git_base = main_branch,
+          })
+        end,
+        desc = "Git Explorer (diff vs main)",
+      },
+      {
         "<leader>be",
         function()
           require("neo-tree.command").execute({ source = "buffers", toggle = true })
@@ -285,7 +340,7 @@ return {
           visible = true,
           show_hidden_count = true,
           hide_dotfiles = false,
-          hide_gitignored = false,
+          hide_gitignored = true,
           hide_by_name = {
             ".git",
             ".DS_Store",
@@ -404,23 +459,23 @@ return {
     event = "VeryLazy",
     init = function()
       vim.g.VM_maps = {
-        ["Find Under"] = "<C-n>",              -- Select word under cursor
-        ["Find Subword Under"] = "<C-n>",      -- Select subword under cursor
-        ["Select All"] = "gza",                -- Select all occurrences
-        ["Select h"] = "<C-Left>",             -- Reduce selection
-        ["Select l"] = "<C-Right>",            -- Expand selection
-        ["Add Cursor Down"] = "<C-M-j>",       -- Add cursor down
-        ["Add Cursor Up"] = "<C-M-k>",         -- Add cursor up
-        ["Add Cursor At Pos"] = "<C-M-p>",     -- Add cursor at click position
-        ["Skip Region"] = "q",                 -- Skip current match and find next (explicit)
-        ["Remove Region"] = "Q",               -- Remove current region entirely (explicit)
-        ["Visual Regex"] = "gz/",              -- Select via regex
-        ["Visual All"] = "gzA",                -- Select all in visual mode
-        ["Visual Add"] = "gza",                -- Add selection in visual mode
-        ["Visual Find"] = "gzf",               -- Find in visual mode
-        ["Visual Cursors"] = "gzc",            -- Create cursors from visual selection
-        ["Mouse Cursor"] = "<C-LeftMouse>",    -- Add cursor with mouse
-        ["Mouse Word"] = "<C-RightMouse>",     -- Select word with mouse
+        ["Find Under"] = "<C-n>", -- Select word under cursor
+        ["Find Subword Under"] = "<C-n>", -- Select subword under cursor
+        ["Select All"] = "gza", -- Select all occurrences
+        ["Select h"] = "<C-Left>", -- Reduce selection
+        ["Select l"] = "<C-Right>", -- Expand selection
+        ["Add Cursor Down"] = "<C-M-j>", -- Add cursor down
+        ["Add Cursor Up"] = "<C-M-k>", -- Add cursor up
+        ["Add Cursor At Pos"] = "<C-M-p>", -- Add cursor at click position
+        ["Skip Region"] = "q", -- Skip current match and find next (explicit)
+        ["Remove Region"] = "Q", -- Remove current region entirely (explicit)
+        ["Visual Regex"] = "gz/", -- Select via regex
+        ["Visual All"] = "gzA", -- Select all in visual mode
+        ["Visual Add"] = "gza", -- Add selection in visual mode
+        ["Visual Find"] = "gzf", -- Find in visual mode
+        ["Visual Cursors"] = "gzc", -- Create cursors from visual selection
+        ["Mouse Cursor"] = "<C-LeftMouse>", -- Add cursor with mouse
+        ["Mouse Word"] = "<C-RightMouse>", -- Select word with mouse
         ["Mouse Column"] = "<M-C-RightMouse>", -- Column selection with mouse
       }
       -- Theme - empty string to not set default links, we'll define colors ourselves
@@ -433,12 +488,12 @@ return {
       vim.g.VM_leader = "\\\\"
     end,
     keys = {
-      { "<C-n>",   mode = { "n", "v" }, desc = "Select word/selection" },
-      { "<C-M-j>", mode = { "n" },      desc = "Add cursor down" },
-      { "<C-M-k>", mode = { "n" },      desc = "Add cursor up" },
-      { "gza",     mode = { "n", "v" }, desc = "Select all occurrences" },
-      { "gz/",     mode = { "n" },      desc = "Select via regex" },
-      { "gzc",     mode = { "v" },      desc = "Create cursors from selection" },
+      { "<C-n>", mode = { "n", "v" }, desc = "Select word/selection" },
+      { "<C-M-j>", mode = { "n" }, desc = "Add cursor down" },
+      { "<C-M-k>", mode = { "n" }, desc = "Add cursor up" },
+      { "gza", mode = { "n", "v" }, desc = "Select all occurrences" },
+      { "gz/", mode = { "n" }, desc = "Select via regex" },
+      { "gzc", mode = { "v" }, desc = "Create cursors from selection" },
     },
   },
 
@@ -529,10 +584,10 @@ return {
       },
     },
     keys = {
-      { "<leader>too", "<cmd>OverseerToggle<cr>",     desc = "Toggle" },
-      { "<leader>tor", "<cmd>OverseerRun<cr>",        desc = "Run" },
-      { "<leader>tob", "<cmd>OverseerBuild<cr>",      desc = "Build" },
-      { "<leader>toi", "<cmd>OverseerInfo<cr>",       desc = "Info" },
+      { "<leader>too", "<cmd>OverseerToggle<cr>", desc = "Toggle" },
+      { "<leader>tor", "<cmd>OverseerRun<cr>", desc = "Run" },
+      { "<leader>tob", "<cmd>OverseerBuild<cr>", desc = "Build" },
+      { "<leader>toi", "<cmd>OverseerInfo<cr>", desc = "Info" },
       { "<leader>toa", "<cmd>OverseerTaskAction<cr>", desc = "Task Action" },
       { "<leader>toc", "<cmd>OverseerClearCache<cr>", desc = "Clear Cache" },
     },

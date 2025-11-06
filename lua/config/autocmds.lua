@@ -18,6 +18,16 @@ vim.api.nvim_create_user_command("SSHCheck", function()
   end
 end, { desc = "Check SSH Agent status" })
 
+-- Auto reload files when changed outside vim
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  group = vim.api.nvim_create_augroup("auto_reload", {}),
+  callback = function()
+    if vim.o.buftype ~= "nofile" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("highlight_yank", {}),

@@ -89,8 +89,7 @@ local function setup_obsidian_layout()
     })
 
     -- Focus back to ObsidianToday (top center window)
-    vim.cmd("wincmd k")
-    vim.cmd("wincmd h")
+    vim.api.nvim_set_current_win(today_win)
   end, 500)
 end
 

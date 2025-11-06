@@ -10,6 +10,7 @@ vim.g.maplocalleader = " m"
 local opt = vim.opt
 
 opt.autowrite = true                                    -- Enable auto write
+opt.autoread = true                                     -- Auto reload files changed outside vim
 opt.swapfile = false                                    -- Disable swap files
 opt.backup = false                                      -- Disable backup files
 opt.writebackup = false                                 -- Disable backup before overwriting file

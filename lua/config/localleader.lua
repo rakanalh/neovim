@@ -203,6 +203,32 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Setup Octo localleader labels",
 })
 
+-- Markdown buffers (Obsidian)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.schedule(function()
+      local bufnr = vim.fn.bufnr()
+
+      -- Guard: Only register once per buffer
+      if vim.b.localleader_setup then
+        return
+      end
+      vim.b.localleader_setup = true
+
+      if is_octo_context() then
+        register_octo_groups(bufnr)
+      else
+        local wk = require("which-key")
+        wk.add({
+          { "<leader>m", group = "Markdown/Obsidian", icon = { icon = "󰍔", color = "blue" }, buffer = bufnr },
+        })
+      end
+    end)
+  end,
+  desc = "Setup Markdown localleader labels",
+})
+
 -- Grug-far buffers (Search/Replace)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "grug-far",

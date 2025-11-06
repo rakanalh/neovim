@@ -79,7 +79,7 @@ return {
               },
               checkOnSave = {
                 enable = true,
-                allFeatures = false,
+                allFeatures = true,
                 command = "clippy",
                 extraArgs = { "--no-deps", "--target-dir", target_dir },
                 extraEnv = {
@@ -87,7 +87,7 @@ return {
                 }
               },
               cachePriming = {
-                enable = false,
+                enable = true,
               },
               procMacro = {
                 enable = true,
@@ -171,12 +171,12 @@ return {
       auto_close = false,
     },
     keys = {
-      { "<localleader>b", "<cmd>CargoBuild<cr>",  desc = "Cargo Build", ft = "rust" },
-      { "<localleader>k", "<cmd>CargoCheck<cr>",  desc = "Cargo Check", ft = "rust" },
-      { "<localleader>l", "<cmd>CargoClippy<cr>", desc = "Cargo Clippy", ft = "rust" },
-      { "<localleader>f", "<cmd>CargoFmt<cr>",    desc = "Cargo Format", ft = "rust" },
-      { "<localleader>d", "<cmd>CargoDoc<cr>",    desc = "Cargo Doc", ft = "rust" },
-      { "<localleader>a", "<cmd>CargoAdd<cr>",    desc = "Cargo Add Dependency", ft = "rust" },
+      { "<localleader>b", "<cmd>CargoBuild<cr>",  desc = "Cargo Build",             ft = "rust" },
+      { "<localleader>k", "<cmd>CargoCheck<cr>",  desc = "Cargo Check",             ft = "rust" },
+      { "<localleader>l", "<cmd>CargoClippy<cr>", desc = "Cargo Clippy",            ft = "rust" },
+      { "<localleader>f", "<cmd>CargoFmt<cr>",    desc = "Cargo Format",            ft = "rust" },
+      { "<localleader>d", "<cmd>CargoDoc<cr>",    desc = "Cargo Doc",               ft = "rust" },
+      { "<localleader>a", "<cmd>CargoAdd<cr>",    desc = "Cargo Add Dependency",    ft = "rust" },
       { "<localleader>x", "<cmd>CargoRemove<cr>", desc = "Cargo Remove Dependency", ft = "rust" },
     },
   },
