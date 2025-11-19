@@ -138,6 +138,7 @@ return {
   -- Scrollbar
   {
     "petertriho/nvim-scrollbar",
+    enabled = false,
     event = "BufReadPost",
     opts = {
       handle = {

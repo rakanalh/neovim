@@ -68,6 +68,13 @@ opt.winminwidth = 5                -- Minimum window width
 opt.wrap = false                   -- Disable line wrap
 opt.showtabline = 0                -- Never show tab line
 
+-- Hide GUI scrollbars
+if vim.fn.has("gui_running") == 1 then
+  opt.guioptions:remove("r") -- Remove right scrollbar
+  opt.guioptions:remove("L") -- Remove left scrollbar
+  opt.guioptions:remove("b") -- Remove bottom scrollbar
+end
+
 -- Performance optimizations
 opt.redrawtime = 1500  -- Allow more time before timing out
 opt.ttimeoutlen = 10   -- Faster key response
