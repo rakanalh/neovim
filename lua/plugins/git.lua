@@ -153,25 +153,6 @@ return {
       use_icons = true,
       view = {
         default = {
-          winbar_info = false,
-        },
-        file_history = {
-          winbar_info = false,
-        },
-      },
-      show_help_hints = true,
-      watch_index = true,
-      icons = {
-        folder_closed = "",
-        folder_open = "",
-      },
-      signs = {
-        fold_closed = "",
-        fold_open = "",
-        done = "✓",
-      },
-      view = {
-        default = {
           layout = "diff2_horizontal",
           winbar_info = false,
         },

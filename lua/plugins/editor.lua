@@ -644,4 +644,55 @@ return {
       { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put Before Applying a Filter" },
     },
   },
+
+  -- quicker.nvim - Improved quickfix UI and workflow
+  {
+    "stevearc/quicker.nvim",
+    ft = "qf",
+    opts = {
+      -- Local window options for quickfix
+      opts = {
+        buflisted = false,
+        number = true,
+        relativenumber = false,
+        signcolumn = "auto",
+        winfixheight = true,
+        wrap = false,
+      },
+      -- Keymaps specific to quickfix buffer
+      keys = {
+        {
+          ">",
+          function()
+            require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+          end,
+          desc = "Expand quickfix context",
+        },
+        {
+          "<",
+          function()
+            require("quicker").collapse()
+          end,
+          desc = "Collapse quickfix context",
+        },
+      },
+      -- Editable quickfix buffer
+      edit = {
+        enabled = true,
+        autosave = "unmodified", -- Save when leaving an unmodified buffer
+      },
+      -- Syntax highlighting
+      highlight = {
+        treesitter = true,   -- Use treesitter for syntax
+        lsp = true,          -- Use LSP semantic tokens
+        load_buffers = true, -- Load referenced buffers for highlighting
+      },
+      -- Trim leading whitespace from quickfix entries
+      trim_leading_whitespace = "common", -- Remove common indentation
+      -- Constrain cursor to valid quickfix items
+      constrain_cursor = true,
+      -- Max height for the quickfix window (percentage of screen)
+      max_height = 0.5,
+    },
+  },
 }
