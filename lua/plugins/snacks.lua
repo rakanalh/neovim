@@ -96,9 +96,11 @@ return {
           files = {
             hidden = true,
             ignored = false,
+            exclude = { "node_modules", "target" },
           },
           grep = {
             hidden = true,
+            exclude = { "node_modules", "target" },
           },
           projects = {
             -- Override to use project.nvim instead of directory search

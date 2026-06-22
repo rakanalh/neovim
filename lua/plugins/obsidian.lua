@@ -2,7 +2,7 @@
 return {
   {
     "obsidian-nvim/obsidian.nvim",
-    version = "*",
+    version = "v3.13.0", -- Pin to stable version to avoid footer errors
     -- Load on markdown files OR on VeryLazy (for startup layout)
     event = "VeryLazy",
     ft = "markdown",

@@ -9,13 +9,11 @@ return {
     end,
     opts = {
       manual_mode = false,
-      detection_methods = { "pattern", "lsp" },
+      lsp = { enabled = true, ignore = {} },
       patterns = { ".git" },
-      ignore_lsp = {},
       show_hidden = false,
       silent_chdir = true,
       scope_chdir = "tab", -- Use tab-local directory changes
-      datapath = vim.fn.stdpath("data"),
     },
   },
 

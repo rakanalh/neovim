@@ -5,11 +5,15 @@ return {
     lazy = true,
     init = function()
       vim.g.navic_silence = true
-      require("lazyvim.util").lsp.on_attach(function(client, buffer)
-        if client.supports_method("textDocument/documentSymbol") then
-          require("nvim-navic").attach(client, buffer)
-        end
-      end)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          local buffer = args.buf
+          if client and client.supports_method("textDocument/documentSymbol") then
+            require("nvim-navic").attach(client, buffer)
+          end
+        end,
+      })
     end,
     opts = function()
       return {
@@ -99,16 +103,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
-      -- Override LazyVim's default LSP keymaps to prevent conflicts
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-      -- Remove LazyVim's default <leader>ss mapping (document symbols)
-      -- We use it for searching buffer lines instead
-      for i = #keys, 1, -1 do
-        if keys[i][1] == "<leader>ss" then
-          table.remove(keys, i)
-        end
-      end
-
       -- Extend LazyVim's servers with our language-specific configurations
       local servers = {
         -- Bash
@@ -218,18 +212,27 @@ return {
         },
       }
 
-      -- Merge with existing servers from LazyVim
-      opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, servers)
-
-      -- Set custom capabilities for file operations
-      opts.capabilities = vim.tbl_deep_extend("force", opts.capabilities or {}, {
-        workspace = {
-          fileOperations = {
-            didRename = true,
-            willRename = true,
+      -- Add wildcard server config for capabilities and keymaps (applies to all servers)
+      servers["*"] = {
+        -- Disable LazyVim's default <leader>ss mapping (document symbols)
+        -- We use it for searching buffer lines instead
+        keys = {
+          { "<leader>ss", false },
+          -- Explicitly add rename keybinding (LazyVim default)
+          { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
+        },
+        capabilities = {
+          workspace = {
+            fileOperations = {
+              didRename = true,
+              willRename = true,
+            },
           },
         },
-      })
+      }
+
+      -- Merge with existing servers from LazyVim
+      opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, servers)
 
       return opts
     end,

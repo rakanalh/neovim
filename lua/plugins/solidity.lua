@@ -14,10 +14,20 @@ return {
     opts = {
       servers = {
         solidity = {
-          cmd = { "nomicfoundation-solidity-language-server", "--stdio" },
-          filetypes = { "solidity" },
-          root_dir = require("lspconfig.util").find_git_ancestor,
           single_file_support = true,
+          on_attach = function(client)
+            -- Disable LSP formatting; conform.nvim handles it with forge_fmt
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
+          handlers = {
+            ["window/showMessageRequest"] = function(_, params)
+              if not params.actions or #params.actions == 0 then
+                return vim.NIL
+              end
+              return vim.lsp.handlers["window/showMessageRequest"](_, params)
+            end,
+          },
         },
       },
     },
@@ -29,7 +39,8 @@ return {
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, {
-        "solidity", -- nomicfoundation-solidity-language-server
+        "solidity-ls", -- nomicfoundation-solidity-language-server
+        "solhint",
       })
     end,
   },
@@ -56,7 +67,7 @@ return {
     "mfussenegger/nvim-lint",
     opts = {
       linters_by_ft = {
-        solidity = { "solhint" },
+        solidity = {},
       },
     },
   },
